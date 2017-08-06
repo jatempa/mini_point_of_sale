@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<section class="section">
+  <div class="container">
+    {% block fos_user_content %}
+    {% endblock fos_user_content %}
+   </div>
+</section>
+{% endblock body %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
