@@ -1,0 +1,167 @@
+easy_admin:
+    site_name: 'Admin'
+    formats:
+      date: 'd/m/Y'
+      time: 'H:i'
+      datetime: 'F j, Y H:i'
+    design:
+      color_scheme: 'dark'
+      form_theme: 'horizontal'
+      menu:
+          - label: 'Comandas'
+            icon: file-text
+            children:
+                - { entity: 'Note'}
+                - { entity: 'NoteProduct'}
+          - entity: 'Category'
+            icon: share-alt
+          - entity: 'Product'
+            icon: beer
+          - entity: 'User'
+            icon: user
+    list:
+        max_results: 10
+        actions:
+            - { name: 'show', label: '', icon: 'search'}
+            - { name: 'edit', label: '', icon: 'pencil' }
+            - { name: 'delete', label: '', icon: 'trash' }
+            - { name: 'search', label: 'Búsqueda' }
+    show:
+        actions:
+            - { name: 'edit', label: 'Actualizar' }
+            - { name: 'list', label: 'Regresar al menu' }
+    edit:
+        actions:
+            - { name: 'list', label: 'Regresar al menú' }
+    new:
+        actions:
+            - { name: 'list', label: 'Regresar al menú' }
+    entities:
+        Category:
+            label: 'Categoría'
+            class: AppBundle\Entity\Category
+            list:
+                title: "Categorías"
+                fields:
+                  - { property: 'id', label: 'Id' }
+                  - { property: 'name', label: 'Categoría' }
+            show:
+                title: "Categoría (#%%entity_id%%)"
+                fields:
+                  - { property: 'id', label: 'Id' }
+                  - { property: 'name', label: 'Categoría' }
+            new:
+                title: "Crear Categoría"
+                fields:
+                  - { property: 'name', label: 'Categoría' }
+            edit:
+                title: "Modificar Categoría"
+                fields:
+                  - { property: 'name', label: 'Categoría' }
+        Note:
+            label: 'Comanda'
+            class: AppBundle\Entity\Note
+            disabled_actions: ['new', 'edit', 'delete', 'show']
+            list:
+                title: "Comandas"
+                fields:
+                  - { property: 'id', label: 'Id' }
+                  - { property: 'numberNote', label: 'Folio' }
+                  - { property: 'status', label: 'Status' }
+                  - { property: 'checkin', label: 'Fecha Emisión' }
+                  - { property: 'checkout', label: 'Fecha Cierre' }
+                  - { property: 'waiter', label: 'Mesero' }
+                sort: ['checkin', 'DESC']
+        NoteProduct:
+            label: 'Detalles Comanda'
+            class: AppBundle\Entity\NoteProduct
+            disabled_actions: ['new', 'edit', 'delete', 'show']
+            list:
+                title: "Detalles Comanda"
+                fields:
+                  - { property: 'note', label: 'Comanda' }
+                  - { property: 'product', label: 'Producto' }
+                  - { property: 'amount', label: 'Cantidad' }
+                  - { property: 'total', label: 'Total $' }
+        Product:
+            label: 'Productos'
+            class: AppBundle\Entity\Product
+            list:
+                actions:
+                  - { name: 'new', label: 'Crear Producto' }
+                title: "Productos"
+                fields:
+                  - { property: 'id', label: 'Id' }
+                  - { property: 'category', label: 'Categoría' }
+                  - { property: 'name', label: 'Nombre' }
+                  - { property: 'price', label: 'Precio $' }
+                  - { property: 'stock', label: 'Stock' }
+            show:
+                title: "Producto (#%%entity_id%%)"
+                fields:
+                  - { property: 'id', label: 'Id' }
+                  - { property: 'category', label: 'Categoría' }
+                  - { property: 'name', label: 'Nombre' }
+                  - { property: 'price', label: 'Precio $' }
+                  - { property: 'stock', label: 'Stock' }
+            new:
+                title: "Crear Producto"
+                fields:
+                  - { property: 'name', label: 'Nombre' }
+                  - { property: 'category', label: 'Categoría' }
+                  - { property: 'price', label: 'Precio $' }
+                  - { property: 'stock', label: 'Stock' }
+            edit:
+                title: "Modificar Producto"
+                fields:
+                  - { property: 'name', label: 'Nombre' }
+                  - { property: 'category', label: 'Categoría' }
+                  - { property: 'price', label: 'Precio $' }
+        User:
+            label: 'Usuarios'
+            class: AppBundle\Entity\User
+            list:
+                title: 'Usuarios'
+                fields:
+                    - { property: 'id', label: 'Id' }
+                    - { property: 'name', label: 'Nombre' }
+                    - { property: 'firstLastName', label: 'Apellido Paterno' }
+                    - { property: 'secondLastName', label: 'Apellido Materno' }
+                    - { property: 'username', label: 'Usuario' }
+                    - { property: 'email', label: 'Correo electrónico' }
+                    - { property: 'enabled', label: 'Habilitado' }
+                    - { property: 'roles', label: 'Rol' }
+            show:
+                title: "Usuario (#%%entity_id%%)"
+                fields:
+                    - { property: 'name', label: 'Nombre' }
+                    - { property: 'firstLastName', label: 'Apellido Paterno' }
+                    - { property: 'secondLastName', label: 'Apellido Materno' }
+                    - { property: 'username', label: 'Usuario' }
+                    - { property: 'email', label: 'Correo electrónico' }
+                    - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
+                    - { property: 'enabled', label: 'Habilitado' }
+            new:
+                title: "Crear Usuario"
+                fields:
+                    - { property: 'name', label: 'Nombre' }
+                    - { property: 'firstLastName', label: 'Apellido Paterno' }
+                    - { property: 'secondLastName', label: 'Apellido Materno' }
+                    - { property: 'email', label: 'Correo electrónico' }
+                    - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
+                    - { property: 'enabled', type: 'checkbox', label: 'Activo' }
+                    - { property: 'username', label: 'Usuario' }
+                    - { property: 'plainPassword', type: 'text', type_options: { required: true}, label: 'Contraseña' }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+            edit:
+                title: "Modificar Usuario"
+                fields:
+                    - { property: 'name', label: 'Nombre' }
+                    - { property: 'firstLastName', label: 'Apellido Paterno' }
+                    - { property: 'secondLastName', label: 'Apellido Materno' }
+                    - { property: 'email', label: 'Correo electrónico' }
+                    - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
+                    - { property: 'enabled', type: 'checkbox', label: 'Activo' }
+                    - { property: 'username', label: 'Usuario' }
+                    - { property: 'plainPassword', type: 'text', type_options: { required: false }, label: 'Contraseña' }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }

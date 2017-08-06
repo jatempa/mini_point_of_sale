@@ -42,6 +42,11 @@ class Note
      */
     private $checkout;
 
+    /** @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     *  @ORM\JoinColumn(name="user", referencedColumnName="user_id")
+     */
+    private $user;
+
     /**
      * @var int
      *
@@ -150,6 +155,29 @@ class Note
     public function getNumberNote()
     {
         return $this->numberNote;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     * @return Note
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     public function __toString()

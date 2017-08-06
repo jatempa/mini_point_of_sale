@@ -21,6 +21,7 @@
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/orm": "^2.4.8",
         "friendsofsymfony/rest-bundle": "^2.2",
+        "friendsofsymfony/user-bundle": "~2.0",
         "h4cc/alice-fixtures-bundle": "^0.5.1",
         "incenteev/composer-parameter-handler": "~2.0",
         "javiereguiluz/easyadmin-bundle": "^1.16",
