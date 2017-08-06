@@ -137,26 +137,29 @@ const store = new Vuex.Store({
       total: 0
     },
     mutations: {
+      updateLastNumberNote(state) {
+        state.lastNumberNote += 1;
+      },
       updateTableNumber(state, tableNumber) {
-        state.tableNumber = tableNumber
+        state.tableNumber = tableNumber;
       },
       updateCategories(state, categories) {
-        state.categories = categories
+        state.categories = categories;
       },
       updateProducts(state, products) {
-        state.products = products
+        state.products = products;
       },
       updateSelectedCategory(state, selectedCategory) {
-        state.selectedCategory = selectedCategory
+        state.selectedCategory = selectedCategory;
       },
       updateSelectedProduct(state, selectedProduct) {
-        state.selectedProduct = selectedProduct
+        state.selectedProduct = selectedProduct;
       },
       updateAmount(state, amount) {
-        state.amount = amount
+        state.amount = amount;
       },
       updateTotal(state, total) {
-        state.total = total
+        state.total = total;
       }
     },
     getters: {
@@ -215,7 +218,8 @@ new Vue({
             console.log(error);
               swal('Error', 'Esta comanda no pudo ser registrada en el sistema', 'error')
           });
-          this.$store.state.lastNumberNote += 1;
+          // Increment number note
+          this.$store.commit('updateLastNumberNote');
           // Clean form
           this.cleanForm();
       } else {
