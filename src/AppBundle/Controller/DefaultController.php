@@ -13,9 +13,18 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ));
+        return $this->render('default/default.html.twig');
+    }
+
+    /**
+     * @Route("/comandas", name="comandas")
+     */
+    public function comandasAction(Request $request)
+    {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->render('default/index.html.twig');
+        }
+
+        return $this->render('default/default.html.twig');
     }
 }
