@@ -1,0 +1,52 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * User
+ *
+ * @ORM\Table(name="users")
+ * @ORM\Entity()
+ */
+class User extends BaseUser
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=60)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstLastName", type="string", length=60)
+     */
+    private $firstLastName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="secondLastName", type="string", length=60, nullable=true)
+     */
+    private $secondLastName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cellphoneNumber", type="string", length=30)
+     */
+    private $cellphoneNumber;
+}
