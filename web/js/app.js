@@ -1,71 +1,66 @@
 let notes = {
     template: `
-          <div class="content">
-            <div class="columns is-mobile is-centered">
-              <div class="column">
-                <form @submit.prevent="createNote">
-                  <div class="field">
-                    <label class="label">Número de la mesa</label>
-                    <div class="control">
-                      <input v-model="tableNumber" class="input" type="number" min="0" max="100" placeholder="Introduce el número de la mesa">
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Categoría de producto</label>
-                    <div class="control">
-                      <div class="select">
-                         <select v-model="selectedCategory">
-                           <option v-for="category in categories" :value="category.id">
-                             {{ category.name }}
-                           </option>
-                         </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-if="selectedCategory > 0" class="field">
-                    <label class="label">Selecciona un producto</label>
-                    <div class="control">
-                      <div class="select">
-                         <select v-model="selectedProduct">
-                           <option v-for="product in getProductsByCategory" :value="product.id">
-                             {{ product.name }} ($ {{ product.price }})
-                           </option>
-                         </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-if="selectedProduct > 0">
-                    <div class="field">
-                      <label class="label">Cantidad</label>
-                      <div class="control">
-                        <input v-model="amount" class="input" type="number" min="0" max="100" placeholder="Introduce la cantidad del producto">
-                      </div>
-                    </div>
-                    <div class="field">
-                      <h3>Total $ {{ calculateTotal }}</h3>
-                    </div>                    
-                    <div class="field is-grouped">
-                      <div class="control">
-                        <button type="submit" class="button is-primary">
-                          <span class="icon is-normal">
-                            <i class="fa fa-save"></i>
-                          </span>
-                          <span>Registrar Comanda</span>
-                        </button>
-                      </div>
-                      <div class="control">
-                        <button class="button" @click="cleanForm">
-                          <span class="icon is-normal">
-                            <i class="fa fa-remove"></i>
-                          </span>
-                          <span>Cancelar</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>              
+      <form @submit.prevent="createNote">
+        <div class="field">
+          <label class="label">Número de la mesa</label>
+          <div class="control">
+            <input v-model="tableNumber" class="input" type="number" min="0" max="100" placeholder="Introduce el número de la mesa">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Categoría de producto</label>
+          <div class="control">
+            <div class="select">
+               <select v-model="selectedCategory">
+                 <option v-for="category in categories" :value="category.id">
+                   {{ category.name }}
+                 </option>
+               </select>
             </div>
+          </div>
+        </div>
+        <div v-if="selectedCategory > 0" class="field">
+          <label class="label">Selecciona un producto</label>
+          <div class="control">
+            <div class="select">
+               <select v-model="selectedProduct">
+                 <option v-for="product in getProductsByCategory" :value="product.id">
+                   {{ product.name }} ($ {{ product.price }})
+                 </option>
+               </select>
+            </div>
+          </div>
+        </div>
+        <div v-if="selectedProduct > 0">
+          <div class="field">
+            <label class="label">Cantidad</label>
+            <div class="control">
+              <input v-model="amount" class="input" type="number" min="0" max="100" placeholder="Introduce la cantidad del producto">
+            </div>
+          </div>
+          <div class="field">
+            <h3>Total $ {{ calculateTotal }}</h3>
+          </div>   
+          <div class="field is-grouped">
+            <div class="control">
+              <button type="submit" class="button is-primary">
+                <span class="icon is-normal">
+                  <i class="fa fa-save"></i>
+                </span>
+                <span>Registrar Comanda</span>
+              </button>
+            </div>
+            <div class="control">
+              <button class="button" @click="cleanForm">
+                <span class="icon is-normal">
+                  <i class="fa fa-remove"></i>
+                </span>
+                <span>Cancelar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
     `,
     data() {
       return {

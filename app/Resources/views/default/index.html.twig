@@ -2,12 +2,21 @@
 
 {% block body %}
 <div class="columns is-mobile is-centered">
-  <div class="tile is-parent is-5 has-text-centered">
-    <article class="tile is-child box">
-      <p class="title">Folio #${ $store.state.lastNumberNote }</p>
-      <p class="subtitle">Mesero(a) - {{ app.user.name ~ ' ' ~ app.user.firstLastName }}</p>
-      <notes></notes>
-    </article>
-  </div>
+	<div class="card is-parent has-text-centered">
+	  <header class="card-header">
+	    <p class="card-header-title">
+	      Mesero(a) - {{ app.user.name ~ ' ' ~ app.user.firstLastName }}
+	    </p>
+	    <a class="card-header-icon" href="{{ path('fos_user_security_logout') }}">
+	      <span class="icon">
+	        <i class="fa fa-power-off"></i>
+	      </span>
+	    </a>
+	  </header>	
+	  <div class="card-content">
+	    <p class="title">Folio #${ $store.state.lastNumberNote }</p>
+	    <notes></notes>	    
+	  </div>
+	</div>
 </div>
 {% endblock %}
