@@ -72,4 +72,15 @@ fos_user:
     user_class: AppBundle\Entity\User
     from_email:
         address: "republik@gmail.com"
-        sender_name: 'Republik'        
+        sender_name: 'Republik'
+
+nelmio_cors:
+    paths:
+        '^/api/':
+            origin_regex: true
+            allow_origin: ['*']
+            allow_headers: ['X-Requested-With', 'Content-Type', 'Accept', 'Origin', 'X-Custom-Auth']
+            allow_methods: ['POST', 'GET', 'OPTIONS']
+            max_age: 3600
+            origin_regex: true
+            allow_origin: ['*']        
