@@ -72,7 +72,7 @@ easy_admin:
                   - { property: 'status', label: 'Status' }
                   - { property: 'checkin', label: 'Fecha Emisión' }
                   - { property: 'checkout', label: 'Fecha Cierre' }
-                  - { property: 'waiter', label: 'Mesero' }
+                  - { property: 'user', label: 'Mesero' }
                 sort: ['checkin', 'DESC']
         NoteProduct:
             label: 'Detalles Comanda'
