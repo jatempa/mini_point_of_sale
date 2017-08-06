@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Created by PhpStorm.
+ * User: jorge antonio atempa
+ * Date: 05/08/17
+ * Time: 11:28 PM
+ */
+
 namespace AppBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
