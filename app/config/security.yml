@@ -20,6 +20,7 @@ security:
                 check_path: /login_check
                 csrf_token_generator: security.csrf.token_manager
                 remember_me: true
+                default_target_path: /comandas
             logout:
                 path:   /logout
                 target: /
