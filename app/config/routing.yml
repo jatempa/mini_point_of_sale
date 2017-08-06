@@ -8,4 +8,19 @@ easy_admin_bundle:
     prefix:   /admin
 
 fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"    
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+category_rest:
+    type: rest
+    resource: AppBundle\Controller\CategoryAPIController
+    prefix: /api/
+
+note_rest:
+    type: rest
+    resource: AppBundle\Controller\NoteAPIController
+    prefix: /api/
+
+product_rest:
+    type: rest
+    resource: AppBundle\Controller\ProductAPIController
+    prefix: /api/    
