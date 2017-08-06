@@ -20,10 +20,6 @@ class NoteAPIController extends Controller
      */
     public function getNotesAction()
     {
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }
-
         $em = $this->getDoctrine()->getManager();
         // Get User Id
         $user_id = $this->getUser();

@@ -25,10 +25,10 @@ class DefaultController extends Controller
      */
     public function comandasAction(Request $request)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            return $this->render('default/index.html.twig');
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') && !$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            throw $this->createAccessDeniedException();
         }
 
-        return $this->render('default/default.html.twig');
+        return $this->render('default/index.html.twig');
     }
 }
