@@ -41,6 +41,8 @@ easy_admin:
             label: 'Categoría'
             class: AppBundle\Entity\Category
             list:
+                actions:
+                    - { name: 'new', label: 'Crear Categoría' }
                 title: "Categorías"
                 fields:
                   - { property: 'id', label: 'Id' }
@@ -121,6 +123,8 @@ easy_admin:
             label: 'Usuarios'
             class: AppBundle\Entity\User
             list:
+                actions:
+                    - { name: 'new', label: 'Crear Usuario' }
                 title: 'Usuarios'
                 fields:
                     - { property: 'id', label: 'Id' }
