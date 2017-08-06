@@ -13,6 +13,10 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->redirect($this->generateUrl('comandas'));
+        }
+
         return $this->render('default/default.html.twig');
     }
 
