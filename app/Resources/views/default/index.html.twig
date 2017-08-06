@@ -15,7 +15,28 @@
 	  </header>	
 	  <div class="card-content">
 	    <p class="title">Folio #${ $store.state.lastNumberNote }</p>
-	    <notes></notes>	    
+        <form @submit.prevent="createNote">
+		  <note></note>
+          <product></product>
+		  <div class="field is-grouped" style="margin-top: 20px;">
+		    <div class="control">
+			  <button type="submit" class="button is-primary">
+				<span class="icon is-normal">
+				  <i class="fa fa-save"></i>
+				</span>
+				<span>Registrar Comanda</span>
+			  </button>
+			</div>
+			<div class="control">
+			  <button class="button" @click.prevent="cleanForm">
+				  <span class="icon is-normal">
+					  <i class="fa fa-remove"></i>
+				  </span>
+				  <span>Cancelar</span>
+			  </button>
+			</div>
+		  </div>
+		</form>
 	  </div>
 	</div>
 </div>
