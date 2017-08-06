@@ -10,3 +10,25 @@ AppBundle\Entity\User:
     firstLastName: <lastName()>
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
+  user2:
+    username: 'usuario1'
+    email: <email()>
+    enabled: 1
+    plainPassword: '1234'
+    roles:
+        - 'ROLE_USER'
+    name: <firstName()>
+    firstLastName: <lastName()>
+    secondLastName: <lastName()>
+    cellphoneNumber: <phoneNumber()>
+  user3:
+    username: 'usuario2'
+    email: <email()>
+    enabled: 1
+    plainPassword: '1234'
+    roles:
+        - 'ROLE_USER'
+    name: <firstName()>
+    firstLastName: <lastName()>
+    secondLastName: <lastName()>
+    cellphoneNumber: <phoneNumber()>
