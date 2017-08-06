@@ -1,0 +1,5 @@
+AppBundle\Entity\Category:
+  category1:
+    name: 'Cerveza'
+  category2:
+    name: 'Botella'

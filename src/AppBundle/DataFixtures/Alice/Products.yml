@@ -1,0 +1,51 @@
+AppBundle\Entity\Product:
+  product1:
+    name: 'Tecate Roja'
+    price: <numberBetween($min = 20, $max = 50)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category1
+  product2:
+    name: 'Tecate Light'
+    price: <numberBetween($min = 20, $max = 50)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category1
+  product3:
+    name: 'Sol'
+    price: <numberBetween($min = 20, $max = 50)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category1
+  product4:
+    name: 'Indio'
+    price: <numberBetween($min = 20, $max = 50)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category1
+  product5:
+    name: 'XX'
+    price: <numberBetween($min = 20, $max = 50)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category1
+  product6:
+    name: 'Buchanans 12 Años'
+    price: <numberBetween($min = 450, $max = 600)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category2
+  product7:
+    name: 'Buchanans 18 Años'
+    price: <numberBetween($min = 600, $max = 850)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category2
+  product8:
+    name: 'Vodka Absolut'
+    price: <numberBetween($min = 350, $max = 500)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category2
+  product9:
+    name: 'Tequila Don Julio'
+    price: <numberBetween($min = 350, $max = 500)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category2
+  product10:
+    name: 'Brandy Presidente'
+    price: <numberBetween($min = 250, $max = 350)>
+    stock: <numberBetween($min = 1, $max = 100)>
+    category: @category2

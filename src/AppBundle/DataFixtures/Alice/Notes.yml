@@ -1,0 +1,21 @@
+AppBundle\Entity\Note:
+  note1:
+    status: "Pendiente"
+    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
+    waiter: <randomElement($array = array (@waiter1, @waiter2, @waiter3, @waiter4, @waiter5, @waiter6, @waiter7, @waiter8, @waiter9, @waiter10))>
+  note2:
+    status: "Pendiente"
+    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
+    waiter: <randomElement($array = array (@waiter1, @waiter2, @waiter3, @waiter4, @waiter5, @waiter6, @waiter7, @waiter8, @waiter9, @waiter10))>
+  note3:
+    status: "Pendiente"
+    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
+    waiter: <randomElement($array = array (@waiter1, @waiter2, @waiter3, @waiter4, @waiter5, @waiter6, @waiter7, @waiter8, @waiter9, @waiter10))>
+  note4:
+    status: "Pendiente"
+    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
+    waiter: <randomElement($array = array (@waiter1, @waiter2, @waiter3, @waiter4, @waiter5, @waiter6, @waiter7, @waiter8, @waiter9, @waiter10))>
+  note5:
+    status: "Pendiente"
+    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
+    waiter: <randomElement($array = array (@waiter1, @waiter2, @waiter3, @waiter4, @waiter5, @waiter6, @waiter7, @waiter8, @waiter9, @waiter10))>

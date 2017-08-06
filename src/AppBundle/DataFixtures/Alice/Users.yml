@@ -1,0 +1,12 @@
+AppBundle\Entity\User:
+  user1:
+    username: 'admin'
+    email: <email()>
+    enabled: 1
+    plainPassword: 'admin'
+    roles:
+        - 'ROLE_ADMIN'
+    name: <firstName()>
+    firstLastName: <lastName()>
+    secondLastName: <lastName()>
+    cellphoneNumber: <phoneNumber()>
