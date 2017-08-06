@@ -23,6 +23,7 @@
         "h4cc/alice-fixtures-bundle": "^0.5.1",
         "incenteev/composer-parameter-handler": "~2.0",
         "javiereguiluz/easyadmin-bundle": "^1.16",
+        "jms/serializer-bundle": "^2.0",
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "symfony/monolog-bundle": "^3.0.2",
