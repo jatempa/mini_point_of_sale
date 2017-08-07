@@ -204,6 +204,9 @@ const store = new Vuex.Store({
       },
       addProductToList(state, product) {
         state.products.push(product);
+      },
+      resetProductToList(state) {
+        state.products = [];
       }
     }
 });
@@ -263,6 +266,7 @@ new Vue({
       this.$store.commit('updateTableNumber', 0);
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
+      this.$store.commit('resetProductToList');
     }
   }
 });
