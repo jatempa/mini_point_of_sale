@@ -21,6 +21,9 @@ AppBundle\Entity\User:
     firstLastName: <lastName()>
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
+    barTables:
+        - @barTable2
+        - @barTable4
   user3:
     username: 'usuario2'
     email: <email()>
@@ -32,3 +35,7 @@ AppBundle\Entity\User:
     firstLastName: <lastName()>
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
+    barTables:
+        - @barTable1
+        - @barTable3
+        - @barTable5
