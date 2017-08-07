@@ -57,6 +57,16 @@ class User extends BaseUser
      */
     private $cellphoneNumber;
 
+    /**
+     * Many Users have Many BarTables.
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BarTable")
+     * @ORM\JoinTable(name="user_bartables",
+     *     joinColumns={@ORM\JoinColumn(name="user", referencedColumnName="user_id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="barTable", referencedColumnName="bartable_id", unique=true)}
+     * )
+     */
+    private $barTables;
+
     public function __construct()
     {
         parent::__construct();
@@ -153,6 +163,39 @@ class User extends BaseUser
     public function getCellphoneNumber()
     {
         return $this->cellphoneNumber;
+    }
+
+    /**
+     * Add barTables
+     *
+     * @param \AppBundle\Entity\BarTable $barTables
+     * @return User
+     */
+    public function addBarTable(\AppBundle\Entity\BarTable $barTables)
+    {
+        $this->barTables[] = $barTables;
+
+        return $this;
+    }
+
+    /**
+     * Remove barTables
+     *
+     * @param \AppBundle\Entity\BarTable $barTables
+     */
+    public function removeBarTable(\AppBundle\Entity\BarTable $barTables)
+    {
+        $this->barTables->removeElement($barTables);
+    }
+
+    /**
+     * Get barTables
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBarTables()
+    {
+        return $this->barTables;
     }
 
     public function __toString()

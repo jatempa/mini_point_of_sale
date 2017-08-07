@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BarTable
  *
- * @ORM\Table(name="bar_tables")
+ * @ORM\Table(name="bartables")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BarTableRepository")
  */
 class BarTable
@@ -15,7 +15,7 @@ class BarTable
     /**
      * @var int
      *
-     * @ORM\Column(name="bar_table_id", type="integer")
+     * @ORM\Column(name="bartable_id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

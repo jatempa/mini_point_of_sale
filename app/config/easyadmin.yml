@@ -13,10 +13,13 @@ easy_admin:
             children:
                 - { entity: 'Note'}
                 - { entity: 'NoteProduct'}
-          - entity: 'Category'
-            icon: share-alt
-          - entity: 'Product'
+          - entity: 'BarTable'
+            icon: cutlery
+          - label: 'Productos'
             icon: beer
+            children:
+                - { entity: 'Category' }
+                - { entity: 'Product' }
           - entity: 'User'
             icon: user
     list:
@@ -37,6 +40,29 @@ easy_admin:
         actions:
             - { name: 'list', label: 'Regresar al menú' }
     entities:
+        BarTable:
+            label: 'Mesas'
+            class: AppBundle\Entity\BarTable
+            list:
+                actions:
+                    - { name: 'new', label: 'Crear Mesa' }
+                title: "Mesas"
+                fields:
+                  - { property: 'id', label: 'Id' }
+                  - { property: 'name', label: 'Mesa' }
+            show:
+                title: "Mesa (#%%entity_id%%)"
+                fields:
+                  - { property: 'id', label: 'Id' }
+                  - { property: 'name', label: 'Mesa' }
+            new:
+                title: "Crear Mesa"
+                fields:
+                  - { property: 'name', label: 'Mesa' }
+            edit:
+                title: "Modificar Mesa"
+                fields:
+                  - { property: 'name', label: 'Mesa' }
         Category:
             label: 'Categoría'
             class: AppBundle\Entity\Category
@@ -132,9 +158,9 @@ easy_admin:
                     - { property: 'firstLastName', label: 'Apellido Paterno' }
                     - { property: 'secondLastName', label: 'Apellido Materno' }
                     - { property: 'username', label: 'Usuario' }
-                    - { property: 'email', label: 'Correo electrónico' }
+                    - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
                     - { property: 'enabled', label: 'Habilitado' }
-                    - { property: 'roles', label: 'Rol' }
+                    - { property: 'barTables', label: 'Mesas' }
             show:
                 title: "Usuario (#%%entity_id%%)"
                 fields:
@@ -145,6 +171,7 @@ easy_admin:
                     - { property: 'email', label: 'Correo electrónico' }
                     - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
                     - { property: 'enabled', label: 'Habilitado' }
+                    - { property: 'barTables', label: 'Mesas' }
             new:
                 title: "Crear Usuario"
                 fields:
@@ -157,6 +184,7 @@ easy_admin:
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'plainPassword', type: 'text', type_options: { required: true}, label: 'Contraseña' }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+                    - { property: 'barTables', label: 'Mesas' }
             edit:
                 title: "Modificar Usuario"
                 fields:
@@ -169,3 +197,4 @@ easy_admin:
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'plainPassword', type: 'text', type_options: { required: false }, label: 'Contraseña' }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+                    - { property: 'barTables', label: 'Mesas' }
