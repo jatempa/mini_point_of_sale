@@ -43,74 +43,64 @@ let product = {
       </div>      
     </div>                   
     `,
+    data() {
+      return {
+        categories: [],
+        products: [],
+        selectedCategory: 0,
+        selectedProduct: 0,
+        amount: 0
+      }
+    },
     mounted() {
       this.fetchCategories();
       this.fetchProducts();
     },
     methods: {
-      fetchCategories: function () {
+      fetchCategories () {
         axios.get('/api/categories')
              .then(response => {
-               this.$store.commit('updateCatalogCategories', response.data.categories);
+               this.categories = response.data.categories;
              })
              .catch(function (error) {
                console.log(error);
              });
       },
-      fetchProducts: function () {
+      fetchProducts () {
         axios.get('/api/products')
              .then(response => {
-               this.$store.commit('updateCatelogProducts', response.data.products);
+               this.products = response.data.products
              })
              .catch(function (error) {
                console.log(error);
              });
       },
-      addProduct: function () {
-          let product = this.$store.state.catalogProducts.filter((p) => p.id === this.$store.state.selectedProduct)
-                                                         .map((p) => new Object({ name: p.name, price: p.price, amount: parseInt(this.$store.state.amount) }));
-          this.$store.commit('addProductToList', product);
-          this.$store.commit('updateSelectedCategory', 0);
-          this.$store.commit('updateSelectedProduct', 0);
-          this.$store.commit('updateAmount', 0);
+      addProduct () {
+        let product = {
+          amount: parseInt(this.amount)
+        };
+
+        axios.get('/api/products/' + parseInt(this.selectedProduct))
+             .then(response => {
+               product.name = response.data.product.name;
+               product.price = parseFloat(response.data.product.price);
+               this.$store.commit('addProductToList', product);
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+        // Clean Form
+        this.cleanForm();
+      },
+      cleanForm () {
+        this.selectedCategory = 0;
+        this.selectedProduct = 0;
+        this.amount = 0;
       }
     },
     computed: {
-      selectedCategory: {
-        get () {
-          return this.$store.state.selectedCategory
-        },
-        set (selectedCategory) {
-          this.$store.commit('updateSelectedCategory', selectedCategory)
-        }
-      },
-      selectedProduct: {
-        get () {
-          return this.$store.state.selectedProduct
-        },
-        set (selectedProduct) {
-          this.$store.commit('updateSelectedProduct', selectedProduct)
-        }
-      },
-      amount: {
-        get () {
-          return this.$store.state.amount
-        },
-        set (amount) {
-          this.$store.commit('updateAmount', amount)
-        }
-      },
-      categories () {
-        return this.$store.state.catalogCategories;
-      },
-      products () {
-        return this.$store.state.catalogProducts;
-      },
-      calculateTotal () {
-        return this.$store.getters.calculateTotal;
-      },
       getProductsByCategory () {
-        return this.$store.getters.getProductsByCategory;
+        return this.products.filter((p) => p.category === this.selectedCategory);
       }
     }
 };
@@ -120,7 +110,7 @@ let productList = {
   <div v-show="productListLength > 0" class="field">
     <label class="label">Lista de productos</label>
     <div class="control">
-      <table class="table">
+      <table class="table is-mobile">
         <thead>
           <tr>
             <th>No.</th>
@@ -139,10 +129,10 @@ let productList = {
         <tbody>
           <tr v-for="(product, index) in getProducts" :key="product.id">
             <td>{{ index + 1 }}</td>
-            <td>{{ product[index].name }}</td>
-            <td>{{ product[index].price }}</td>
-            <td>{{ product[index].amount }}</td>
-            <td>{{ product[index].amount * product[index].price }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.amount }}</td>
+            <td>{{ product.amount * product.price }}</td>
           </tr>
         </tbody>
       </table>    
@@ -157,7 +147,7 @@ let productList = {
       return this.$store.state.products.length;
     },
     totalCost() {
-      return this.$store.state.total;
+      return this.$store.state.products.reduce((acc, x) => acc + (x.price * x.amount), 0);
     }
   }
 };
@@ -189,13 +179,10 @@ const store = new Vuex.Store({
     state: {
       lastNumberNote: 0,
       tableNumber: 0,
-      catalogCategories: [],
-      catalogProducts: [],
       selectedCategory: 0,
       selectedProduct: 0,
-      amount: 0,
-      total: 0,
-      products: []
+      products: [],
+      amount: 0
     },
     mutations: {
       updateLastNumberNote(state) {
@@ -203,12 +190,6 @@ const store = new Vuex.Store({
       },
       updateTableNumber(state, tableNumber) {
         state.tableNumber = tableNumber;
-      },
-      updateCatalogCategories(state, categories) {
-        state.catalogCategories = categories;
-      },
-      updateCatelogProducts(state, products) {
-        state.catalogProducts = products;
       },
       updateSelectedCategory(state, selectedCategory) {
         state.selectedCategory = selectedCategory;
@@ -218,21 +199,6 @@ const store = new Vuex.Store({
       },
       addProductToList(state, product) {
         state.products.push(product);
-      },
-      updateAmount(state, amount) {
-        state.amount = amount;
-      },
-      updateTotal(state, total) {
-        state.total = total;
-      }
-    },
-    getters: {
-      calculateTotal: state => {
-        state.total = parseFloat(state.catalogProducts.filter((p) => p.id === state.selectedProduct).map((x) => x.price)) * state.amount;
-        return state.total > 0 ? state.total : 0;
-      },
-      getProductsByCategory: state => {
-        return state.catalogProducts.filter((p) => p.category === state.selectedCategory);
       }
     }
 });

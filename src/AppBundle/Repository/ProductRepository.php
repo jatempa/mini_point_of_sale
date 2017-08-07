@@ -33,6 +33,6 @@ class ProductRepository extends EntityRepository
 
         $dql->setParameter('id', $id);
 
-        return $dql->getQuery()->getResult();
+        return $dql->getQuery()->getSingleResult();
     }
 }
