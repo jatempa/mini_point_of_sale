@@ -112,7 +112,7 @@ let productForm = {
 
 let productList = {
   template: `
-    <div v-show="productListLength > 0" class="field">
+    <div v-if="productListLength > 0" class="field">
         <label class="label">Lista de productos</label>
         <div class="control">
           <table class="table">
@@ -159,20 +159,45 @@ let productList = {
 
 let note = {
     template: `
-    <div class="field">
-      <label class="label">Número de la mesa</label>
+    <div v-show="mesas.length > 0" class="field">
+      <label class="label">Selecciona una mesa</label>
       <div class="control">
-        <input v-model="tableNumber" class="input" type="number" min="0" max="100" placeholder="Introduce el número de la mesa">
+        <div class="select">
+          <select v-model="selectedWaiterTable">
+            <option v-for="mesa in mesas" :value="mesa.id">
+              {{ mesa.name }}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
     `,
+    mounted() {
+        this.getWaiterTables();
+    },
+    methods: {
+        getWaiterTables: function () {
+            axios.get('/api/user/tables')
+                .then(response => {
+                    this.mesas = response.data.mesas;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    },
+    data() {
+        return {
+            mesas: []
+        }
+    },
     computed: {
-      tableNumber: {
+      selectedWaiterTable: {
         get () {
-          return this.$store.state.tableNumber
+          return this.$store.state.selectedWaiterTable
         },
-        set (tableNumber) {
-          this.$store.commit('updateTableNumber', tableNumber)
+        set (value) {
+          this.$store.commit('updateSelectedWaiterTable', value)
         }
       }
     }
@@ -183,7 +208,7 @@ Vue.use('vuex');
 const store = new Vuex.Store({
     state: {
       lastNumberNote: 0,
-      tableNumber: 0,
+      selectedWaiterTable: 0,
       selectedCategory: 0,
       selectedProduct: 0,
       products: [],
@@ -195,6 +220,9 @@ const store = new Vuex.Store({
       },
       updateTableNumber(state, tableNumber) {
         state.tableNumber = tableNumber;
+      },
+      updateSelectedWaiterTable(state, selectedWaiterTable) {
+        state.selectedWaiterTable = selectedWaiterTable;
       },
       updateSelectedCategory(state, selectedCategory) {
         state.selectedCategory = selectedCategory;
