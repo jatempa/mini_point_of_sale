@@ -2,7 +2,7 @@ let productForm = {
     template: `
     <section>
       <div class="field">
-        <label class="label">Agregar</label>
+        <label class="label">Selecciona un tipo de producto</label>
         <div class="control">
           <div class="select">
             <select v-model="selectedCategory">
@@ -159,16 +159,18 @@ let productList = {
 
 let note = {
     template: `
-    <label class="label">Selecciona una mesa</label>
-    <div class="control">
-    <div class="select">
-      <select v-model="selectedWaiterTable">
-        <option v-for="mesa in mesas" :value="mesa.id">
-          {{ mesa.name }}
-        </option>
-      </select>
-    </div>
-    </div>
+    <section>
+        <label class="label">Selecciona una mesa</label>
+        <div class="control">
+            <div class="select">
+              <select v-model="selectedWaiterTable">
+                <option v-for="mesa in mesas" :value="mesa.id">
+                  {{ mesa.name }}
+                </option>
+              </select>
+            </div>
+        </div>    
+    </section>    
     `,
     mounted() {
         this.getWaiterTables();
@@ -289,6 +291,7 @@ new Vue({
       }
     },
     cleanForm: function () {
+      this.$store.commit('updateSelectedWaiterTable',0);
       this.$store.commit('updateTableNumber', 0);
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
