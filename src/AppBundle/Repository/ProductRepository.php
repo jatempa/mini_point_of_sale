@@ -22,4 +22,17 @@ class ProductRepository extends EntityRepository
 
         return $dql->getQuery()->getResult();
     }
+
+    public function findProductById($id)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('p.id', 'p.name', 'p.price')
+            ->from('AppBundle:Product', 'p')
+            ->where('p.id = :id');
+
+        $dql->setParameter('id', $id);
+
+        return $dql->getQuery()->getResult();
+    }
 }

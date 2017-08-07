@@ -28,4 +28,18 @@ class ProductAPIController extends Controller
 
         return $this->get('fos_rest.view_handler')->handle($view);
     }
+
+    /**
+     * @Get("/products/{id}")
+     */
+    public function getProductByIdAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $product = $em->getRepository('AppBundle:Product')->findProductById($id);
+
+        $view = View::create()->setData(array('product' => $product));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
 }
