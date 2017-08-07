@@ -2,7 +2,7 @@ let productForm = {
     template: `
     <section>
       <div class="field">
-        <label class="label">Categoría de producto</label>
+        <label class="label">Agregar</label>
         <div class="control">
           <div class="select">
             <select v-model="selectedCategory">
@@ -38,7 +38,7 @@ let productForm = {
           <span class="icon is-normal">
               <i class="fa fa-plus"></i>
           </span>
-          <span>Agregar Producto</span>
+          <span>Agregar a lista</span>
         </button>
       </div>      
     </div>                   
@@ -113,7 +113,7 @@ let productForm = {
 let productList = {
   template: `
     <div v-if="productListLength > 0" class="field">
-        <label class="label">Lista de productos</label>
+        <div class="field"><h3>Lista de productos</h3></div>
         <div class="control">
           <table class="table">
             <thead>
@@ -159,17 +159,15 @@ let productList = {
 
 let note = {
     template: `
-    <div v-show="mesas.length > 0" class="field">
-      <label class="label">Selecciona una mesa</label>
-      <div class="control">
-        <div class="select">
-          <select v-model="selectedWaiterTable">
-            <option v-for="mesa in mesas" :value="mesa.id">
-              {{ mesa.name }}
-            </option>
-          </select>
-        </div>
-      </div>
+    <label class="label">Selecciona una mesa</label>
+    <div class="control">
+    <div class="select">
+      <select v-model="selectedWaiterTable">
+        <option v-for="mesa in mesas" :value="mesa.id">
+          {{ mesa.name }}
+        </option>
+      </select>
+    </div>
     </div>
     `,
     mounted() {
