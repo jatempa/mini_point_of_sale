@@ -1,0 +1,11 @@
+AppBundle\Entity\BarTable:
+  barTable1:
+    name: "Mesa 1"
+  barTable2:
+    name: "Mesa 2"
+  barTable3:
+    name: "Mesa 3"
+  barTable4:
+    name: "Mesa 4"
+  barTable5:
+    name: "Mesa 5"
