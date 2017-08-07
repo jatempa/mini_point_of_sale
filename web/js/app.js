@@ -76,21 +76,25 @@ let product = {
              });
       },
       addProduct () {
-        let product = {
-          amount: parseInt(this.amount)
-        };
+        if (parseInt(this.amount) > 0) {
+          let product = {
+              amount: parseInt(this.amount)
+          };
 
-        axios.get('/api/products/' + parseInt(this.selectedProduct))
-             .then(response => {
-               product.name = response.data.product.name;
-               product.price = parseFloat(response.data.product.price);
-               this.$store.commit('addProductToList', product);
-             })
-             .catch(function (error) {
-               console.log(error);
-             });
-        // Clean Form
-        this.cleanForm();
+          axios.get('/api/products/' + parseInt(this.selectedProduct))
+               .then(response => {
+                  product.name = response.data.product.name;
+                  product.price = parseFloat(response.data.product.price);
+                  this.$store.commit('addProductToList', product);
+               })
+               .catch(function (error) {
+                  console.log(error);
+              });
+          // Clean Form
+          this.cleanForm();
+        } else {
+          swal('Error', 'Ingresa una cantidad mínima de 1 para continuar', 'warning');
+        }
       },
       cleanForm () {
         this.selectedCategory = 0;
@@ -107,37 +111,37 @@ let product = {
 
 let productList = {
   template: `
-  <div v-show="productListLength > 0" class="field">
-    <label class="label">Lista de productos</label>
-    <div class="control">
-      <table class="table is-mobile">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cant.</th>
-            <th>Subt.</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <th colspan="4">Total $</th>
-            <th>{{ totalCost }}</th>
-          </tr>
-        </tfoot>
-        <tbody>
-          <tr v-for="(product, index) in getProducts" :key="product.id">
-            <td>{{ index + 1 }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.amount }}</td>
-            <td>{{ product.amount * product.price }}</td>
-          </tr>
-        </tbody>
-      </table>    
+    <div v-show="productListLength > 0" class="field">
+        <label class="label">Lista de productos</label>
+        <div class="control">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cant.</th>
+                <th>Subt.</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th colspan="4">Total $</th>
+                <th>{{ totalCost }}</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr v-for="(product, index) in getProducts" :key="product.id">
+                <td>{{ index + 1 }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.amount }}</td>
+                <td>{{ product.amount * product.price }}</td>
+              </tr>
+            </tbody>
+          </table>    
+        </div>    
     </div>
-  </div>
   `,
   computed: {
     getProducts() {
