@@ -1,4 +1,4 @@
-let product = {
+let productForm = {
     template: `
     <section>
       <div class="field">
@@ -83,6 +83,7 @@ let product = {
 
           axios.get('/api/products/' + parseInt(this.selectedProduct))
                .then(response => {
+                  product.id = response.data.product.id;
                   product.name = response.data.product.name;
                   product.price = parseFloat(response.data.product.price);
                   this.$store.commit('addProductToList', product);
@@ -211,7 +212,7 @@ new Vue({
   delimiters: ['${', '}'],
   el: 'main',
   store,
-  components: { note, productList, product },
+  components: { note, productList, productForm },
   mounted() {
     this.getLastNoteNumber();
   },
@@ -234,12 +235,10 @@ new Vue({
         'X-Requested-With': 'XMLHttpRequest',
       };
 
-      if((parseInt(this.$store.state.selectedProduct) > 0) && (parseInt(this.$store.state.amount) > 0) && (parseInt(this.$store.state.total) > 0)) {
+      if(this.$store.state.products.length > 0) {
         let noteData = {
           numberNote: parseInt(this.$store.state.lastNumberNote),
-          product: parseInt(this.$store.state.selectedProduct),
-          amount: parseInt(this.$store.state.amount),
-          total: parseFloat(this.$store.state.total)
+          products: this.$store.state.products
         };
 
         axios.post('/api/notes/create', noteData)
@@ -264,8 +263,6 @@ new Vue({
       this.$store.commit('updateTableNumber', 0);
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
-      this.$store.commit('updateAmount', 0);
-      this.$store.commit('updateTotal', 0);
     }
   }
 });

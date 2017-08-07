@@ -46,29 +46,32 @@ class NoteAPIController extends Controller
         if ($request->isXmlHttpRequest()) {
             $result = null;
 
-            $noteData = $request->request->all();
+            $numberNote = $request->request->get('numberNote');
+            $products = $request->request->get('products');
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 $note = new Note();
-                $note->setNumberNote($noteData['numberNote']);
+                $note->setNumberNote($numberNote);
                 $note->setStatus("Pendiente");
                 $note->setCheckin(new \DateTime('now'));
                 $note->setUser($this->getUser());
                 $em->persist($note);
                 $em->flush();
 
-                $noteProduct = new NoteProduct();
-                $noteProduct->setNote($note);
-                $product = $em->getRepository('AppBundle:Product')->findOneById($noteData['product']);
-                if(!is_null($product)) {
-                    $noteProduct->setProduct($product);
+                foreach ($products as $product) {
+                    if (!is_null($product)) {
+                        $noteProduct = new NoteProduct();
+                        $noteProduct->setNote($note);
+                        $prod = $em->getRepository('AppBundle:Product')->findOneById($product['id']);
+                        $noteProduct->setProduct($prod);
+                        $noteProduct->setAmount($product['amount']);
+                        $noteProduct->setTotal($product['price']);
+                        // Save Product
+                        $em->persist($noteProduct);
+                        $em->flush();
+                    }
                 }
-                $noteProduct->setAmount($noteData['amount']);
-                $noteProduct->setTotal($noteData['total']);
-                // Save Note
-                $em->persist($noteProduct);
-                $em->flush();
                 $em->getConnection()->commit();
                 $result = "success";
             } catch (Exception $e) {
