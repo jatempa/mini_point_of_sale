@@ -24,11 +24,18 @@ let accountForm = {
                   <span  class="tag is-danger">Cerrada</span>
                 </td>
                 <td v-if="account.status">
-                  <a class="link is-info" @click.prevent="closeAccount(account)">
+                  <a class="link" @click.prevent="closeAccount(account)">
                     <span class="icon">
                       <i class="fa fa-remove"></i>
                     </span>
                   </a>
+                </td>
+                <td v-else>
+                  <a class="link">
+                    <span class="icon">
+                      <i class="fa fa-print"></i>
+                    </span>
+                  </a>             
                 </td>
               </tr>
             </tbody>
