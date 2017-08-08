@@ -155,35 +155,35 @@ let productForm = {
 let productList = {
   template: `
     <div v-if="productListLength > 0" class="field">
-        <div class="field"><h3>Lista de productos</h3></div>
-        <div class="control">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Producto</th>
-                <th>Precio</th>
-                <th>Cant.</th>
-                <th>Subt.</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th colspan="4">Total $</th>
-                <th>{{ totalCost }}</th>
-              </tr>
-            </tfoot>
-            <tbody>
-              <tr v-for="(product, index) in getProducts" :key="product.id">
-                <td>{{ index + 1 }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.amount }}</td>
-                <td>{{ product.amount * product.price }}</td>
-              </tr>
-            </tbody>
-          </table>    
-        </div>    
+      <div class="field"><h3>Lista de productos</h3></div>
+      <div class="control">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cant.</th>
+              <th>Subt.</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th colspan="4">Total $</th>
+              <th>{{ totalCost }}</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr v-for="(product, index) in getProducts" :key="product.id">
+              <td>{{ index + 1 }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.amount }}</td>
+              <td>{{ product.amount * product.price }}</td>
+            </tr>
+          </tbody>
+        </table>    
+      </div>    
     </div>
   `,
   computed: {

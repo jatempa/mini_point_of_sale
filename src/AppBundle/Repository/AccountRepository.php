@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class AccountRepository extends EntityRepository
 {
+    public function findAllAccounts($id)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select( 'a.id','a.status', 'b.name as mesa')
+            ->from('AppBundle:Account', 'a')
+            ->innerJoin('a.barTable', 'b')
+            ->where('a.user = :id');
+
+        $dql->setParameter('id', $id);
+
+        return $dql->getQuery()->getResult();
+    }
 }
