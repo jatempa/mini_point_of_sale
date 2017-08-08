@@ -33,9 +33,9 @@ class DefaultController extends Controller
     public function comandasAction(Request $request)
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            throw $this->createAccessDeniedException();
+            return $this->redirectToRoute('homepage');
         }
 
-        return $this->render('default/index.html.twig');
+        return $this->render('notes/index.html.twig');
     }
 }
