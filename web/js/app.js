@@ -2,6 +2,18 @@ let productForm = {
     template: `
     <section>
       <div class="field">
+        <label class="label">Selecciona una mesa</label>
+        <div class="control">
+            <div class="select">
+              <select v-model="selectedTable">
+                <option v-for="mesa in mesas" :value="mesa.id">
+                  {{ mesa.name }}
+                </option>
+              </select>
+            </div>
+        </div>
+      </div>        
+      <div v-if="selectedTable > 0" class="field">
         <label class="label">Selecciona un tipo de producto</label>
         <div class="control">
           <div class="select">
@@ -45,18 +57,27 @@ let productForm = {
     `,
     data() {
       return {
+        mesas: [],
         categories: [],
         products: [],
-        selectedCategory: 0,
-        selectedProduct: 0,
         amount: 0
       }
     },
     mounted() {
+      this.fetchTables();
       this.fetchCategories();
       this.fetchProducts();
     },
     methods: {
+      fetchTables: function () {
+        axios.get('/api/tables')
+             .then(response => {
+               this.mesas = response.data.mesas;
+             })
+             .catch(function (error) {
+               console.log(error);
+             });
+      },
       fetchCategories () {
         axios.get('/api/categories')
              .then(response => {
@@ -91,21 +112,42 @@ let productForm = {
                .catch(function (error) {
                   console.log(error);
               });
-          // Clean Form
-          this.cleanForm();
+          // Clear
+          this.$store.commit('updateSelectedCategory', 0);
+          this.$store.commit('updateSelectedProduct', 0);
+          this.amount = 0;
         } else {
           swal('Error', 'Ingresa una cantidad mínima de 1 para continuar', 'warning');
         }
-      },
-      cleanForm () {
-        this.selectedCategory = 0;
-        this.selectedProduct = 0;
-        this.amount = 0;
       }
     },
     computed: {
       getProductsByCategory () {
         return this.products.filter((p) => p.category === this.selectedCategory);
+      },
+      selectedTable: {
+        get () {
+          return this.$store.state.selectedTable
+        },
+        set (value) {
+          this.$store.commit('updateSelectedTable', value)
+        }
+      },
+      selectedCategory: {
+        get () {
+          return this.$store.state.selectedCategory
+        },
+        set (value) {
+          this.$store.commit('updateSelectedCategory', value)
+        }
+      },
+      selectedProduct: {
+        get () {
+          return this.$store.state.selectedProduct
+        },
+        set (value) {
+          this.$store.commit('updateSelectedProduct', value)
+        }
       }
     }
 };
@@ -157,60 +199,15 @@ let productList = {
   }
 };
 
-let note = {
-    template: `
-    <section>
-        <label class="label">Selecciona una mesa</label>
-        <div class="control">
-            <div class="select">
-              <select v-model="selectedWaiterTable">
-                <option v-for="mesa in mesas" :value="mesa.id">
-                  {{ mesa.name }}
-                </option>
-              </select>
-            </div>
-        </div>    
-    </section>    
-    `,
-    mounted() {
-        this.getWaiterTables();
-    },
-    methods: {
-        getWaiterTables: function () {
-            axios.get('/api/tables')
-                .then(response => {
-                    this.mesas = response.data.mesas;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-    },
-    data() {
-        return {
-            mesas: []
-        }
-    },
-    computed: {
-      selectedWaiterTable: {
-        get () {
-          return this.$store.state.selectedWaiterTable
-        },
-        set (value) {
-          this.$store.commit('updateSelectedWaiterTable', value)
-        }
-      }
-    }
-};
-
 Vue.use('vuex');
 
 const store = new Vuex.Store({
     state: {
       lastNumberNote: 0,
-      selectedWaiterTable: 0,
+      selectedTable: 0,
       selectedCategory: 0,
       selectedProduct: 0,
+      mesas: [],
       products: [],
       amount: 0
     },
@@ -221,8 +218,8 @@ const store = new Vuex.Store({
       updateTableNumber(state, tableNumber) {
         state.tableNumber = tableNumber;
       },
-      updateSelectedWaiterTable(state, selectedWaiterTable) {
-        state.selectedWaiterTable = selectedWaiterTable;
+      updateSelectedTable(state, selectedTable) {
+        state.selectedTable = selectedTable;
       },
       updateSelectedCategory(state, selectedCategory) {
         state.selectedCategory = selectedCategory;
@@ -243,7 +240,7 @@ new Vue({
   delimiters: ['${', '}'],
   el: 'main',
   store,
-  components: { note, productList, productForm },
+  components: { productList, productForm },
   mounted() {
     this.getLastNoteNumber();
   },
@@ -291,7 +288,7 @@ new Vue({
       }
     },
     cleanForm: function () {
-      this.$store.commit('updateSelectedWaiterTable',0);
+      this.$store.commit('updateSelectedTable',0);
       this.$store.commit('updateTableNumber', 0);
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
