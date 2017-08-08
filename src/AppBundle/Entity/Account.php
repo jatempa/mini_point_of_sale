@@ -179,6 +179,6 @@ class Account
 
     public function __toString()
     {
-        return $this->getId() . ' - ' . $this->getBarTable();
+        return 'Cta. ' . $this->getId() . ' - ' . $this->getBarTable();
     }
 }

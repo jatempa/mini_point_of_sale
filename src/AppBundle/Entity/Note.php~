@@ -54,10 +54,10 @@ class Note
      */
     private $user;
 
-    /** @ORM\ManyToOne(targetEntity="AppBundle\Entity\BarTable")
-     *  @ORM\JoinColumn(name="barTable", referencedColumnName="bartable_id")
+    /** @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account")
+     *  @ORM\JoinColumn(name="account", referencedColumnName="account_id")
      */
-    private $barTable;
+    private $account;
 
     /**
      * @var int
@@ -192,8 +192,10 @@ class Note
         return $this->user;
     }
 
+
+
     public function __toString()
     {
-        return $this->getNumberNote() . ' ';
+        return $this->getUser() . ' #' . $this->getNumberNote();
     }
 }

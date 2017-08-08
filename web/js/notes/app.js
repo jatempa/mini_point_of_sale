@@ -2,18 +2,18 @@ let productForm = {
     template: `
     <section>
       <div class="field">
-        <label class="label">Selecciona una mesa</label>
+        <label class="label">Selecciona una cuenta</label>
         <div class="control">
             <div class="select">
-              <select v-model="selectedTable">
-                <option v-for="mesa in mesas" :value="mesa.id">
-                  {{ mesa.name }}
+              <select v-model="selectedAccount">
+                <option v-for="account in accounts" :value="account.id" v-if="account.status">
+                  Cta. {{ account.id }} - {{ account.mesa }}
                 </option>
               </select>
             </div>
         </div>
       </div>        
-      <div v-if="selectedTable > 0" class="field">
+      <div v-if="selectedAccount > 0" class="field">
         <label class="label">Selecciona un tipo de producto</label>
         <div class="control">
           <div class="select">
@@ -57,26 +57,26 @@ let productForm = {
     `,
     data() {
       return {
-        mesas: [],
+        accounts: [],
         categories: [],
         products: [],
         amount: 0
       }
     },
     mounted() {
-      this.fetchTables();
+      this.fetchAccounts();
       this.fetchCategories();
       this.fetchProducts();
     },
     methods: {
-      fetchTables () {
-        axios.get('/api/tables')
-             .then(response => {
-               this.mesas = response.data.mesas;
-             })
-             .catch(function (error) {
-               console.log(error);
-             });
+      fetchAccounts () {
+        axios.get('/api/accounts')
+            .then(response => {
+                this.accounts = response.data.accounts;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
       },
       fetchCategories () {
         axios.get('/api/categories')
@@ -125,12 +125,12 @@ let productForm = {
       getProductsByCategory () {
         return this.products.filter((p) => p.category === this.selectedCategory);
       },
-      selectedTable: {
+      selectedAccount: {
         get () {
-          return this.$store.state.selectedTable
+          return this.$store.state.selectedAccount
         },
         set (value) {
-          this.$store.commit('updateSelectedTable', value)
+          this.$store.commit('updateSelectedAccount', value)
         }
       },
       selectedCategory: {
@@ -204,7 +204,7 @@ Vue.use('vuex');
 const store = new Vuex.Store({
     state: {
       lastNumberNote: 0,
-      selectedTable: 0,
+      selectedAccount: 0,
       selectedCategory: 0,
       selectedProduct: 0,
       mesas: [],
@@ -215,8 +215,8 @@ const store = new Vuex.Store({
       updateLastNumberNote(state) {
         state.lastNumberNote += 1;
       },
-      updateSelectedTable(state, selectedTable) {
-        state.selectedTable = selectedTable;
+      updateSelectedAccount(state, selectedAccount) {
+        state.selectedAccount = selectedAccount;
       },
       updateSelectedCategory(state, selectedCategory) {
         state.selectedCategory = selectedCategory;
@@ -262,7 +262,7 @@ new Vue({
 
       if(this.$store.state.products.length > 0) {
         let noteData = {
-          selectedTable: parseInt(this.$store.state.selectedTable),
+          selectedAccount: parseInt(this.$store.state.selectedAccount),
           numberNote: parseInt(this.$store.state.lastNumberNote),
           products: this.$store.state.products
         };
@@ -286,7 +286,7 @@ new Vue({
       }
     },
     cleanForm () {
-      this.$store.commit('updateSelectedTable',0);
+      this.$store.commit('updateSelectedAccount',0);
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
       this.$store.commit('resetProductToList');

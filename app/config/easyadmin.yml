@@ -108,7 +108,7 @@ easy_admin:
                 title: "Comandas"
                 fields:
                   - { property: 'id', label: 'Id' }
-                  - { property: 'barTable', label: 'Mesa' }
+                  - { property: 'account', label: 'Mesa' }
                   - { property: 'numberNote', label: 'Folio' }
                   - { property: 'status', label: 'Status' }
                   - { property: 'checkin', label: 'Fecha Emisión' }

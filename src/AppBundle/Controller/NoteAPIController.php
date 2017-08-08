@@ -47,7 +47,7 @@ class NoteAPIController extends Controller
         if ($request->isXmlHttpRequest()) {
             $result = null;
             // Get data from client
-            $selectedTable = $request->request->get('selectedTable');
+            $selectedAccount = $request->request->get('selectedAccount');
             $numberNote = $request->request->get('numberNote');
             $products = $request->request->get('products');
             // Prepare ORM
@@ -55,14 +55,14 @@ class NoteAPIController extends Controller
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
 
-                $tableNumber = $em->getRepository('AppBundle:BarTable')->findOneById($selectedTable);
+                $account = $em->getRepository('AppBundle:Account')->findOneById($selectedAccount);
 
                 $note = new Note();
                 $note->setNumberNote($numberNote);
                 $note->setStatus("Pendiente");
                 $note->setCheckin(new \DateTime('now'));
                 $note->setUser($this->getUser());
-                $note->setBarTable($tableNumber);
+                $note->setAccount($account);
                 $em->persist($note);
                 $em->flush();
 
