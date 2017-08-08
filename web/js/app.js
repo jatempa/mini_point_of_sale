@@ -53,7 +53,7 @@ let productForm = {
           <span>Agregar a lista</span>
         </button>
       </div>      
-    </div>                   
+    </section>                   
     `,
     data() {
       return {
@@ -69,7 +69,7 @@ let productForm = {
       this.fetchProducts();
     },
     methods: {
-      fetchTables: function () {
+      fetchTables () {
         axios.get('/api/tables')
              .then(response => {
                this.mesas = response.data.mesas;
@@ -187,13 +187,13 @@ let productList = {
     </div>
   `,
   computed: {
-    getProducts() {
+    getProducts () {
       return this.$store.state.products;
     },
-    productListLength() {
+    productListLength () {
       return this.$store.state.products.length;
     },
-    totalCost() {
+    totalCost () {
       return this.$store.state.products.reduce((acc, x) => acc + (x.price * x.amount), 0);
     }
   }
@@ -244,8 +244,13 @@ new Vue({
   mounted() {
     this.getLastNoteNumber();
   },
+  data() {
+    return {
+      isOpenAccount: false
+    }
+  },
   methods: {
-    getLastNoteNumber: function () {
+    getLastNoteNumber () {
       axios.get('/api/notes/lastNoteId')
            .then(response => {
              response.data.map((n) => this.$store.state.lastNumberNote = parseInt(n.numberNote) + 1);
@@ -287,12 +292,18 @@ new Vue({
         swal('Error', 'Es necesario especificar valores correctos para procesar la comanda', 'warning');
       }
     },
-    cleanForm: function () {
+    cleanForm () {
       this.$store.commit('updateSelectedTable',0);
       this.$store.commit('updateTableNumber', 0);
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
       this.$store.commit('resetProductToList');
+    },
+    openAccount () {
+      this.isOpenAccount = true;
+    },
+    closeAccount () {
+      this.isOpenAccount = false;
     }
   }
 });

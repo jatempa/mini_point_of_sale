@@ -12,27 +12,41 @@
 	        <i class="fa fa-power-off"></i>
 	      </span>
 	    </a>
-	  </header>	
-	  <div class="card-content">
-	    <p class="title">Folio #${ $store.state.lastNumberNote }</p>
-        <form @submit.prevent="createNote">
-          <product-list></product-list>
-          <product-form></product-form>
+	  </header>
+      <section style="margin-top: 20px; margin-bottom: 20px;">
+	    <button v-show="!isOpenAccount" type="button" class="button is-primary" @click="openAccount">
+		  <span class="icon is-normal">
+		    <i class="fa fa-check-circle-o"></i>
+		  </span>
+		  <span>Abrir Cuenta</span>
+		</button>
+		<button v-show="isOpenAccount" type="button" class="button is-primary" @click="closeAccount">
+		  <span class="icon is-normal">
+		    <i class="fa fa-window-close-o"></i>
+		  </span>
+		  <span>Cerrar Cuenta</span>
+		</button>
+	  </section>
+      <div v-show="isOpenAccount" class="card-content">
+		<p class="title">Folio #${ $store.state.lastNumberNote }</p>
+		<form @submit.prevent="createNote">
+		  <product-list></product-list>
+		  <product-form></product-form>
 		  <div class="field is-grouped" style="margin-top: 20px;">
 		    <div class="control">
 			  <button type="submit" class="button is-primary">
-				<span class="icon is-normal">
-				  <i class="fa fa-save"></i>
+                <span class="icon is-normal">
+                  <i class="fa fa-save"></i>
 				</span>
 				<span>Registrar Comanda</span>
 			  </button>
 			</div>
 			<div class="control">
-			  <button class="button" @click.prevent="cleanForm">
-				  <span class="icon is-normal">
-					  <i class="fa fa-remove"></i>
-				  </span>
-				  <span>Cancelar</span>
+              <button class="button" @click.prevent="cleanForm">
+                <span class="icon is-normal">
+                  <i class="fa fa-remove"></i>
+				</span>
+                <span>Cancelar</span>
 			  </button>
 			</div>
 		  </div>
