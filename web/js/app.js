@@ -298,12 +298,6 @@ new Vue({
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
       this.$store.commit('resetProductToList');
-    },
-    openAccount () {
-      this.isOpenAccount = true;
-    },
-    closeAccount () {
-      this.isOpenAccount = false;
     }
   }
 });

@@ -13,21 +13,7 @@
 	      </span>
 	    </a>
 	  </header>
-      <section style="margin-top: 20px; margin-bottom: 20px;">
-	    <button v-show="!isOpenAccount" type="button" class="button is-primary" @click="openAccount">
-		  <span class="icon is-normal">
-		    <i class="fa fa-check-circle-o"></i>
-		  </span>
-		  <span>Abrir Cuenta</span>
-		</button>
-		<button v-show="isOpenAccount" type="button" class="button is-primary" @click="closeAccount">
-		  <span class="icon is-normal">
-		    <i class="fa fa-window-close-o"></i>
-		  </span>
-		  <span>Cerrar Cuenta</span>
-		</button>
-	  </section>
-      <div v-show="isOpenAccount" class="card-content">
+      <div class="card-content">
 		<p class="title">Folio #${ $store.state.lastNumberNote }</p>
 		<form @submit.prevent="createNote">
 		  <product-list></product-list>
