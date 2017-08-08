@@ -41,3 +41,8 @@
 	</div>
   </div>
 {% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/notes/app.js') }}"></script>
+{% endblock %}
