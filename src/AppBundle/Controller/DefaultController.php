@@ -28,9 +28,21 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/cuentas", name="cuentas")
+     */
+    public function accountsAction(Request $request)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('accounts/index.html.twig');
+    }
+
+    /**
      * @Route("/comandas", name="comandas")
      */
-    public function comandasAction(Request $request)
+    public function notesAction(Request $request)
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('homepage');

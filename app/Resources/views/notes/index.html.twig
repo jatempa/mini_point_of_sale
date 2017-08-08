@@ -1,43 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="columns is-mobile is-centered">
+  <div class="columns is-mobile is-centered">
 	<div class="card is-parent has-text-centered">
 	  <header class="card-header">
-	    <p class="card-header-title">
-	      Mesero(a) - {{ app.user.name ~ ' ' ~ app.user.firstLastName }}
-	    </p>
-	    <a class="card-header-icon" href="{{ path('fos_user_security_logout') }}">
-	      <span class="icon">
-	        <i class="fa fa-power-off"></i>
-	      </span>
-	    </a>
+		<p class="card-header-title">
+		  Mesero(a) - {{ app.user.name ~ ' ' ~ app.user.firstLastName }}
+		</p>
+		<a class="card-header-icon" href="{{ path('fos_user_security_logout') }}">
+		  <span class="icon">
+			<i class="fa fa-power-off"></i>
+		  </span>
+		</a>
 	  </header>
-      <div class="card-content">
+	  <div class="card-content">
 		<p class="title">Folio #${ $store.state.lastNumberNote }</p>
 		<form @submit.prevent="createNote">
 		  <product-list></product-list>
 		  <product-form></product-form>
 		  <div class="field is-grouped" style="margin-top: 20px;">
-		    <div class="control">
+			<div class="control">
 			  <button type="submit" class="button is-primary">
-                <span class="icon is-normal">
-                  <i class="fa fa-save"></i>
+				<span class="icon is-normal">
+				  <i class="fa fa-save"></i>
 				</span>
 				<span>Registrar Comanda</span>
 			  </button>
 			</div>
 			<div class="control">
-              <button class="button" @click.prevent="cleanForm">
-                <span class="icon is-normal">
-                  <i class="fa fa-remove"></i>
+			  <button class="button" @click.prevent="cleanForm">
+				<span class="icon is-normal">
+				  <i class="fa fa-remove"></i>
 				</span>
-                <span>Cancelar</span>
+				<span>Cancelar</span>
 			  </button>
 			</div>
 		  </div>
 		</form>
 	  </div>
 	</div>
-</div>
+  </div>
 {% endblock %}
