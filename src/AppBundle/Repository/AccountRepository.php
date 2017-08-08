@@ -19,7 +19,8 @@ class AccountRepository extends EntityRepository
         $dql->select( 'a.id','a.status', 'a.checkin', 'b.id as mesaid', 'b.name as mesa')
             ->from('AppBundle:Account', 'a')
             ->innerJoin('a.barTable', 'b')
-            ->where('a.user = :id');
+            ->where('a.user = :id')
+            ->orderBy('a.id','desc');
 
         $dql->setParameter('id', $id);
 
