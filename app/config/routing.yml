@@ -10,6 +10,11 @@ easy_admin_bundle:
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
+accounts_rest:
+    type: rest
+    resource: AppBundle\Controller\AccountAPIController
+    prefix: /api/
+
 bartables_rest:
     type: rest
     resource: AppBundle\Controller\BarTableAPIController
