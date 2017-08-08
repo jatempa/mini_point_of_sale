@@ -8,9 +8,10 @@ easy_admin:
       color_scheme: 'dark'
       form_theme: 'horizontal'
       menu:
-          - label: 'Comandas'
+          - label: 'Ventas'
             icon: file-text
             children:
+                - { entity: 'Account'}
                 - { entity: 'Note'}
                 - { entity: 'NoteProduct'}
           - entity: 'BarTable'
@@ -40,6 +41,17 @@ easy_admin:
         actions:
             - { name: 'list', label: 'Regresar al menú' }
     entities:
+        Account:
+            label: 'Cuentas'
+            class: AppBundle\Entity\Account
+            disabled_actions: ['new', 'edit', 'delete', 'show']
+            list:
+                title: "Cuentas"
+                fields:
+                  - { property: 'id', label: 'Id' }
+                  - { property: 'user', label: 'Mesero' }
+                  - { property: 'barTable', label: 'Mesa' }
+                  - { property: 'status', label: 'Abierta' }
         BarTable:
             label: 'Mesas'
             class: AppBundle\Entity\BarTable
@@ -160,7 +172,7 @@ easy_admin:
                     - { property: 'secondLastName', label: 'Apellido Materno' }
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
-                    - { property: 'enabled', label: 'Habilitado' }
+                    - { property: 'enabled', label: 'Activo' }
             show:
                 title: "Usuario (#%%entity_id%%)"
                 fields:
@@ -170,7 +182,7 @@ easy_admin:
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'email', label: 'Correo electrónico' }
                     - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
-                    - { property: 'enabled', label: 'Habilitado' }
+                    - { property: 'enabled', label: 'Activo' }
             new:
                 title: "Crear Usuario"
                 fields:
