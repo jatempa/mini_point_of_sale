@@ -32,6 +32,20 @@ class Account
     private $barTable;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="checkin", type="datetime", nullable=true)
+     */
+    private $checkin;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="checkout", type="datetime", nullable=true)
+     */
+    private $checkout;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="status", type="boolean")
@@ -94,6 +108,52 @@ class Account
         return $this->barTable;
     }
 
+    /**
+     * Set checkin
+     *
+     * @param \DateTime $checkin
+     * @return Account
+     */
+    public function setCheckin($checkin)
+    {
+        $this->checkin = $checkin;
+
+        return $this;
+    }
+
+    /**
+     * Get checkin
+     *
+     * @return \DateTime
+     */
+    public function getCheckin()
+    {
+        return $this->checkin;
+    }
+
+    /**
+     * Set checkout
+     *
+     * @param \DateTime $checkout
+     * @return Account
+     */
+    public function setCheckout($checkout)
+    {
+        $this->checkout = $checkout;
+
+        return $this;
+    }
+
+    /**
+     * Get checkout
+     *
+     * @return \DateTime
+     */
+    public function getCheckout()
+    {
+        return $this->checkout;
+    }
+    
     /**
      * Set status
      *

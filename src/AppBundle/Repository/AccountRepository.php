@@ -25,4 +25,19 @@ class AccountRepository extends EntityRepository
 
         return $dql->getQuery()->getResult();
     }
+
+    public function findAccountByUserIdAndTableId($userId, $tableId)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('a')
+            ->from('AppBundle:Account', 'a')
+            ->where('a.user = :userId')
+            ->andWhere('a.barTable = :tableId');
+
+        $dql->setParameter('userId', $userId);
+        $dql->setParameter('tableId', $tableId);
+
+        return $dql->getQuery()->getSingleResult();
+    }
 }

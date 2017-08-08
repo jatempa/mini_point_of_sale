@@ -130,6 +130,32 @@ new Vue({
           swal('Error', 'Es necesario especificar valores correctos para procesar la cuenta', 'warning');
         }
       },
+      closeAccount () {
+        axios.defaults.headers.common = {
+          'X-Requested-With': 'XMLHttpRequest',
+        };
+
+        if(this.$store.state.selectedTable > 0) {
+          let accountData = {
+            selectedTable: parseInt(this.$store.state.selectedTable)
+          };
+
+          axios.put('/api/accounts/close', accountData)
+               .then(function (response) {
+                 if(response.data === 'success') {
+                   swal('¡Correcto!', 'Cuenta cerrada satisfactoriamente', 'success');
+                 }
+               })
+               .catch(function (error) {
+                 console.log(error);
+                 swal('Error', 'Esta cuenta no pudo ser cerrada en el sistema', 'error')
+               });
+          // Clean form
+          this.cleanForm();
+        } else {
+          swal('Error', 'Es necesario especificar valores correctos para procesar la cuenta', 'warning');
+        }
+      },
       cleanForm () {
         this.$store.commit('updateSelectedTable', 0);
       }

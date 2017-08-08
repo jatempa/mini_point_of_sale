@@ -51,6 +51,8 @@ easy_admin:
                   - { property: 'id', label: 'Id' }
                   - { property: 'user', label: 'Mesero' }
                   - { property: 'barTable', label: 'Mesa' }
+                  - { property: 'checkin', label: 'Fecha de apertura' }
+                  - { property: 'checkout', label: 'Fecha de clausura' }
                   - { property: 'status', label: 'Abierta' }
         BarTable:
             label: 'Mesas'

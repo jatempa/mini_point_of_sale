@@ -12,6 +12,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Account;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,14 +51,45 @@ class AccountAPIController extends Controller
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 $account = new Account();
-
                 $tableNumber = $em->getRepository('AppBundle:BarTable')->findOneById($selectedTable);
-
+                $account->setCheckin(new \DateTime('now'));
                 $account->setBarTable($tableNumber);
                 $account->setUser($this->getUser());
                 $account->setStatus(true);
 
                 $em->persist($account);
+                $em->flush();
+
+                $em->getConnection()->commit();
+                $result = "success";
+            } catch (Exception $e) {
+                $em->getConnection()->rollBack();
+                throw $e;
+            }
+
+            return new JsonResponse($result);
+        }
+
+        return new Response('This is not ajax!', 400);
+    }
+
+    /**
+     * @Put("/accounts/close")
+     */
+    public function putCloseAccountAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $result = null;
+            // Get data from client
+            $selectedTable = $request->request->get('selectedTable');
+            // Prepare ORM
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction(); // suspend auto-commit
+            try {
+                $account = $em->getRepository('AppBundle:Account')
+                              ->findAccountByUserIdAndTableId($this->getUser()->getId(), $selectedTable);
+                $account->setCheckout(new \DateTime('now'));
+                $account->setStatus(false);
                 $em->flush();
 
                 $em->getConnection()->commit();

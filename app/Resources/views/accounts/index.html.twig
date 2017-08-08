@@ -16,11 +16,11 @@
       <div class="card-content">
         <p class="title">Cuentas</p>
         <div class="content">
-          <form @submit.prevent="createAccount">
+          <form>
             <account-form></account-form>
             <div class="field is-grouped" style="margin-top: 20px;">
               <div class="control">
-                <button type="submit" class="button is-primary">
+                <button class="button is-primary" @click.prevent="createAccount">
                   <span class="icon is-normal">
                     <i class="fa fa-save"></i>
                   </span>
@@ -28,11 +28,11 @@
                 </button>
               </div>
               <div class="control">
-                <button class="button" @click.prevent="cleanForm">
+                <button class="button" @click.prevent="closeAccount">
                   <span class="icon is-normal">
                     <i class="fa fa-remove"></i>
                   </span>
-                  <span>Cancelar</span>
+                  <span>Cerrar Cuenta</span>
                 </button>
               </div>
             </div>
