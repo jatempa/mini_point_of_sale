@@ -177,7 +177,7 @@ let note = {
     },
     methods: {
         getWaiterTables: function () {
-            axios.get('/api/user/tables')
+            axios.get('/api/tables')
                 .then(response => {
                     this.mesas = response.data.mesas;
                 })

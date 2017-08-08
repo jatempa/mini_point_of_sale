@@ -16,15 +16,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class BarTableAPIController extends Controller
 {
     /**
-     * @Get("/user/tables")
+     * @Get("/tables")
      */
-    public function getTablesByWaiterAction()
+    public function getTablesAction()
     {
         $em = $this->getDoctrine()->getManager();
-        // Get User Id
-        $user_id = $this->getUser();
-        $user_id->getId();
-        $mesas = $em->getRepository('AppBundle:BarTable')->findTablesByWaiter($user_id);
+
+        $mesas = $em->getRepository('AppBundle:BarTable')->findAllTables();
 
         $view = View::create()->setData(array('mesas' => $mesas));
 

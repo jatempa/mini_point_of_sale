@@ -12,16 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class BarTableRepository extends EntityRepository
 {
-    public function findTablesByWaiter($id)
+    public function findAllTables()
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
         $dql->select( 't.id', 't.name')
-            ->from('AppBundle:User', 'u')
-            ->join('u.barTables', 't')
-            ->where('u.id = :id');
-
-        $dql->setParameter('id', $id);
+            ->from('AppBundle:BarTable', 't');
 
         return $dql->getQuery()->getResult();
     }
