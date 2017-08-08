@@ -21,6 +21,11 @@ class Account
      */
     private $id;
 
+    /** @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     *  @ORM\JoinColumn(name="user", referencedColumnName="user_id")
+     */
+    private $user;
+
     /** @ORM\ManyToOne(targetEntity="AppBundle\Entity\BarTable")
      *  @ORM\JoinColumn(name="barTable", referencedColumnName="bartable_id")
      */
@@ -44,26 +49,26 @@ class Account
     }
 
     /**
-     * Set status
+     * Set user
      *
-     * @param boolean $status
+     * @param \AppBundle\Entity\User $user
      * @return Account
      */
-    public function setStatus($status)
+    public function setUser(\AppBundle\Entity\User $user = null)
     {
-        $this->status = $status;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get user
      *
-     * @return boolean 
+     * @return \AppBundle\Entity\User
      */
-    public function getStatus()
+    public function getUser()
     {
-        return $this->status;
+        return $this->user;
     }
 
     /**
@@ -89,9 +94,31 @@ class Account
         return $this->barTable;
     }
 
-    public function __toString()
+    /**
+     * Set status
+     *
+     * @param boolean $status
+     * @return Account
+     */
+    public function setStatus($status)
     {
-        return 'Cuenta ' . $this->getId() . '/ Mesa ' . $this->getBarTable();
+        $this->status = $status;
+
+        return $this;
     }
 
+    /**
+     * Get status
+     *
+     * @return boolean
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function __toString()
+    {
+        return $this->getId() . ' - ' . $this->getBarTable();
+    }
 }

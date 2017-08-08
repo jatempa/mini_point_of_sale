@@ -215,9 +215,6 @@ const store = new Vuex.Store({
       updateLastNumberNote(state) {
         state.lastNumberNote += 1;
       },
-      updateTableNumber(state, tableNumber) {
-        state.tableNumber = tableNumber;
-      },
       updateSelectedTable(state, selectedTable) {
         state.selectedTable = selectedTable;
       },
@@ -244,11 +241,6 @@ new Vue({
   mounted() {
     this.getLastNoteNumber();
   },
-  data() {
-    return {
-      isOpenAccount: false
-    }
-  },
   methods: {
     getLastNoteNumber () {
       axios.get('/api/notes/lastNoteId')
@@ -270,6 +262,7 @@ new Vue({
 
       if(this.$store.state.products.length > 0) {
         let noteData = {
+          selectedTable: parseInt(this.$store.state.selectedTable),
           numberNote: parseInt(this.$store.state.lastNumberNote),
           products: this.$store.state.products
         };
@@ -294,7 +287,6 @@ new Vue({
     },
     cleanForm () {
       this.$store.commit('updateSelectedTable',0);
-      this.$store.commit('updateTableNumber', 0);
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
       this.$store.commit('resetProductToList');

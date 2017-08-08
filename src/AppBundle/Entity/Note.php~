@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Created by PhpStorm.
+ * User: jorge antonio atempa
+ * Date: 05/08/17
+ * Time: 11:28 PM
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -46,6 +53,11 @@ class Note
      *  @ORM\JoinColumn(name="user", referencedColumnName="user_id")
      */
     private $user;
+
+    /** @ORM\ManyToOne(targetEntity="AppBundle\Entity\BarTable")
+     *  @ORM\JoinColumn(name="barTable", referencedColumnName="bartable_id")
+     */
+    private $barTable;
 
     /**
      * @var int
@@ -157,8 +169,31 @@ class Note
         return $this->numberNote;
     }
 
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     * @return Note
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
     public function __toString()
     {
-        return $this->getWaiter() . ' - #' . $this->getNumberNote();
+        return $this->getNumberNote() . ' ';
     }
 }

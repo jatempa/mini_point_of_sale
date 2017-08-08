@@ -9,6 +9,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Account;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\NoteProduct;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -41,21 +42,27 @@ class NoteAPIController extends Controller
     /**
      * @Post("/notes/create")
      */
-    public function postRegistroEquipoAction(Request $request)
+    public function postCreateNoteAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             $result = null;
-
+            // Get data from client
+            $selectedTable = $request->request->get('selectedTable');
             $numberNote = $request->request->get('numberNote');
             $products = $request->request->get('products');
+            // Prepare ORM
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
+
+                $tableNumber = $em->getRepository('AppBundle:BarTable')->findOneById($selectedTable);
+
                 $note = new Note();
                 $note->setNumberNote($numberNote);
                 $note->setStatus("Pendiente");
                 $note->setCheckin(new \DateTime('now'));
                 $note->setUser($this->getUser());
+                $note->setBarTable($tableNumber);
                 $em->persist($note);
                 $em->flush();
 

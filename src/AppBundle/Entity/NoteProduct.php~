@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Created by PhpStorm.
+ * User: jorge antonio atempa
+ * Date: 05/08/17
+ * Time: 11:28 PM
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -41,7 +48,7 @@ class NoteProduct
     /**
      * @var float
      *
-     * @ORM\Column(name="total", type="float")
+     * @ORM\Column(name="total", type="float", precision=7, scale=2, options={"default": 0}, nullable=true)
      */
     private $total;
 
@@ -122,5 +129,28 @@ class NoteProduct
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Set total
+     *
+     * @param float $total
+     * @return NoteProduct
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return float 
+     */
+    public function getTotal()
+    {
+        return $this->total;
     }
 }

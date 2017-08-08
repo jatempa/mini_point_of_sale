@@ -94,6 +94,7 @@ easy_admin:
                 title: "Comandas"
                 fields:
                   - { property: 'id', label: 'Id' }
+                  - { property: 'barTable', label: 'Mesa' }
                   - { property: 'numberNote', label: 'Folio' }
                   - { property: 'status', label: 'Status' }
                   - { property: 'checkin', label: 'Fecha Emisión' }
@@ -160,7 +161,6 @@ easy_admin:
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
                     - { property: 'enabled', label: 'Habilitado' }
-                    - { property: 'barTables', label: 'Mesas' }
             show:
                 title: "Usuario (#%%entity_id%%)"
                 fields:
@@ -171,7 +171,6 @@ easy_admin:
                     - { property: 'email', label: 'Correo electrónico' }
                     - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
                     - { property: 'enabled', label: 'Habilitado' }
-                    - { property: 'barTables', label: 'Mesas' }
             new:
                 title: "Crear Usuario"
                 fields:
@@ -184,7 +183,6 @@ easy_admin:
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'plainPassword', type: 'text', type_options: { required: true}, label: 'Contraseña' }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
-                    - { property: 'barTables', label: 'Mesas' }
             edit:
                 title: "Modificar Usuario"
                 fields:
@@ -197,4 +195,3 @@ easy_admin:
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'plainPassword', type: 'text', type_options: { required: false }, label: 'Contraseña' }
                     - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
-                    - { property: 'barTables', label: 'Mesas' }

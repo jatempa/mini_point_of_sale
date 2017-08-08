@@ -9,7 +9,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -62,7 +61,6 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->roles = array("ROLE_USER");
-        $this->barTables = new ArrayCollection();
     }
 
     /**
