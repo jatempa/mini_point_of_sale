@@ -81,13 +81,15 @@ class AccountAPIController extends Controller
         if ($request->isXmlHttpRequest()) {
             $result = null;
             // Get data from client
-            $selectedTable = $request->request->get('selectedTable');
+            $accountId = $request->request->get('id');
+            $userId = $this->getUser()->getId();
+            $selectedTable = $request->request->get('mesaId');
             // Prepare ORM
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 $account = $em->getRepository('AppBundle:Account')
-                              ->findAccountByUserIdAndTableId($this->getUser()->getId(), $selectedTable);
+                              ->findAccountByUserIdAndTableId($accountId, $userId);
                 $account->setCheckout(new \DateTime('now'));
                 $account->setStatus(false);
                 $em->flush();

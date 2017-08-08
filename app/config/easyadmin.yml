@@ -3,7 +3,7 @@ easy_admin:
     formats:
       date: 'd/m/Y'
       time: 'H:i'
-      datetime: 'F j, Y H:i'
+      datetime: 'F j, H:i:s'
     design:
       color_scheme: 'dark'
       form_theme: 'horizontal'

@@ -16,7 +16,7 @@ class AccountRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select( 'a.id','a.status', 'b.name as mesa')
+        $dql->select( 'a.id','a.status', 'a.checkin', 'b.id as mesaid', 'b.name as mesa')
             ->from('AppBundle:Account', 'a')
             ->innerJoin('a.barTable', 'b')
             ->where('a.user = :id');
@@ -26,17 +26,17 @@ class AccountRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findAccountByUserIdAndTableId($userId, $tableId)
+    public function findAccountByUserIdAndTableId($accountId, $userId)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
         $dql->select('a')
             ->from('AppBundle:Account', 'a')
-            ->where('a.user = :userId')
-            ->andWhere('a.barTable = :tableId');
+            ->where('a.id = :accountId')
+            ->andWhere('a.user = :userId');
 
-        $dql->setParameter('userId', $userId);
-        $dql->setParameter('tableId', $tableId);
+        $dql->setParameter('accountId', $accountId);
+        $dql->setParameter('userId', $userId);;
 
         return $dql->getQuery()->getSingleResult();
     }
