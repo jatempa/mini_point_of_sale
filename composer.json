@@ -26,6 +26,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "javiereguiluz/easyadmin-bundle": "^1.16",
         "jms/serializer-bundle": "^2.0",
+        "liuggio/excelbundle": "^2.1",
         "nelmio/cors-bundle": "^1.5",
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "^3.0.2",
