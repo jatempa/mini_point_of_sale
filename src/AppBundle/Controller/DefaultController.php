@@ -9,6 +9,8 @@
 
 namespace AppBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +27,8 @@ class DefaultController extends Controller
 
     /**
      * @Route("/cuentas", name="cuentas")
+     * @Cache(maxage="300")
+     * @Method("GET")
      */
     public function accountsAction(Request $request)
     {
@@ -37,6 +41,8 @@ class DefaultController extends Controller
 
     /**
      * @Route("/comandas", name="comandas")
+     * @Cache(maxage="300")
+     * @Method("GET")
      */
     public function notesAction(Request $request)
     {
