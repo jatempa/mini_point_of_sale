@@ -43,3 +43,14 @@ AppBundle\Entity\User:
     firstLastName: <lastName()>
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
+  user5:
+    username: 'usuario3'
+    email: <email()>
+    enabled: 1
+    plainPassword: '1234'
+    roles:
+        - 'ROLE_MESERO'
+    name: <firstName()>
+    firstLastName: <lastName()>
+    secondLastName: <lastName()>
+    cellphoneNumber: <phoneNumber()>
