@@ -5,7 +5,7 @@ AppBundle\Entity\User:
     enabled: 1
     plainPassword: 'admin'
     roles:
-        - 'ROLE_SUPER_ADMIN'
+        - 'ROLE_ADMIN'
     name: <firstName()>
     firstLastName: <lastName()>
     secondLastName: <lastName()>

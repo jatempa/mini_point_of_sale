@@ -20,11 +20,6 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $ac = $this->get('security.authorization_checker');
-        if ($ac->isGranted('ROLE_MESERO') && $ac->isGranted('ROLE_USER')) {
-            return $this->redirect($this->generateUrl('comandas'));
-        }
-
         return $this->render('default/default.html.twig');
     }
 
@@ -33,9 +28,8 @@ class DefaultController extends Controller
      */
     public function accountsAction(Request $request)
     {
-        $ac = $this->get('security.authorization_checker');
-        if ($ac->isGranted('ROLE_MESERO') && $ac->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('homepage');
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MESERO')) {
+            throw $this->createAccessDeniedException();
         }
 
         return $this->render('accounts/index.html.twig');
@@ -46,12 +40,11 @@ class DefaultController extends Controller
      */
     public function notesAction(Request $request)
     {
-        $ac = $this->get('security.authorization_checker');
-        if ($ac->isGranted('ROLE_MESERO') && $ac->isGranted('ROLE_USER')) {
-            return $this->render('notes/index.html.twig');
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MESERO')) {
+            throw $this->createAccessDeniedException();
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->render('notes/index.html.twig');
     }
 
     /**
@@ -59,11 +52,10 @@ class DefaultController extends Controller
      */
     public function notesPendingAction(Request $request)
     {
-        $ac = $this->get('security.authorization_checker');
-        if ($ac->isGranted('ROLE_PALOMA') && $ac->isGranted('ROLE_ADMIN')) {
-            return $this->render('notes/show.html.twig');
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_PALOMA')) {
+            throw $this->createAccessDeniedException();
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->render('notes/show.html.twig');
     }
 }

@@ -4,9 +4,10 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
-        ROLE_USER:   [ROLE_MESERO]
-        ROLE_ADMIN:   [ROLE_PALOMA]
-        ROLE_SUPER_ADMIN:  [ROLE_SUPER_ADMIN]
+        ROLE_CAJERO:      ROLE_CAJERO
+        ROLE_PALOMA:      ROLE_PALOMA
+        ROLE_MESERO:      ROLE_MESERO
+        ROLE_ADMIN:       ROLE_ADMIN
 
     providers:
         fos_userbundle:
@@ -32,7 +33,9 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/cuentas, role: [ROLE_MESERO] }
-        - { path: ^/comandas, role: [ROLE_MESERO] }
-        - { path: ^/pendientes, role: [ROLE_PALOMA] }
-        - { path: ^/admin/, role: [ROLE_SUPER_ADMIN] }
+        - { path: ^/corte/*, role: ROLE_CAJERO }
+        - { path: ^/pendientes/*, role: ROLE_PALOMA }
+        - { path: ^/cuentas/*, role: ROLE_MESERO }
+        - { path: ^/comandas/*, role: ROLE_MESERO }
+        - { path: ^/api/*, role: [ROLE_ADMIN, ROLE_MESERO, ROLE_PALOMA] }
+        - { path: ^/admin, role: ROLE_ADMIN }
