@@ -42,4 +42,22 @@ class NoteProductRepository extends EntityRepository
 
         return $dql->getQuery()->getResult();
     }
+
+    public function findSalesByAccountWaiter()
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('concat(u.name, \' \', u.firstLastName) as waiter', 'a.id as account', 'a.checkin', 'a.checkout', 'b.name as table', 'n.numberNote', 'c.name as category', 'sum(np.amount) as amount', 'sum(np.total) as total')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.product', 'p')
+            ->innerJoin('p.category', 'c')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('n.account', 'a')
+            ->innerJoin('a.user', 'u')
+            ->innerJoin('a.barTable', 'b')
+            ->groupBy('a.id', 'n.id', 'p.category')
+            ->orderBy('a.id');
+
+        return $dql->getQuery()->getResult();
+    }
 }
