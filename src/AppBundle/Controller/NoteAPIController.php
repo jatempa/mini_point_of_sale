@@ -9,7 +9,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Account;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\NoteProduct;
 use FOS\RestBundle\Controller\Annotations\Get;
