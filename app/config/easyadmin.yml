@@ -174,6 +174,7 @@ easy_admin:
                     - { property: 'secondLastName', label: 'Apellido Materno' }
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
+                    - { property: 'roles' }
                     - { property: 'enabled', label: 'Activo' }
             show:
                 title: "Usuario (#%%entity_id%%)"
@@ -185,6 +186,18 @@ easy_admin:
                     - { property: 'email', label: 'Correo electrónico' }
                     - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
                     - { property: 'enabled', label: 'Activo' }
+            edit:
+                title: "Modificar Usuario"
+                fields:
+                    - { property: 'name', label: 'Nombre' }
+                    - { property: 'firstLastName', label: 'Apellido Paterno' }
+                    - { property: 'secondLastName', label: 'Apellido Materno' }
+                    - { property: 'email', label: 'Correo electrónico' }
+                    - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
+                    - { property: 'enabled', type: 'checkbox', label: 'Activo' }
+                    - { property: 'username', label: 'Usuario' }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: false, choices: { ROLE_PALOMA: 'Paloma', ROLE_MESERO: 'Mesero', ROLE_ADMIN: 'Administrador' } } }
+                form_options: { validation_groups: ['Profile'] }
             new:
                 title: "Crear Usuario"
                 fields:
@@ -196,15 +209,5 @@ easy_admin:
                     - { property: 'enabled', type: 'checkbox', label: 'Activo' }
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'plainPassword', type: 'text', type_options: { required: true}, label: 'Contraseña' }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
-            edit:
-                title: "Modificar Usuario"
-                fields:
-                    - { property: 'name', label: 'Nombre' }
-                    - { property: 'firstLastName', label: 'Apellido Paterno' }
-                    - { property: 'secondLastName', label: 'Apellido Materno' }
-                    - { property: 'email', label: 'Correo electrónico' }
-                    - { property: 'cellphoneNumber', type: 'text', label: 'Celular' }
-                    - { property: 'enabled', type: 'checkbox', label: 'Activo' }
-                    - { property: 'username', label: 'Usuario' }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: false, choices: { ROLE_PALOMA: 'Paloma', ROLE_MESERO: 'Mesero', ROLE_ADMIN: 'Administrador' } } }
+                form_options: { validation_groups: ['Registration'] }

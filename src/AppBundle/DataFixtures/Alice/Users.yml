@@ -5,29 +5,40 @@ AppBundle\Entity\User:
     enabled: 1
     plainPassword: 'admin'
     roles:
-        - 'ROLE_ADMIN'
+        - 'ROLE_SUPER_ADMIN'
     name: <firstName()>
     firstLastName: <lastName()>
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
   user2:
-    username: 'usuario1'
+    username: 'paloma'
     email: <email()>
     enabled: 1
     plainPassword: '1234'
     roles:
-        - 'ROLE_USER'
+        - 'ROLE_PALOMA'
     name: <firstName()>
     firstLastName: <lastName()>
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
   user3:
+    username: 'usuario1'
+    email: <email()>
+    enabled: 1
+    plainPassword: '1234'
+    roles:
+        - 'ROLE_MESERO'
+    name: <firstName()>
+    firstLastName: <lastName()>
+    secondLastName: <lastName()>
+    cellphoneNumber: <phoneNumber()>
+  user4:
     username: 'usuario2'
     email: <email()>
     enabled: 1
     plainPassword: '1234'
     roles:
-        - 'ROLE_USER'
+        - 'ROLE_MESERO'
     name: <firstName()>
     firstLastName: <lastName()>
     secondLastName: <lastName()>

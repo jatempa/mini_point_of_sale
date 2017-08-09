@@ -20,7 +20,8 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+        $ac = $this->get('security.authorization_checker');
+        if ($ac->isGranted('ROLE_MESERO') && $ac->isGranted('ROLE_USER')) {
             return $this->redirect($this->generateUrl('comandas'));
         }
 
@@ -32,7 +33,8 @@ class DefaultController extends Controller
      */
     public function accountsAction(Request $request)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+        $ac = $this->get('security.authorization_checker');
+        if ($ac->isGranted('ROLE_MESERO') && $ac->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('homepage');
         }
 
@@ -44,10 +46,24 @@ class DefaultController extends Controller
      */
     public function notesAction(Request $request)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('homepage');
+        $ac = $this->get('security.authorization_checker');
+        if ($ac->isGranted('ROLE_MESERO') && $ac->isGranted('ROLE_USER')) {
+            return $this->render('notes/index.html.twig');
         }
 
-        return $this->render('notes/index.html.twig');
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
+     * @Route("/pendientes", name="pendientes")
+     */
+    public function notesPendingAction(Request $request)
+    {
+        $ac = $this->get('security.authorization_checker');
+        if ($ac->isGranted('ROLE_PALOMA') && $ac->isGranted('ROLE_ADMIN')) {
+            return $this->render('notes/show.html.twig');
+        }
+
+        return $this->redirectToRoute('homepage');
     }
 }
