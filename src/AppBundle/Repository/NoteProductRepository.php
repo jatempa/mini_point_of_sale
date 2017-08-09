@@ -12,4 +12,40 @@ use Doctrine\ORM\EntityRepository;
  */
 class NoteProductRepository extends EntityRepository
 {
+    public function findSalesByCategoryProductAndWaiter()
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('concat(u.name, \' \', u.firstLastName) as waiter', 'c.name', 'sum(np.amount) as amount', 'sum(np.total) as total')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('np.product', 'p')
+            ->innerJoin('n.user', 'u')
+            ->innerJoin('p.category', 'c')
+            ->groupBy('n.user', 'c.id')
+            ->orderBy('u.id');
+
+        //$dql->setParameter('tempNow', $tempNow);
+
+        return $dql->getQuery()->getResult();
+    }
+
+    public function findSalesByProductAndWaiter()
+    {
+        //$tempNow = new \DateTime('now');
+
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('concat(u.name, \' \', u.firstLastName) as waiter', 'p.name as product', 'sum(np.amount) as amount', 'sum(np.total) as total')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.product', 'p')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('n.user', 'u')
+            ->groupBy('n.user', 'p.name')
+            ->orderBy('u.id');
+
+        //$dql->setParameter('tempNow', $tempNow);
+
+        return $dql->getQuery()->getResult();
+    }
 }
