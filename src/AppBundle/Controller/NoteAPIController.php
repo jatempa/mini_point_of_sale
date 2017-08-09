@@ -40,6 +40,19 @@ class NoteAPIController extends Controller
     }
 
     /**
+     * @Get("/notes/pending")
+     */
+    public function getPendingNotesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $notes = $em->getRepository('AppBundle:Note')->findAllPendingNotes();
+
+        $view = View::create()->setData(array('notes' => $notes));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
      * @Post("/notes/create")
      */
     public function postCreateNoteAction(Request $request)

@@ -30,4 +30,21 @@ class NoteRepository extends EntityRepository
 
         return $dql->getQuery()->getResult();
     }
+
+    public function findAllPendingNotes()
+    {
+        $tempNow = new \DateTime('now');
+
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('n.id', 'n.numberNote', 'n.checkin', 'n.status', 'concat(u.name, \' \', u.firstLastName) as mesero')
+            ->from('AppBundle:Note', 'n')
+            ->innerJoin('n.user', 'u')
+            ->where('n.checkin <= :tempNow')
+            ->setMaxResults(20);
+
+        $dql->setParameter('tempNow', $tempNow);
+
+        return $dql->getQuery()->getResult();
+    }
 }
