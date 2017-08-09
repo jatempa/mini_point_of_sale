@@ -1,18 +1,6 @@
 let productForm = {
     template: `
     <section>
-      <div class="field">
-        <label class="label">Selecciona una cuenta</label>
-        <div class="control">
-            <div class="select">
-              <select v-model="selectedAccount">
-                <option v-for="account in accounts" :value="account.id" v-if="account.status">
-                  Cta. {{ account.id }} - {{ account.mesa }}
-                </option>
-              </select>
-            </div>
-        </div>
-      </div>        
       <div v-if="selectedAccount > 0" class="field">
         <label class="label">Selecciona un tipo de producto</label>
         <div class="control">
@@ -57,27 +45,16 @@ let productForm = {
     `,
     data() {
       return {
-        accounts: [],
         categories: [],
         products: [],
         amount: 0
       }
     },
     mounted() {
-      this.fetchAccounts();
       this.fetchCategories();
       this.fetchProducts();
     },
     methods: {
-      fetchAccounts () {
-        axios.get('/api/accounts')
-            .then(response => {
-                this.accounts = response.data.accounts;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-      },
       fetchCategories () {
         axios.get('/api/categories')
              .then(response => {
@@ -154,9 +131,22 @@ let productForm = {
 
 let productList = {
   template: `
-    <div v-if="productListLength > 0" class="field">
-      <div class="field"><h3>Lista de productos</h3></div>
+  <section>
+    <div class="field">
+      <label class="label">Selecciona una cuenta</label>
       <div class="control">
+        <div class="select">
+          <select v-model="selectedAccount">
+            <option v-for="account in accounts" :value="account.id" v-if="account.status">
+              Cta. {{ account.id }} - {{ account.mesa }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div v-if="productListLength > 0" class="label">Lista de productos</div>
+      <div v-if="productListLength > 0" class="control">
         <table class="table">
           <thead>
             <tr>
@@ -167,7 +157,7 @@ let productList = {
               <th>Subt.</th>
             </tr>
           </thead>
-          <tfoot>
+          <tfoot v-if="productListLength > 0">
             <tr>
               <th colspan="4">Total $</th>
               <th>{{ totalCost }}</th>
@@ -184,8 +174,28 @@ let productList = {
           </tbody>
         </table>    
       </div>    
-    </div>
+    </div>  
+  </section>
   `,
+  data() {
+    return {
+      accounts: []
+    }
+  },
+  mounted() {
+    this.fetchAccounts();
+  },
+  methods: {
+    fetchAccounts() {
+      axios.get('/api/accounts')
+           .then(response => {
+              this.accounts = response.data.accounts;
+           })
+           .catch(function (error) {
+              console.log(error);
+           });
+    }
+  },
   computed: {
     getProducts () {
       return this.$store.state.products;
@@ -195,6 +205,14 @@ let productList = {
     },
     totalCost () {
       return this.$store.state.products.reduce((acc, x) => acc + (x.price * x.amount), 0);
+    },
+    selectedAccount: {
+      get () {
+          return this.$store.state.selectedAccount
+      },
+      set (value) {
+          this.$store.commit('updateSelectedAccount', value)
+      }
     }
   }
 };
