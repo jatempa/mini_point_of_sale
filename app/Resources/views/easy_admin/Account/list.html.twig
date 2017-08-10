@@ -192,9 +192,17 @@ page: app.request.get('page', 1)
 
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="title">Reportes de Meseros</h3>
-            <a class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_users_excel') }}" role="button">
-                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Meseros
+            <h3 class="title">Reportes de Ventas de Meseros</h3>
+            <a class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_product_waiter_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Producto
+            </a>
+
+            <a class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_category_product_waiter_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Categoría de Producto
+            </a>
+
+            <a class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_account_waiter_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Cuenta
             </a>
         </div>
     </div>

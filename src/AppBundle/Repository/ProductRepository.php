@@ -23,6 +23,17 @@ class ProductRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
+    public function findAllProductsReport()
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('p.name', 'p.price', 'p.stock', 'c.name as category')
+            ->from('AppBundle:Product', 'p')
+            ->join('p.category', 'c');
+
+        return $dql->getQuery()->getResult();
+    }
+
     public function findProductById($id)
     {
         $em = $this->getEntityManager();
