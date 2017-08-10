@@ -5,6 +5,8 @@ easy_admin:
       time: 'H:i'
       datetime: 'F j, H:i:s'
     design:
+      assets:
+          favicon: 'img/republik.ico'
       color_scheme: 'dark'
       form_theme: 'horizontal'
       menu:
