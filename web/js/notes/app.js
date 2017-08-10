@@ -41,13 +41,6 @@ let productForm = {
       </div>      
     </section>                   
     `,
-    data() {
-      return {
-        categories: [],
-        products: [],
-        amount: 0
-      }
-    },
     mounted() {
       this.fetchCategories();
       this.fetchProducts();
@@ -56,7 +49,7 @@ let productForm = {
       fetchCategories () {
         axios.get('/api/categories')
              .then(response => {
-               this.categories = response.data.categories;
+               this.$store.commit('updateCategories', response.data.categories);
              })
              .catch(function (error) {
                console.log(error);
@@ -65,32 +58,31 @@ let productForm = {
       fetchProducts () {
         axios.get('/api/products')
              .then(response => {
-               this.products = response.data.products
+               this.$store.commit('updateProducts', response.data.products);
              })
              .catch(function (error) {
                console.log(error);
              });
       },
       addProduct () {
-        if (parseInt(this.amount) > 0) {
+        if (parseInt(this.$store.state.amount) > 0) {
           let product = {
-              amount: parseInt(this.amount)
+              amount: parseInt(this.$store.state.amount)
           };
 
-          axios.get('/api/products/' + parseInt(this.selectedProduct))
-               .then(response => {
-                  product.id = response.data.product.id;
-                  product.name = response.data.product.name;
-                  product.price = parseFloat(response.data.product.price);
-                  this.$store.commit('addProductToList', product);
-               })
-               .catch(function (error) {
-                  console.log(error);
-              });
+          this.$store.state.products
+                           .filter((p) => p.id === parseInt(this.$store.state.selectedProduct))
+                           .map(function(p) {
+                               product.id = p.id;
+                               product.name = p.name;
+                               product.price = parseFloat(p.price);
+                           });
+          // Add to car products
+          this.$store.commit('addCarProducts', product);
           // Clear
           this.$store.commit('updateSelectedCategory', 0);
           this.$store.commit('updateSelectedProduct', 0);
-          this.amount = 0;
+          this.$store.state.amount = 0;
         } else {
           swal('Error', 'Ingresa una cantidad mínima de 1 para continuar', 'warning');
         }
@@ -98,7 +90,10 @@ let productForm = {
     },
     computed: {
       getProductsByCategory () {
-        return this.products.filter((p) => p.category === this.selectedCategory);
+        return this.$store.state.products.filter((p) => p.category === this.$store.state.selectedCategory);
+      },
+      categories () {
+        return this.$store.state.categories;
       },
       selectedAccount: {
         get () {
@@ -122,6 +117,14 @@ let productForm = {
         },
         set (value) {
           this.$store.commit('updateSelectedProduct', value)
+        }
+      },
+      amount: {
+        get () {
+          return this.$store.state.amount
+        },
+        set (value) {
+          this.$store.commit('updateAmount', value)
         }
       }
     }
@@ -160,7 +163,7 @@ let productList = {
             </tr>
           </tfoot>
           <tbody>
-            <tr v-for="(product, index) in getProducts" :key="product.id">
+            <tr v-for="(product, index) in getCarProducts" :key="product.id">
               <td>{{ index + 1 }}</td>
               <td>{{ product.name }}</td>
               <td>{{ product.price }}</td>
@@ -193,10 +196,7 @@ let productList = {
     }
   },
   computed: {
-    getProductById (product_id) {
-      return this.products.filter((p) => p.id === product_id);
-    },
-    getProducts () {
+    getCarProducts () {
       return this.$store.state.carProducts;
     },
     carProductListLength () {
@@ -224,7 +224,10 @@ const store = new Vuex.Store({
       selectedAccount: 0,
       selectedCategory: 0,
       selectedProduct: 0,
-      carProducts: []
+      carProducts: [],
+      categories: [],
+      products: [],
+      amount: 0
     },
     mutations: {
       updateLastNumberNote(state) {
@@ -238,6 +241,15 @@ const store = new Vuex.Store({
       },
       updateSelectedProduct(state, selectedProduct) {
         state.selectedProduct = selectedProduct;
+      },
+      updateProducts(state, products) {
+        state.products = products;
+      },
+      updateCategories(state, categories) {
+        state.categories = categories;
+      },
+      updateAmount(state, amount) {
+        state.amount = amount;
       },
       addCarProducts(state, product) {
         state.carProducts.push(product);
