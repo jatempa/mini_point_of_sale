@@ -70,6 +70,15 @@ let productForm = {
               amount: parseInt(this.$store.state.amount)
           };
 
+          // this.$store.state.carProducts
+          //                  .map((p) => p.id === parseInt(this.$store.state.selectedProduct))
+          //                  .map(function(isExistent) {
+          //                    if(isExistent) {
+          //
+          //                    }
+          //                  });
+
+
           this.$store.state.products.filter((p) => p.id === parseInt(this.$store.state.selectedProduct))
                                     .map(function(p) {
                                       product.id = p.id;
@@ -84,7 +93,7 @@ let productForm = {
           this.$store.commit('updateSelectedProduct', 0);
           this.$store.state.amount = 0;
         } else {
-          swal('Error', 'Ingresa una cantidad mínima de 1 para continuar', 'warning');
+          swal('Error', 'Debes ingresar una cantidad mínima de 1 producto para continuar', 'warning');
         }
       }
     },
@@ -287,13 +296,13 @@ new Vue({
         'X-Requested-With': 'XMLHttpRequest',
       };
 
-      if(this.$store.state.products.length > 0) {
+      if ((this.$store.state.carProducts.length > 0) && (parseInt(this.$store.state.selectedAccount) > 0) && (parseInt(this.$store.state.lastNumberNote) > 0)) {
         let noteData = {
           selectedAccount: parseInt(this.$store.state.selectedAccount),
           numberNote: parseInt(this.$store.state.lastNumberNote),
           products: this.$store.state.carProducts
         };
-        
+
         axios.post('/api/notes/create', noteData)
           .then(function (response) {
             if(response.data === 'success') {
@@ -311,7 +320,7 @@ new Vue({
           // Clean form
           this.cleanForm();
       } else {
-        swal('Error', 'Es necesario especificar valores correctos para procesar la comanda', 'warning');
+        swal('Error', 'Verifica que hayas seleccionado una Cuenta y una serie de productos ', 'warning');
       }
     },
     cleanForm () {
