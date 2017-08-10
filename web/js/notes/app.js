@@ -1,7 +1,7 @@
 let productForm = {
     template: `
     <section>
-      <div v-if="selectedAccount > 0" class="field">
+      <div v-if="selectedAccount > 0" class="field" style="margin-top: 8px;">
         <label class="label">Selecciona un tipo de producto</label>
         <div class="control">
           <div class="select">
@@ -13,7 +13,7 @@ let productForm = {
           </div>
         </div>
       </div>
-      <div v-if="selectedCategory > 0" class="field">
+      <div v-if="selectedCategory > 0" class="field" style="margin-top: 8px;">
         <label class="label">Selecciona un producto</label>
         <div class="control">
           <div class="select">
@@ -25,14 +25,12 @@ let productForm = {
           </div>
         </div>
       </div>
-      <div v-if="selectedProduct > 0">
+      <div v-if="selectedProduct > 0" style="margin-top: 8px;">
         <div class="field">
-          <div class="field">
-            <label class="label">Cantidad</label>
-            <div class="control">
-              <input v-model="amount" class="input" type="number" min="0" max="100" placeholder="Introduce la cantidad del producto">
-            </div>
-          </div>   
+          <label class="label">Cantidad</label>
+          <div class="control">
+            <input v-model="amount" class="input" type="number" min="0" max="100" placeholder="Introduce la cantidad del producto">
+          </div>
         </div>
         <button class="button is-info" @click.prevent="addProduct">
           <span class="icon is-normal">
@@ -132,21 +130,19 @@ let productForm = {
 let productList = {
   template: `
   <section>
-    <div class="field">
+    <div class="control">
       <label class="label">Selecciona una cuenta</label>
-      <div class="control">
-        <div class="select">
-          <select v-model="selectedAccount">
-            <option v-for="account in accounts" :value="account.id" v-if="account.status">
-              Cta. {{ account.id }} - {{ account.mesa }}
-            </option>
-          </select>
-        </div>
+      <div class="select">
+        <select v-model="selectedAccount">
+          <option v-for="account in accounts" :value="account.id" v-if="account.status">
+            Cuenta {{ account.id }} - {{ account.mesa }}
+          </option>
+        </select>
       </div>
     </div>
-    <div class="field">
-      <div v-if="productListLength > 0" class="label">Lista de productos</div>
-      <div v-if="productListLength > 0" class="control">
+    <div v-if="carProductListLength > 0" class="field" style="margin-top: 8px;">
+      <div class="label">Lista de productos</div>
+      <div class="control">
         <table class="table">
           <thead>
             <tr>
@@ -157,7 +153,7 @@ let productList = {
               <th>Subt.</th>
             </tr>
           </thead>
-          <tfoot v-if="productListLength > 0">
+          <tfoot>
             <tr>
               <th colspan="4">Total $</th>
               <th>{{ totalCost }}</th>
@@ -197,14 +193,17 @@ let productList = {
     }
   },
   computed: {
-    getProducts () {
-      return this.$store.state.products;
+    getProductById (product_id) {
+      return this.products.filter((p) => p.id === product_id);
     },
-    productListLength () {
-      return this.$store.state.products.length;
+    getProducts () {
+      return this.$store.state.carProducts;
+    },
+    carProductListLength () {
+      return this.$store.state.carProducts.length;
     },
     totalCost () {
-      return this.$store.state.products.reduce((acc, x) => acc + (x.price * x.amount), 0);
+      return this.$store.state.carProducts.reduce((acc, x) => acc + (x.price * x.amount), 0);
     },
     selectedAccount: {
       get () {
@@ -225,9 +224,7 @@ const store = new Vuex.Store({
       selectedAccount: 0,
       selectedCategory: 0,
       selectedProduct: 0,
-      mesas: [],
-      products: [],
-      amount: 0
+      carProducts: []
     },
     mutations: {
       updateLastNumberNote(state) {
@@ -242,11 +239,11 @@ const store = new Vuex.Store({
       updateSelectedProduct(state, selectedProduct) {
         state.selectedProduct = selectedProduct;
       },
-      addProductToList(state, product) {
-        state.products.push(product);
+      addCarProducts(state, product) {
+        state.carProducts.push(product);
       },
-      resetProductToList(state) {
-        state.products = [];
+      resetCarProducts(state) {
+        state.carProducts = [];
       }
     }
 });
@@ -307,7 +304,7 @@ new Vue({
       this.$store.commit('updateSelectedAccount',0);
       this.$store.commit('updateSelectedCategory', 0);
       this.$store.commit('updateSelectedProduct', 0);
-      this.$store.commit('resetProductToList');
+      this.$store.commit('resetCarProducts');
     }
   }
 });
