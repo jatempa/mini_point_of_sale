@@ -85,7 +85,7 @@ class NoteAPIController extends Controller
                         $prod = $em->getRepository('AppBundle:Product')->findOneById($product['id']);
                         $noteProduct->setProduct($prod);
                         $noteProduct->setAmount($product['amount']);
-                        $noteProduct->setTotal($product['amount'] * $product['price']);
+                        $noteProduct->setTotal($product['total']);
                         // Save Product
                         $em->persist($noteProduct);
                         $em->flush();

@@ -70,13 +70,13 @@ let productForm = {
               amount: parseInt(this.$store.state.amount)
           };
 
-          this.$store.state.products
-                           .filter((p) => p.id === parseInt(this.$store.state.selectedProduct))
-                           .map(function(p) {
-                               product.id = p.id;
-                               product.name = p.name;
-                               product.price = parseFloat(p.price);
-                           });
+          this.$store.state.products.filter((p) => p.id === parseInt(this.$store.state.selectedProduct))
+                                    .map(function(p) {
+                                      product.id = p.id;
+                                      product.name = p.name;
+                                      product.price = parseFloat(p.price);
+                                      product.total = parseFloat(product.amount * p.price)
+                                    });
           // Add to car products
           this.$store.commit('addCarProducts', product);
           // Clear
@@ -168,7 +168,7 @@ let productList = {
               <td>{{ product.name }}</td>
               <td>{{ product.price }}</td>
               <td>{{ product.amount }}</td>
-              <td>{{ product.amount * product.price }}</td>
+              <td>{{ product.total }}</td>
             </tr>
           </tbody>
         </table>    
@@ -291,19 +291,21 @@ new Vue({
         let noteData = {
           selectedAccount: parseInt(this.$store.state.selectedAccount),
           numberNote: parseInt(this.$store.state.lastNumberNote),
-          products: this.$store.state.products
+          products: this.$store.state.carProducts
         };
-
+        
         axios.post('/api/notes/create', noteData)
           .then(function (response) {
             if(response.data === 'success') {
               swal('¡Correcto!', 'Comanda registrada satisfactoriamente', 'success');
+              succ = true;
             }
           })
           .catch(function (error) {
             console.log(error);
               swal('Error', 'Esta comanda no pudo ser registrada en el sistema', 'error')
           });
+
           // Increment number note
           this.$store.commit('updateLastNumberNote');
           // Clean form

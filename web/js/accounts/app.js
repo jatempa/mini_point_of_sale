@@ -1,45 +1,46 @@
 let accountForm = {
   template: `
-  <div v-if="accountListLength > 0" class="field">
-    <div class="control">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Mesa</th>
-            <th>Status</th>
-            <th>Cerrar</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="account in accountList" :key="account.id">
-            <td>{{ account.id }}</td>
-            <td>{{ account.mesa }}</td>
-            <td v-if=" account.status">
-              <span class="tag is-success">Abierta</span>
-            </td>
-            <td v-else>
-              <span  class="tag is-danger">Cerrada</span>
-            </td>
-            <td v-if="account.status">
-              <a class="link" @click.prevent="closeAccount(account)">
-                <span class="icon">
-                  <i class="fa fa-check-circle-o"></i>
-                </span>
-              </a>
-            </td>
-            <td v-else>
-              <a class="link">
-                <span class="icon">
-                  <i class="fa fa-print"></i>
-                </span>
-              </a>             
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <section>
+    <div v-if="accountListLength > 0" class="field">
+      <div class="control">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Mesa</th>
+              <th>Status</th>
+              <th>Cerrar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="account in accountList" :key="account.id">
+              <td>{{ account.id }}</td>
+              <td>{{ account.mesa }}</td>
+              <td v-if=" account.status">
+                <span class="tag is-success">Abierta</span>
+              </td>
+              <td v-else>
+                <span  class="tag is-danger">Cerrada</span>
+              </td>
+              <td v-if="account.status">
+                <a class="link" @click.prevent="closeAccount(account)">
+                  <span class="icon">
+                    <i class="fa fa-check-circle-o"></i>
+                  </span>
+                </a>
+              </td>
+              <td v-else>
+                <a class="link">
+                  <span class="icon">
+                    <i class="fa fa-print"></i>
+                  </span>
+                </a>             
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <h3>Crear cuenta</h3>
     <div class="control">
       <label class="label">Selecciona una mesa</label>
       <div class="select">
@@ -50,7 +51,7 @@ let accountForm = {
         </select>
       </div>
     </div>
-  </div>`,
+  </section>`,
   methods: {
     fetchAccounts () {
         axios.get('/api/accounts')
