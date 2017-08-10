@@ -50,12 +50,12 @@ easy_admin:
             list:
                 title: "Cuentas"
                 fields:
-                  - { property: 'id', label: 'Id' }
+                  - { property: 'id', label: 'Cuenta Id' }
                   - { property: 'user', label: 'Mesero' }
                   - { property: 'barTable', label: 'Mesa' }
                   - { property: 'checkin', label: 'Fecha de apertura' }
                   - { property: 'checkout', label: 'Fecha de clausura' }
-                  - { property: 'status', label: 'Abierta' }
+                  - { property: 'status', label: '¿Abierta?' }
         BarTable:
             label: 'Mesas'
             class: AppBundle\Entity\BarTable
@@ -113,8 +113,8 @@ easy_admin:
                   - { property: 'account', label: 'Mesa' }
                   - { property: 'numberNote', label: 'Folio' }
                   - { property: 'status', label: 'Status' }
-                  - { property: 'checkin', label: 'Fecha Emisión' }
-                  - { property: 'checkout', label: 'Fecha Cierre' }
+                  - { property: 'checkin', label: 'Fecha/Hora Emisión' }
+                  - { property: 'checkout', label: 'Fecha/Hora Cobro' }
                   - { property: 'user', label: 'Mesero' }
                 sort: ['checkin', 'DESC']
         NoteProduct:
