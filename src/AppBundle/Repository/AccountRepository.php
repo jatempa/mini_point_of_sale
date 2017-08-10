@@ -16,7 +16,7 @@ class AccountRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select( 'a.id','a.status', 'a.checkin', 'b.id as mesaid', 'b.name as mesa')
+        $dql->select( 'a.id','a.status', 'b.id as mesaid', 'b.name as mesa')
             ->from('AppBundle:Account', 'a')
             ->innerJoin('a.barTable', 'b')
             ->where('a.user = :id')

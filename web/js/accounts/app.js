@@ -1,59 +1,55 @@
 let accountForm = {
   template: `
-  <div>
-      <div v-if="accountListLength > 0" class="field">
-        <div class="control">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Mesa</th>
-                <th>Apertura</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="account in accountList" :key="account.id">
-                <td>{{ account.id }}</td>
-                <td>{{ account.mesa }}</td>
-                <td>{{ account.checkin }}</td>
-                <td v-if=" account.status">
-                  <span class="tag is-success">Abierta</span>
-                </td>
-                <td v-else>
-                  <span  class="tag is-danger">Cerrada</span>
-                </td>
-                <td v-if="account.status">
-                  <a class="link" @click.prevent="closeAccount(account)">
-                    <span class="icon">
-                      <i class="fa fa-remove"></i>
-                    </span>
-                  </a>
-                </td>
-                <td v-else>
-                  <a class="link">
-                    <span class="icon">
-                      <i class="fa fa-print"></i>
-                    </span>
-                  </a>             
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>    
+  <div v-if="accountListLength > 0" class="field">
+    <div class="control">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Mesa</th>
+            <th>Status</th>
+            <th>Cerrar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="account in accountList" :key="account.id">
+            <td>{{ account.id }}</td>
+            <td>{{ account.mesa }}</td>
+            <td v-if=" account.status">
+              <span class="tag is-success">Abierta</span>
+            </td>
+            <td v-else>
+              <span  class="tag is-danger">Cerrada</span>
+            </td>
+            <td v-if="account.status">
+              <a class="link" @click.prevent="closeAccount(account)">
+                <span class="icon">
+                  <i class="fa fa-check-circle-o"></i>
+                </span>
+              </a>
+            </td>
+            <td v-else>
+              <a class="link">
+                <span class="icon">
+                  <i class="fa fa-print"></i>
+                </span>
+              </a>             
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Crear cuenta</h3>
+    <div class="control">
+      <label class="label">Selecciona una mesa</label>
+      <div class="select">
+        <select v-model="selectedTable">
+          <option v-for="mesa in mesasList" :value="mesa.id">
+            {{ mesa.name }}
+          </option>
+        </select>
       </div>
-      <div class="field">
-        <label class="label">Selecciona una mesa</label>
-        <div class="control">
-          <div class="select">
-            <select v-model="selectedTable">
-              <option v-for="mesa in mesasList" :value="mesa.id">
-                {{ mesa.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>  
+    </div>
   </div>`,
   methods: {
     fetchAccounts () {
