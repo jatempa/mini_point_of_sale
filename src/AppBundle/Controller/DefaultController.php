@@ -27,7 +27,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/cuentas", name="cuentas")
-     * @Cache(maxage="300")
      * @Method("GET")
      */
     public function accountsAction(Request $request)
@@ -41,7 +40,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/comandas", name="comandas")
-     * @Cache(maxage="300")
      * @Method("GET")
      */
     public function notesAction(Request $request)
