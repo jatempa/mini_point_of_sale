@@ -13,6 +13,7 @@ use AppBundle\Entity\Note;
 use AppBundle\Entity\NoteProduct;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,6 +100,45 @@ class NoteAPIController extends Controller
             }
 
             return new JsonResponse($result);
+        }
+
+        return new Response('This is not ajax!', 400);
+    }
+
+    /**
+     * @Put("/notes/checkout/product")
+     */
+    public function puttCheckoutNoteAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            // Get data from client
+            $note = $request->request->all();
+            // Prepare ORM
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction(); // suspend auto-commit
+            try {
+                // Reduce stock
+                $p = $em->getRepository('AppBundle:NoteProduct')->findNoteProduct($note['userId'], $note['productId'], $note['numberNote']);
+                $tempStock = $p['stock'];
+
+                $product = $em->getRepository('AppBundle:Product')->findOneById($p['id']);
+                $reduceAmount = $tempStock - $note['amount'];
+                if ($reduceAmount < 0) {
+                    return new JsonResponse("pocoinventario");
+                }
+                $product->setStock($reduceAmount);
+                $em->flush();
+                // Change status of note
+                $n = $em->getRepository('AppBundle:Note')->findOneNote($note['userId'], $note['numberNote']);
+                $n->setStatus('Entregado');
+                $n->setCheckOut(new \DateTime('now'));
+                $em->flush();
+                $em->getConnection()->commit();
+                return new JsonResponse("success");
+            } catch (Exception $e) {
+                $em->getConnection()->rollBack();
+                return new JsonResponse("error");
+            }
         }
 
         return new Response('This is not ajax!', 400);
