@@ -21,12 +21,15 @@ new Vue({
           <div class="col-md-4 col-lg-4" v-for="note in notes" :key="note.id">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Comanda {{ note.numberNote }}</strong> - {{ note.waiter }}</h3>
+                  <h3 class="panel-title"><strong>Comanda {{ note.numberNote }}</strong> - Mesero(a) {{ note.waiter }}</h3>
               </div>
               <div class="panel-body">
-                  <h3>
-                    {{ note.amount }} {{ note.category }} {{ note.product }}
-                  </h3>
+                <h2>
+                  {{ note.amount }} {{ note.product }}
+                </h2>
+                <h3>
+                  {{ note.category }}
+                </h3>
               </div>
               <div class="panel-footer text-center">
                 <form>
