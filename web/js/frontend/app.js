@@ -78,9 +78,6 @@ new Vue({
              if(response.data === 'success') {
                pendingNote.status = "Entregado";
                swal('¡Correcto!', 'Producto actualizado satisfactoriamente', 'success');
-             } else if (response.data === 'pocoinventario') {
-               pendingNote.status = "Entregado";
-               swal('Importante', 'No existe cantidad solicitada en el inventario', 'warning');
              }
            })
            .catch(function (error) {

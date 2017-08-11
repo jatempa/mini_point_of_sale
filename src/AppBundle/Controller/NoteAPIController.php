@@ -152,7 +152,7 @@ class NoteAPIController extends Controller
                 return new JsonResponse("success");
             } catch (Exception $e) {
                 $em->getConnection()->rollBack();
-                return new JsonResponse("error");
+                throw $e;
             }
         }
 
