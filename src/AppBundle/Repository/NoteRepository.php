@@ -46,7 +46,7 @@ class NoteRepository extends EntityRepository
             ->where('n.checkin <= :tempNow')
             ->andWhere('np.status = \'Pendiente\'')
             ->orderBy('n.checkin')
-            ->setMaxResults(20);
+            ->setMaxResults(50);
 
         $dql->setParameter('tempNow', $tempNow);
 
@@ -68,7 +68,7 @@ class NoteRepository extends EntityRepository
             ->where('n.checkin <= :tempNow')
             ->andWhere('np.status = \'Entregado\'')
             ->orderBy('n.checkin', 'desc')
-            ->setMaxResults(20);
+            ->setMaxResults(100);
 
         $dql->setParameter('tempNow', $tempNow);
 
