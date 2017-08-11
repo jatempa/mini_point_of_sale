@@ -60,25 +60,4 @@ class NoteProductRepository extends EntityRepository
 
         return $dql->getQuery()->getResult();
     }
-
-    public function findNoteProduct($userId, $productId, $folio)
-    {
-        $em = $this->getEntityManager();
-        $dql = $em->createQueryBuilder();
-        $dql->select('p.stock', 'p.id')
-            ->from('AppBundle:NoteProduct', 'np')
-            ->innerJoin('np.product', 'p')
-            ->innerJoin('np.note', 'n')
-            ->innerJoin('n.user', 'u')
-            ->where('u.id = :userId')
-            ->andWhere('p.id = :productId')
-            ->andWhere('n.numberNote = :folio')
-            ->groupBy('u.id', 'n.numberNote', 'p.id');
-
-        $dql->setParameter('userId', $userId);
-        $dql->setParameter('productId', $productId);
-        $dql->setParameter('folio', $folio);
-
-        return $dql->getQuery()->getSingleResult();
-    }
 }

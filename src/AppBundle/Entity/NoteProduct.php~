@@ -53,6 +53,20 @@ class NoteProduct
     private $total;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="checkout", type="datetime", nullable=true)
+     */
+    private $checkout;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=30)
+     */
+    private $status;
+
+    /**
      * Get id
      *
      * @return integer 

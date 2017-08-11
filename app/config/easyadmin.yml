@@ -112,9 +112,7 @@ easy_admin:
                   - { property: 'id', label: 'Id' }
                   - { property: 'account', label: 'Mesa' }
                   - { property: 'numberNote', label: 'Folio' }
-                  - { property: 'status', label: 'Status' }
                   - { property: 'checkin', label: 'Fecha/Hora Emisión' }
-                  - { property: 'checkout', label: 'Fecha/Hora Cobro' }
                   - { property: 'user', label: 'Mesero' }
                 sort: ['checkin', 'DESC']
         NoteProduct:
@@ -128,6 +126,8 @@ easy_admin:
                   - { property: 'product', label: 'Producto' }
                   - { property: 'amount', label: 'Cantidad' }
                   - { property: 'total', label: 'Total $' }
+                  - { property: 'status', label: 'Status' }
+                  - { property: 'checkout', label: 'Fecha/Hora Entrega' }
         Product:
             label: 'Productos'
             class: AppBundle\Entity\Product

@@ -24,6 +24,19 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 class NoteAPIController extends Controller
 {
     /**
+     * @Get("/notes/demo")
+     */
+    public function getNotesDemoAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $notes = $em->getRepository('AppBundle:NoteProduct')->findNoteProductToReduce(3, 6, 11, 2);
+
+        $view = View::create()->setData(array('notes' => $notes));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
      * @Get("/notes/lastNoteId")
      */
     public function getNotesAction()
@@ -72,7 +85,6 @@ class NoteAPIController extends Controller
 
                 $note = new Note();
                 $note->setNumberNote($numberNote);
-                $note->setStatus("Pendiente");
                 $note->setCheckin(new \DateTime('now'));
                 $note->setUser($this->getUser());
                 $note->setAccount($account);
@@ -87,6 +99,7 @@ class NoteAPIController extends Controller
                         $noteProduct->setProduct($prod);
                         $noteProduct->setAmount($product['amount']);
                         $noteProduct->setTotal($product['total']);
+                        $noteProduct->setStatus("Pendiente");
                         // Save Product
                         $em->persist($noteProduct);
                         $em->flush();
@@ -108,7 +121,7 @@ class NoteAPIController extends Controller
     /**
      * @Put("/notes/checkout/product")
      */
-    public function puttCheckoutNoteAction(Request $request)
+    public function putCheckoutNoteAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
             // Get data from client
@@ -117,22 +130,24 @@ class NoteAPIController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
-                // Reduce stock
-                $p = $em->getRepository('AppBundle:NoteProduct')->findNoteProduct($note['userId'], $note['productId'], $note['numberNote']);
-                $tempStock = $p['stock'];
+                // Change status of note
+                $np = $em->getRepository('AppBundle:NoteProduct')->findOneById($note['noteProductId']);
+                $np->setStatus('Entregado');
+                $np->setCheckOut(new \DateTime('now'));
+                $em->flush();
 
-                $product = $em->getRepository('AppBundle:Product')->findOneById($p['id']);
+                // Reduce stock
+                $product = $em->getRepository('AppBundle:Product')->findOneById($note['productId']);
+                $tempStock = $product->getStock();
+
                 $reduceAmount = $tempStock - $note['amount'];
                 if ($reduceAmount < 0) {
-                    return new JsonResponse("pocoinventario");
+                    $em->getConnection()->rollBack();
+                } else {
+                    $product->setStock($reduceAmount);
+                    $em->flush();
                 }
-                $product->setStock($reduceAmount);
-                $em->flush();
-                // Change status of note
-                $n = $em->getRepository('AppBundle:Note')->findOneNote($note['userId'], $note['numberNote']);
-                $n->setStatus('Entregado');
-                $n->setCheckOut(new \DateTime('now'));
-                $em->flush();
+
                 $em->getConnection()->commit();
                 return new JsonResponse("success");
             } catch (Exception $e) {

@@ -58,34 +58,35 @@ new Vue({
            });
     },
     loadMorePendingNotes () {
-      this.getPendingNotes();
+      this.fetchPendingNotes();
     },
     checkoutNote (pendingNote) {
       axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
       };
-      console.log(pendingNote);
+
       let note = {
         userId: pendingNote.userId,
         productId: pendingNote.productId,
-        numberNote: pendingNote.numberNote,
+        noteId: pendingNote.noteId,
+        noteProductId: pendingNote.noteProductId,
         amount: parseInt(pendingNote.amount)
       };
 
       axios.put('/notes/checkout/product', note)
-        .then(function (response) {
-          if(response.data === 'success') {
-            pendingNote.status = "Entregado";
-            swal('¡Correcto!', 'Producto actualizado satisfactoriamente', 'success');
-          } else if (response.data === 'pocoinventario') {
-            pendingNote.status = "Entregado";
-            swal('Importante', 'No existe cantidad solicitada en el inventario', 'warning');
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-          swal('Error', 'Esta venta no ha podido ser registrada en el sistema. No entregue el producto y solicite generen una nueva comanda.', 'error')
-        });
+           .then(function (response) {
+             if(response.data === 'success') {
+               pendingNote.status = "Entregado";
+               swal('¡Correcto!', 'Producto actualizado satisfactoriamente', 'success');
+             } else if (response.data === 'pocoinventario') {
+               pendingNote.status = "Entregado";
+               swal('Importante', 'No existe cantidad solicitada en el inventario', 'warning');
+             }
+           })
+           .catch(function (error) {
+             console.log(error);
+             swal('Error', 'Esta venta no ha podido ser registrada en el sistema. No entregue el producto y solicite generen una nueva comanda.', 'error')
+           });
     }
   },
   computed: {

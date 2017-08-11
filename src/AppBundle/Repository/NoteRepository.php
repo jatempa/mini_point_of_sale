@@ -37,36 +37,19 @@ class NoteRepository extends EntityRepository
 
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as waiter', 'n.numberNote', 'n.status', 'p.id as productId', 'p.name as product', 'c.name as category', 'sum(np.amount) as amount')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as waiter', 'n.id as noteId', 'np.id as noteProductId', 'n.numberNote', 'np.status', 'p.id as productId', 'p.name as product', 'c.name as category', 'np.amount')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.product', 'p')
             ->innerJoin('p.category', 'c')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('n.checkin <= :tempNow')
-            ->andWhere('n.status = \'Pendiente\'')
-            ->groupBy('u.id', 'n.numberNote', 'p.id')
+            ->andWhere('np.status = \'Pendiente\'')
+            ->orderBy('n.checkin')
             ->setMaxResults(20);
 
         $dql->setParameter('tempNow', $tempNow);
 
         return $dql->getQuery()->getResult();
-    }
-
-
-    public function findOneNote($userId, $numberNote)
-    {
-        $em = $this->getEntityManager();
-        $dql = $em->createQueryBuilder();
-        $dql->select('n')
-            ->from('AppBundle:Note', 'n')
-            ->innerJoin('n.user', 'u')
-            ->where('u.id = :userId')
-            ->andWhere('n.numberNote = :numberNote');
-
-        $dql->setParameter('userId', $userId);
-        $dql->setParameter('numberNote', $numberNote);
-
-        return $dql->getQuery()->getSingleResult();
     }
 }
