@@ -24,9 +24,12 @@ new Vue({
                   <h3 class="panel-title"><strong>Comanda {{ note.numberNote }}</strong> - {{ note.waiter }}</h3>
               </div>
               <div class="panel-body">
-                  <h3>
-                    {{ note.amount }} {{ note.category }} {{ note.product }}
-                  </h3>
+                <h2>
+                  {{ note.amount }} {{ note.product }}
+                </h2>
+                <h3>
+                  {{ note.category }}
+                </h3>
               </div>
               <div class="panel-footer text-center">
                 <form>
