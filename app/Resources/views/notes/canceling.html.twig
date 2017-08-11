@@ -1,0 +1,19 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #site {
+            margin-top: 25px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main></main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/frontend/canceling.js') }}"></script>
+{% endblock %}

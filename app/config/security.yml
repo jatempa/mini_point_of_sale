@@ -38,4 +38,5 @@ security:
         - { path: ^/cuentas/*, role: ROLE_MESERO }
         - { path: ^/comandas/*, role: ROLE_MESERO }
         - { path: ^/api/*, role: [ROLE_ADMIN, ROLE_MESERO, ROLE_PALOMA] }
+        - { path: ^/cancelaciones/*, role: ROLE_ADMIN }
         - { path: ^/admin, role: ROLE_ADMIN }

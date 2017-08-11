@@ -66,6 +66,19 @@ class NoteAPIController extends Controller
     }
 
     /**
+     * @Get("/notes/canceling")
+     */
+    public function getCancelingNotesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $notes = $em->getRepository('AppBundle:Note')->findAllDeliveredNotes();
+
+        $view = View::create()->setData(array('notes' => $notes));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
      * @Post("/notes/create")
      */
     public function postCreateNoteAction(Request $request)
@@ -148,6 +161,40 @@ class NoteAPIController extends Controller
                     $em->flush();
                 }
 
+                $em->getConnection()->commit();
+                return new JsonResponse("success");
+            } catch (Exception $e) {
+                $em->getConnection()->rollBack();
+                throw $e;
+            }
+        }
+
+        return new Response('This is not ajax!', 400);
+    }
+
+    /**
+     * @Put("/notes/checkin/product")
+     */
+    public function putCheckinNoteAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            // Get data from client
+            $note = $request->request->all();
+            // Prepare ORM
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction(); // suspend auto-commit
+            try {
+                // Change status of note
+                $np = $em->getRepository('AppBundle:NoteProduct')->findOneById($note['noteProductId']);
+                $np->setStatus('Cancelado');
+                $np->setCheckOut(new \DateTime('now'));
+                $em->flush();
+                // Reduce stock
+                $product = $em->getRepository('AppBundle:Product')->findOneById($note['productId']);
+                $tempStock = $product->getStock();
+                $reduceAmount = $tempStock + $note['amount'];
+                $product->setStock($reduceAmount);
+                $em->flush();
                 $em->getConnection()->commit();
                 return new JsonResponse("success");
             } catch (Exception $e) {
