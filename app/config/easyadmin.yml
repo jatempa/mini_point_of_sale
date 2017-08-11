@@ -162,6 +162,7 @@ easy_admin:
                   - { property: 'name', label: 'Nombre' }
                   - { property: 'category', label: 'Categoría' }
                   - { property: 'price', label: 'Precio $' }
+                  - { property: 'stock', label: 'Stock' }
         User:
             label: 'Usuarios'
             class: AppBundle\Entity\User
