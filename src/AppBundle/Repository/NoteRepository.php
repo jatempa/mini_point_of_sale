@@ -67,7 +67,7 @@ class NoteRepository extends EntityRepository
             ->innerJoin('n.user', 'u')
             ->where('n.checkin <= :tempNow')
             ->andWhere('np.status = \'Entregado\'')
-            ->orderBy('n.checkin')
+            ->orderBy('n.checkin', 'desc')
             ->setMaxResults(20);
 
         $dql->setParameter('tempNow', $tempNow);

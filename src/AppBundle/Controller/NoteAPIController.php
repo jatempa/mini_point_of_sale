@@ -192,9 +192,15 @@ class NoteAPIController extends Controller
                 // Reduce stock
                 $product = $em->getRepository('AppBundle:Product')->findOneById($note['productId']);
                 $tempStock = $product->getStock();
-                $reduceAmount = $tempStock + $note['amount'];
-                $product->setStock($reduceAmount);
-                $em->flush();
+
+                $reduceAmount = $tempStock - $note['amount'];
+                if ($reduceAmount < 0) {
+                    $em->getConnection()->rollBack();
+                } else {
+                    $product->setStock($reduceAmount);
+                    $em->flush();
+                }
+
                 $em->getConnection()->commit();
                 return new JsonResponse("success");
             } catch (Exception $e) {
