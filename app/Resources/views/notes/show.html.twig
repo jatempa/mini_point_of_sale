@@ -1,5 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseAdmin.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style>
+    #site {
+      margin-top: 25px;
+    }
+  </style>
+{% endblock %}
 
 {% block body %}
-	<h1>Hola Mundo Paloma</h1>
+  <main></main>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript" src="{{ asset('js/frontend/app.js') }}"></script>
 {% endblock %}

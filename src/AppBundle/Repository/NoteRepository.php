@@ -37,10 +37,14 @@ class NoteRepository extends EntityRepository
 
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('n.id', 'n.numberNote', 'n.checkin', 'n.status', 'concat(u.name, \' \', u.firstLastName) as mesero')
-            ->from('AppBundle:Note', 'n')
+        $dql->select('concat(u.name, \' \', u.firstLastName) as waiter', 'n.numberNote', 'p.name as product', 'c.name as category', 'sum(np.amount) as amount')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.product', 'p')
+            ->innerJoin('p.category', 'c')
+            ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('n.checkin <= :tempNow')
+            ->groupBy('u.id', 'n.numberNote', 'p.id')
             ->setMaxResults(20);
 
         $dql->setParameter('tempNow', $tempNow);
