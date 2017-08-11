@@ -52,4 +52,26 @@ class NoteRepository extends EntityRepository
 
         return $dql->getQuery()->getResult();
     }
+
+    public function findAllDeliveredNotes()
+    {
+        $tempNow = new \DateTime('now');
+
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as waiter', 'n.id as noteId', 'np.id as noteProductId', 'n.numberNote', 'np.status', 'p.id as productId', 'p.name as product', 'c.name as category', 'np.amount')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.product', 'p')
+            ->innerJoin('p.category', 'c')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('n.user', 'u')
+            ->where('n.checkin <= :tempNow')
+            ->andWhere('np.status = \'Entregado\'')
+            ->orderBy('n.checkin')
+            ->setMaxResults(20);
+
+        $dql->setParameter('tempNow', $tempNow);
+
+        return $dql->getQuery()->getResult();
+    }
 }

@@ -62,4 +62,16 @@ class DefaultController extends Controller
 
         return $this->render('notes/show.html.twig');
     }
+
+    /**
+     * @Route("/cancelaciones", name="cancelaciones")
+     */
+    public function notesCancelingAction(Request $request)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        return $this->render('notes/canceling.html.twig');
+    }
 }
