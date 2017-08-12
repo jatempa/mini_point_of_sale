@@ -24,23 +24,6 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 class NoteAPIController extends Controller
 {
     /**
-     * @Get("/notes/demo")
-     */
-    public function getNotesDemoAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $notes = $em->getRepository('AppBundle:Note')->findUsersWithPendingNotes();
-
-        for ($i = 0; $i < count($notes); $i++) {
-            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findPendingNoteProducts($notes[$i]['userId'], $notes[$i]['numberNote']);
-        }
-
-        $view = View::create()->setData(array('notes' => $notes));
-
-        return $this->get('fos_rest.view_handler')->handle($view);
-    }
-
-    /**
      * @Get("/notes/lastNoteId")
      */
     public function getNotesAction()
@@ -152,24 +135,29 @@ class NoteAPIController extends Controller
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 // Change status of note
-                $np = $em->getRepository('AppBundle:NoteProduct')->findOneById($note['noteProductId']);
-                $np->setStatus('Entregado');
-                $np->setCheckOut(new \DateTime('now'));
-                $em->flush();
+                $nps = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($note['userId'], $note['numberNote']);
 
-                // Reduce stock
-                $product = $em->getRepository('AppBundle:Product')->findOneById($note['productId']);
-                $tempStock = $product->getStock();
-
-                $reduceAmount = $tempStock - $note['amount'];
-                if ($reduceAmount < 0) {
-                    $em->getConnection()->rollBack();
-                } else {
-                    $product->setStock($reduceAmount);
+                foreach ($nps as $np) {
+                    $noteProduct = $em->getRepository('AppBundle:NoteProduct')->findOneById($np['id']);
+                    $noteProduct->setStatus('Entregado');
+                    $noteProduct->setCheckOut(new \DateTime('now'));
                     $em->flush();
+                }
+                // Reduce stock
+                foreach ($note['products'] as $p) {
+                    $product = $em->getRepository('AppBundle:Product')->findOneById($p['id']);
+                    $reduceAmount = $product->getStock() - $p['amount'];
+
+                    if ($reduceAmount < 0) {
+                        $em->getConnection()->rollBack();
+                    } else {
+                        $product->setStock($reduceAmount);
+                        $em->flush();
+                    }
                 }
 
                 $em->getConnection()->commit();
+
                 return new JsonResponse("success");
             } catch (Exception $e) {
                 $em->getConnection()->rollBack();

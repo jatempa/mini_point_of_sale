@@ -26,15 +26,15 @@ new Vue({
               <div class="panel-body">
                 <ul>
                   <li v-for="product in n.products" :key="product.id">
-                    <h2>{{ product.amount }} - {{ product.product }}</h2>
+                    <h2>{{ product.amount }} {{ product.product }}</h2>
                   </li>
                 </ul>
               </div>
               <div class="panel-footer text-center">
                 <form>
-                    <button type="button" class="btn btn-success btn-lg" >
-                        <i class="fa fa-check" aria-hidden="true"></i> Entregado
-                    </button>
+                  <button type="button" class="btn btn-success btn-lg" @click.prevent="checkoutNote(n)">
+                    <i class="fa fa-check" aria-hidden="true"></i> Entregado
+                  </button>
                 </form>
               </div>                                 
             </div>
@@ -65,11 +65,9 @@ new Vue({
       };
 
       let note = {
-        userId: pendingNote.userId,
-        productId: pendingNote.productId,
-        noteId: pendingNote.noteId,
-        noteProductId: pendingNote.noteProductId,
-        amount: parseInt(pendingNote.amount)
+        numberNote: pendingNote.numberNote,
+        products: pendingNote.products,
+        userId: pendingNote.userId
       };
 
       axios.put('/notes/checkout/product', note)

@@ -44,7 +44,8 @@ class NoteRepository extends EntityRepository
             ->where('n.checkin <= :tempNow')
             ->andWhere('np.status = \'Pendiente\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
-            ->orderBy('n.checkin');
+            ->orderBy('n.checkin')
+            ->setMaxResults(20);
 
         $dql->setParameter('tempNow', $tempNow);
 
@@ -55,10 +56,9 @@ class NoteRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('p.name as product', 'c.name as category', 'sum(np.amount) as amount')
+        $dql->select('p.id', 'p.name as product', 'sum(np.amount) as amount')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.product', 'p')
-            ->innerJoin('p.category', 'c')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('u.id = :userId')
