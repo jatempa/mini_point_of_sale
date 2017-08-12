@@ -18,26 +18,25 @@ new Vue({
       </div>
       <div class="row">
         <div id="site" class="col-md-12 col-lg-12">
-          <div class="col-md-4 col-lg-4" v-for="note in getPendingNotes" :key="note.id"">
+          <div class="col-md-4 col-lg-4" v-for="n in getPendingNotes" :key="n.id">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Comanda {{ note.numberNote }}</strong> - Mesero(a) {{ note.waiter }}</h3>
+                <h3 class="panel-title"><strong>Comanda {{ n.numberNote }}</strong> - Mesero(a) {{ n.fullname }}</h3>
               </div>
               <div class="panel-body">
-                <h2>
-                  {{ note.amount }} {{ note.product }}
-                </h2>
-                <h3>
-                  {{ note.category }}
-                </h3>
+                <ul>
+                  <li v-for="product in n.products" :key="product.id">
+                    <h2>{{ product.amount }} - {{ product.product }}</h2>
+                  </li>
+                </ul>
               </div>
               <div class="panel-footer text-center">
                 <form>
-                  <button type="button" class="btn btn-success btn-lg" @click="checkoutNote(note)">
-                    <i class="fa fa-check" aria-hidden="true"></i> Entregado
-                  </button>
+                    <button type="button" class="btn btn-success btn-lg" >
+                        <i class="fa fa-check" aria-hidden="true"></i> Entregado
+                    </button>
                 </form>
-              </div>
+              </div>                                 
             </div>
           </div>
         </div>
@@ -88,7 +87,7 @@ new Vue({
   },
   computed: {
     getPendingNotes() {
-      return this.notes.filter((n) => n.status === "Pendiente");
+      return this.notes.filter((n) => n.status === 'Pendiente');
     }
   }
 });

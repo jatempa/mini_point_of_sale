@@ -70,15 +70,6 @@ let productForm = {
               amount: parseInt(this.$store.state.amount)
           };
 
-          // this.$store.state.carProducts
-          //                  .map((p) => p.id === parseInt(this.$store.state.selectedProduct))
-          //                  .map(function(isExistent) {
-          //                    if(isExistent) {
-          //
-          //                    }
-          //                  });
-
-
           this.$store.state.products.filter((p) => p.id === parseInt(this.$store.state.selectedProduct))
                                     .map(function(p) {
                                       product.id = p.id;

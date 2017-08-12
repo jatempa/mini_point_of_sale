@@ -31,24 +31,42 @@ class NoteRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findAllPendingNotes()
+    public function findUsersWithPendingNotes()
     {
         $tempNow = new \DateTime('now');
 
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as waiter', 'n.id as noteId', 'np.id as noteProductId', 'n.numberNote', 'np.status', 'p.id as productId', 'p.name as product', 'c.name as category', 'np.amount')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname, n.numberNote, np.status')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('n.user', 'u')
+            ->where('n.checkin <= :tempNow')
+            ->andWhere('np.status = \'Pendiente\'')
+            ->groupBy('u.id', 'n.numberNote', 'n.checkin')
+            ->orderBy('n.checkin');
+
+        $dql->setParameter('tempNow', $tempNow);
+
+        return $dql->getQuery()->getResult();
+    }
+
+    public function findPendingNoteProducts($userId, $numberNote)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('p.name as product', 'c.name as category', 'sum(np.amount) as amount')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.product', 'p')
             ->innerJoin('p.category', 'c')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
-            ->where('n.checkin <= :tempNow')
-            ->andWhere('np.status = \'Pendiente\'')
-            ->orderBy('n.checkin')
-            ->setMaxResults(50);
+            ->where('u.id = :userId')
+            ->andWhere('n.numberNote = :folio')
+            ->groupBy('p.id');
 
-        $dql->setParameter('tempNow', $tempNow);
+        $dql->setParameter('userId', $userId);
+        $dql->setParameter('folio', $numberNote);
 
         return $dql->getQuery()->getResult();
     }
@@ -68,7 +86,7 @@ class NoteRepository extends EntityRepository
             ->where('n.checkin <= :tempNow')
             ->andWhere('np.status = \'Entregado\'')
             ->orderBy('n.checkin', 'desc')
-            ->setMaxResults(100);
+            ->setMaxResults(50);
 
         $dql->setParameter('tempNow', $tempNow);
 
