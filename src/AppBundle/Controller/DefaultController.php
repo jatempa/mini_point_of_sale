@@ -88,7 +88,7 @@ class DefaultController extends Controller
         $notes = $em->getRepository('AppBundle:Note')->findUsersWithDeliveredNotes();
 
         for ($i = 0; $i < count($notes); $i++) {
-            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findDeliveredProducts($notes[$i]['userId'], $notes[$i]['numberNote']);
+            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($notes[$i]['userId'], $notes[$i]['numberNote']);
         }
 
         $paginator  = $this->get('knp_paginator');
@@ -115,7 +115,7 @@ class DefaultController extends Controller
         $em->getConnection()->beginTransaction(); // suspend auto-commit
         try {
             // Change status of note
-            $ps = $em->getRepository('AppBundle:Note')->findDeliveredProducts($userId, $folioNumber);
+            $ps = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $folioNumber);
 
             foreach ($ps as $p) {
               // Reduce stock

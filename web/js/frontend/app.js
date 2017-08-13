@@ -8,25 +8,26 @@ new Vue({
   template: `
   <section class="col-md-12 col-lg-12">
       <div class="row">
-        <div class="col-md-2 col-md-offset-10 col-lg-2 col-lg-offset-10">
-          <form>
+        <div class="col-md-3 col-md-offset-9 col-lg-3 col-lg-offset-9">
+          <form style="margin-bottom: 25px">
             <button type="button" class="btn btn-primary btn-lg" @click="loadMorePendingNotes">
-              <i class="fa fa-refresh" aria-hidden="true"></i> Comandas
+              <i class="fa fa-refresh" aria-hidden="true"></i> Actualizar Comandas
             </button>
           </form>
         </div>  
       </div>
       <div class="row">
-        <div id="site" class="col-md-12 col-lg-12">
+        <div class="col-md-12 col-lg-12">
           <div class="col-md-4 col-lg-4" v-for="n in getPendingNotes" :key="n.id">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title"><strong>Comanda {{ n.numberNote }}</strong> - Mesero(a) {{ n.fullname }}</h3>
+                <h3 class="panel-title"><strong>Mesero {{ n.userId }} </strong> {{ n.fullname }} / Comanda {{ n.numberNote }}</h3>
               </div>
               <div class="panel-body">
                 <ul>
                   <li v-for="product in n.products" :key="product.id">
                     <h2>{{ product.amount }} {{ product.product }}</h2>
+                    <h3>{{ product.category }} $ {{ product.price }}</h3>
                   </li>
                 </ul>
               </div>

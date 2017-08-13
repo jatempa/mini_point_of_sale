@@ -24,23 +24,6 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 class NoteAPIController extends Controller
 {
     /**
-     * @Get("/notes/demo")
-     */
-    public function getNotesDemoAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $notes = $em->getRepository('AppBundle:Note')->findUsersWithDeliveredNotes();
-
-        for ($i = 0; $i < count($notes); $i++) {
-            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findDeliveredNoteProducts($notes[$i]['userId'], $notes[$i]['numberNote']);
-        }
-
-        $view = View::create()->setData(array('notes' => $notes));
-
-        return $this->get('fos_rest.view_handler')->handle($view);
-    }
-
-    /**
      * @Get("/notes/lastNoteId")
      */
     public function getNotesAction()
@@ -65,7 +48,7 @@ class NoteAPIController extends Controller
         $notes = $em->getRepository('AppBundle:Note')->findUsersWithPendingNotes();
 
         for ($i = 0; $i < count($notes); $i++) {
-            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findPendingNoteProducts($notes[$i]['userId'], $notes[$i]['numberNote']);
+            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($notes[$i]['userId'], $notes[$i]['numberNote']);
         }
 
         $view = View::create()->setData(array('notes' => $notes));
