@@ -31,14 +31,18 @@ class AccountRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('a')
-            ->from('AppBundle:Account', 'a')
-            ->where('a.id = :accountId')
+        $dql->select('a.id as account', 'concat(u.name, \' \', u.firstLastName) as waiter', 'b.name', 'n.numberNote')
+            ->from('AppBundle:Note', 'n')
+            ->innerJoin('n.account', 'a')
+            ->innerJoin('a.user', 'u')
+            ->innerJoin('a.barTable', 'b')
+            ->where('n.status = \'Entregado\'')
+            ->andWhere('a.id = :accountId')
             ->andWhere('a.user = :userId');
 
         $dql->setParameter('accountId', $accountId);
-        $dql->setParameter('userId', $userId);;
+        $dql->setParameter('userId', $userId);
 
-        return $dql->getQuery()->getSingleResult();
+        return $dql->getQuery()->getResult();
     }
 }

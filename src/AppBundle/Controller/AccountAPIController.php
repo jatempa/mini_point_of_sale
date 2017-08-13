@@ -28,9 +28,70 @@ class AccountAPIController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         // Get User Id
-        $user_id = $this->getUser();
-        $user_id->getId();
-        $accounts = $em->getRepository('AppBundle:Account')->findAllAccounts($user_id);
+        $userId = $this->getUser();
+        $userId->getId();
+        $accounts = $em->getRepository('AppBundle:Account')->findAllAccounts($userId);
+
+        $view = View::create()->setData(array("accounts" => $accounts));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
+     * @Get("/accounts/all")
+     */
+    public function getAllAccountsByWaiterAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get User Id
+        $users = $em->getRepository('AppBundle:User')->findWaitersId();
+
+        for ($i = 0; $i < count($users); $i++) {
+            $users[$i]['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccounts($users[$i]['id']);
+            for ($j = 0; $j < count($users[$i]['accounts']); $j++) {
+                $users[$i]['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($users[$i]['accounts'][$j]['id'], $users[$i]['id']);
+                for ($k = 0; $k < count($users[$i]['accounts'][$j]['notes']); $k++) {
+                    $users[$i]['accounts'][$j]['notes'][$k]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($users[$i]['id'], $users[$i]['accounts'][$j]['notes'][$k]['numberNote']);
+                }
+            }
+        }
+
+        $view = View::create()->setData(array("users" => $users));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
+     * @Get("/accounts/{accountId}")
+     */
+    public function getAccountsByAccountIdAction($accountId, $userId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get User Id
+        $userId = $this->getUser();
+        $userId->getId();
+        $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($accountId, $userId);
+
+        for ($i = 0; $i < count($accounts); $i++) {
+            $accounts[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $accounts[$i]['numberNote']);
+        }
+
+        $view = View::create()->setData(array("accounts" => $accounts));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
+     * @Get("/accounts/{accountId}/{userId}")
+     */
+    public function getAccountsByAccountIdAndUserIdAction($accountId, $userId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($accountId, $userId);
+
+        for ($i = 0; $i < count($accounts); $i++) {
+            $accounts[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $accounts[$i]['numberNote']);
+        }
 
         $view = View::create()->setData(array("accounts" => $accounts));
 

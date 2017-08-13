@@ -22,7 +22,7 @@ class NoteProductRepository extends EntityRepository
             ->innerJoin('np.product', 'p')
             ->innerJoin('n.user', 'u')
             ->innerJoin('p.category', 'c')
-            ->where('np.status = \'Entregado\'')
+            ->where('n.status = \'Entregado\'')
             ->groupBy('n.user', 'c.id')
             ->orderBy('u.id');
 
@@ -38,7 +38,7 @@ class NoteProductRepository extends EntityRepository
             ->innerJoin('np.product', 'p')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
-            ->where('np.status = \'Entregado\'')
+            ->where('n.status = \'Entregado\'')
             ->groupBy('n.user', 'p.name')
             ->orderBy('u.id');
 
@@ -57,7 +57,7 @@ class NoteProductRepository extends EntityRepository
             ->innerJoin('n.account', 'a')
             ->innerJoin('a.user', 'u')
             ->innerJoin('a.barTable', 'b')
-            ->where('np.status = \'Entregado\'')
+            ->where('n.status = \'Entregado\'')
             ->groupBy('a.id', 'n.id', 'p.category')
             ->orderBy('a.id');
 

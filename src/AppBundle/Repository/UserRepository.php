@@ -22,4 +22,15 @@ class UserRepository extends EntityRepository
 
         return $dql->getQuery()->getResult();
     }
+
+    public function findWaitersId()
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('u.id')
+            ->from('AppBundle:User', 'u')
+            ->where('u.roles like \'%MESERO%\'');
+
+        return $dql->getQuery()->getResult();
+    }
 }
