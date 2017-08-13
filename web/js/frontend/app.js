@@ -2,13 +2,25 @@ new Vue({
   el: 'main',
   data() {
     return {
-      notes: []
+      notes: [],
+      initialDate: '',
+      finalDate: ''
     }
   },
   template: `
   <section class="col-md-12 col-lg-12">
       <div class="row">
-        <div class="col-md-3 col-md-offset-9 col-lg-3 col-lg-offset-9">
+        <div class="col-md-9 col-lg-9">
+          <div class="form-group">
+            <label>Fecha Inicial</label>
+            <input type="date" v-model="initialDate" />
+          </div>
+          <div class="form-group">
+            <label>Fecha Final</label>
+            <input type="date" v-model="finalDate" />
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-3">
           <form style="margin-bottom: 25px">
             <button type="button" class="btn btn-primary btn-lg" @click="loadMorePendingNotes">
               <i class="fa fa-refresh" aria-hidden="true"></i> Actualizar Comandas
@@ -49,13 +61,23 @@ new Vue({
   },
   methods: {
     fetchPendingNotes () {
-      axios.get('/api/notes/pending')
-           .then(response => {
-             this.notes = response.data.notes;
-           })
-           .catch(function (error) {
-              console.log(error);
-           });
+      if (this.initialDate !== "" && this.finalDate !== "") {
+        axios.get('/api/notes/pending/' + this.initialDate + '/' + this.finalDate)
+            .then(response => {
+                this.notes = response.data.notes;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+      } else {
+        axios.get('/api/notes/pending')
+            .then(response => {
+                this.notes = response.data.notes;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+      }
     },
     loadMorePendingNotes () {
       this.fetchPendingNotes();
