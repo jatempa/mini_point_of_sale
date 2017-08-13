@@ -53,20 +53,6 @@ class NoteProduct
     private $total;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=30)
-     */
-    private $status;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="checkout", type="datetime", nullable=true)
-     */
-    private $checkout;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -166,51 +152,5 @@ class NoteProduct
     public function getTotal()
     {
         return $this->total;
-    }
-
-    /**
-     * Set status
-     *
-     * @param string $status
-     * @return NoteProduct
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Set checkout
-     *
-     * @param \DateTime $checkout
-     * @return NoteProduct
-     */
-    public function setCheckout($checkout)
-    {
-        $this->checkout = $checkout;
-
-        return $this;
-    }
-
-    /**
-     * Get checkout
-     *
-     * @return \DateTime 
-     */
-    public function getCheckout()
-    {
-        return $this->checkout;
     }
 }

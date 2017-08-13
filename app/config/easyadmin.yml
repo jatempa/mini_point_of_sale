@@ -110,10 +110,12 @@ easy_admin:
                 title: "Comandas"
                 fields:
                   - { property: 'id', label: 'Id' }
+                  - { property: 'user', label: 'Mesero' }
                   - { property: 'account', label: 'Mesa' }
                   - { property: 'numberNote', label: 'Folio' }
                   - { property: 'checkin', label: 'Fecha/Hora Emisión' }
-                  - { property: 'user', label: 'Mesero' }
+                  - { property: 'checkout', label: 'Fecha/Hora Actualización' }
+                  - { property: 'status', label: 'Status' }
                 sort: ['checkin', 'DESC']
         NoteProduct:
             label: 'Detalles Comanda'
@@ -126,8 +128,6 @@ easy_admin:
                   - { property: 'product', label: 'Producto' }
                   - { property: 'amount', label: 'Cantidad' }
                   - { property: 'total', label: 'Total $' }
-                  - { property: 'status', label: 'Status' }
-                  - { property: 'checkout', label: 'Fecha/Hora Entrega' }
         Product:
             label: 'Productos'
             class: AppBundle\Entity\Product

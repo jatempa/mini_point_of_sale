@@ -37,12 +37,12 @@ class NoteRepository extends EntityRepository
 
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','np.status')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('n.checkin <= :tempNow')
-            ->andWhere('np.status = \'Pendiente\'')
+            ->andWhere('n.status = \'Pendiente\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
             ->orderBy('n.checkin')
             ->setMaxResults(50);
@@ -77,21 +77,21 @@ class NoteRepository extends EntityRepository
 
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','np.status', 'n.checkin')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status', 'n.checkin')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('n.checkin <= :tempNow')
-            ->andWhere('np.status = \'Entregado\'')
+            ->andWhere('n.status = \'Entregado\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
-            ->orderBy('n.checkin');
+            ->orderBy('n.checkin', 'DESC');
 
         $dql->setParameter('tempNow', $tempNow);
 
         return $dql->getQuery()->getResult();
     }
 
-    public function findDeliveredNoteProducts($userId, $numberNote)
+    public function findDeliveredProducts($userId, $numberNote)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();

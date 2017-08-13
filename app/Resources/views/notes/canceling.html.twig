@@ -13,7 +13,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <section class="text-centered">
-          <h1>Comandas generadas</h1>
+          <h1>Comandas</h1>
         </section>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -26,7 +26,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Comanda</th>
+                <th>No. Comanda</th>
                 <th>Fecha y Hora</th>
                 <th></th>
                 <th>Cancelar</th>
@@ -34,11 +34,12 @@
           </thead>
           <tbody>
           {% for note in notes %}
-            <tr>
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+
                 <td>{{ note.userId }}</td>
                 <td>{{ note.fullname }}</td>
                 <td>{{ note.numberNote }}</td>
-                <td>{{ note.checkin|date('Y-m-d H:i') }}</td>
+                <td>{{ note.checkin|date('Y-m-d H:i:s') }}</td>
                 <td>
                   <table class="table table-responsive">
                     <thead>
@@ -55,9 +56,9 @@
                   </table>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-danger btn-lg">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </button>
+                  <a class="btn btn-danger btn-lg" href="{{ path('cancel_note', { 'userId': note.userId, 'folioNumber': note.numberNote }) }}">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </a>
                 </td>
             </tr>
           {% endfor %}

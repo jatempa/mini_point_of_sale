@@ -20,8 +20,9 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
+     * @Method("GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         /*
         $connector = new CupsPrintConnector("BIXOLON-SRP-330II");
@@ -38,7 +39,7 @@ class DefaultController extends Controller
      * @Route("/cuentas", name="cuentas")
      * @Method("GET")
      */
-    public function accountsAction(Request $request)
+    public function accountsAction()
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_MESERO')) {
             throw $this->createAccessDeniedException();
@@ -51,7 +52,7 @@ class DefaultController extends Controller
      * @Route("/comandas", name="comandas")
      * @Method("GET")
      */
-    public function notesAction(Request $request)
+    public function notesAction()
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_MESERO')) {
             throw $this->createAccessDeniedException();
@@ -62,8 +63,9 @@ class DefaultController extends Controller
 
     /**
      * @Route("/pendientes", name="pendientes")
+     * @Method("GET")
      */
-    public function notesPendingAction(Request $request)
+    public function notesPendingAction()
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_PALOMA')) {
             throw $this->createAccessDeniedException();
@@ -73,7 +75,8 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/cancelaciones", name="cancelaciones")
+     * @Route("/cancelaciones", name="cancelations")
+     * @Method("GET")
      */
     public function notesCancelingAction(Request $request)
     {
@@ -85,7 +88,7 @@ class DefaultController extends Controller
         $notes = $em->getRepository('AppBundle:Note')->findUsersWithDeliveredNotes();
 
         for ($i = 0; $i < count($notes); $i++) {
-            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findDeliveredNoteProducts($notes[$i]['userId'], $notes[$i]['numberNote']);
+            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findDeliveredProducts($notes[$i]['userId'], $notes[$i]['numberNote']);
         }
 
         $paginator  = $this->get('knp_paginator');
@@ -95,5 +98,51 @@ class DefaultController extends Controller
             'notes/canceling.html.twig',
             array('notes' => $pagination)
         );
+    }
+
+    /**
+     * @Route("/notes/checkin/product/cancelaciones/{userId}/{folioNumber}", name="cancel_note")
+     * @Method("GET")
+     */
+    public function cancelNoteAction($userId, $folioNumber)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Prepare ORM
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction(); // suspend auto-commit
+        try {
+            // Change status of note
+            $ps = $em->getRepository('AppBundle:Note')->findDeliveredProducts($userId, $folioNumber);
+
+            foreach ($ps as $p) {
+              // Reduce stock
+              $product = $em->getRepository('AppBundle:Product')->findOneById($p['id']);
+              $tempStock = $product->getStock();
+
+              $reduceAmount = $tempStock + $p['amount'];
+              if ($reduceAmount < 0) {
+                $em->getConnection()->rollBack();
+              } else {
+                $product->setStock($reduceAmount);
+                $em->flush();
+              }
+            }
+
+            $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($userId, $folioNumber);
+            //Update status of note product
+            $note = $em->getRepository('AppBundle:Note')->findOneById($n['id']);
+            $note->setStatus('Cancelado');
+            $note->setCheckOut(new \DateTime('now'));
+            $em->flush();
+            $em->getConnection()->commit();
+        } catch (Exception $e) {
+            $em->getConnection()->rollBack();
+            throw $e;
+        }
+
+        return $this->redirectToRoute('cancelations');
     }
 }

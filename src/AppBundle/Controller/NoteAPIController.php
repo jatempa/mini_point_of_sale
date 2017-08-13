@@ -74,19 +74,6 @@ class NoteAPIController extends Controller
     }
 
     /**
-     * @Get("/notes/canceling")
-     */
-    public function getCancelingNotesAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $notes = $em->getRepository('AppBundle:Note')->findAllDeliveredNotes();
-
-        $view = View::create()->setData(array('notes' => $notes));
-
-        return $this->get('fos_rest.view_handler')->handle($view);
-    }
-
-    /**
      * @Post("/notes/create")
      */
     public function postCreateNoteAction(Request $request)
@@ -109,6 +96,7 @@ class NoteAPIController extends Controller
                 $note->setCheckin(new \DateTime('now'));
                 $note->setUser($this->getUser());
                 $note->setAccount($account);
+                $note->setStatus("Pendiente");
                 $em->persist($note);
                 $em->flush();
 
@@ -120,7 +108,6 @@ class NoteAPIController extends Controller
                         $noteProduct->setProduct($prod);
                         $noteProduct->setAmount($product['amount']);
                         $noteProduct->setTotal($product['total']);
-                        $noteProduct->setStatus("Pendiente");
                         // Save Product
                         $em->persist($noteProduct);
                         $em->flush();
@@ -152,14 +139,13 @@ class NoteAPIController extends Controller
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 // Change status of note
-                $nps = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($note['userId'], $note['numberNote']);
+                $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($note['userId'], $note['numberNote']);
 
-                foreach ($nps as $np) {
-                    $noteProduct = $em->getRepository('AppBundle:NoteProduct')->findOneById($np['id']);
-                    $noteProduct->setStatus('Entregado');
-                    $noteProduct->setCheckOut(new \DateTime('now'));
-                    $em->flush();
-                }
+                $noteObj = $em->getRepository('AppBundle:Note')->findOneById($n['id']);
+                $noteObj->setStatus('Entregado');
+                $noteObj->setCheckOut(new \DateTime('now'));
+                $em->flush();
+
                 // Reduce stock
                 foreach ($note['products'] as $p) {
                     $product = $em->getRepository('AppBundle:Product')->findOneById($p['id']);
@@ -175,46 +161,6 @@ class NoteAPIController extends Controller
 
                 $em->getConnection()->commit();
 
-                return new JsonResponse("success");
-            } catch (Exception $e) {
-                $em->getConnection()->rollBack();
-                throw $e;
-            }
-        }
-
-        return new Response('This is not ajax!', 400);
-    }
-
-    /**
-     * @Put("/notes/checkin/product")
-     */
-    public function putCheckinNoteAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest()) {
-            // Get data from client
-            $note = $request->request->all();
-            // Prepare ORM
-            $em = $this->getDoctrine()->getManager();
-            $em->getConnection()->beginTransaction(); // suspend auto-commit
-            try {
-                // Change status of note
-                $np = $em->getRepository('AppBundle:NoteProduct')->findOneById($note['noteProductId']);
-                $np->setStatus('Cancelado');
-                $np->setCheckOut(new \DateTime('now'));
-                $em->flush();
-                // Reduce stock
-                $product = $em->getRepository('AppBundle:Product')->findOneById($note['productId']);
-                $tempStock = $product->getStock();
-
-                $reduceAmount = $tempStock - $note['amount'];
-                if ($reduceAmount < 0) {
-                    $em->getConnection()->rollBack();
-                } else {
-                    $product->setStock($reduceAmount);
-                    $em->flush();
-                }
-
-                $em->getConnection()->commit();
                 return new JsonResponse("success");
             } catch (Exception $e) {
                 $em->getConnection()->rollBack();

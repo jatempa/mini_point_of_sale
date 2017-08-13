@@ -68,16 +68,17 @@ class NoteProductRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('np.id')
+        $dql->select('n.id')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('u.id = :userId')
-            ->andWhere('n.numberNote = :folio');
+            ->andWhere('n.numberNote = :folio')
+            ->groupBy('n.id');
 
         $dql->setParameter('userId', $userId);
         $dql->setParameter('folio', $numberNote);
 
-        return $dql->getQuery()->getResult();
+        return $dql->getQuery()->getSingleResult();
     }
 }
