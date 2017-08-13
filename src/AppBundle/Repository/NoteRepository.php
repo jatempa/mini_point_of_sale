@@ -52,25 +52,6 @@ class NoteRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findPendingNoteProducts($userId, $numberNote)
-    {
-        $em = $this->getEntityManager();
-        $dql = $em->createQueryBuilder();
-        $dql->select('p.id', 'p.name as product', 'sum(np.amount) as amount')
-            ->from('AppBundle:NoteProduct', 'np')
-            ->innerJoin('np.product', 'p')
-            ->innerJoin('np.note', 'n')
-            ->innerJoin('n.user', 'u')
-            ->where('u.id = :userId')
-            ->andWhere('n.numberNote = :folio')
-            ->groupBy('p.id');
-
-        $dql->setParameter('userId', $userId);
-        $dql->setParameter('folio', $numberNote);
-
-        return $dql->getQuery()->getResult();
-    }
-
     public function findUsersWithDeliveredNotes()
     {
         $tempNow = new \DateTime('now');
@@ -91,13 +72,15 @@ class NoteRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findDeliveredProducts($userId, $numberNote)
+
+    public function findProductsByNote($userId, $numberNote)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('p.id', 'p.name as product', 'sum(np.amount) as amount')
+        $dql->select('p.id', 'p.name as product', 'p.price', 'sum(np.amount) as amount', 'c.name as category')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.product', 'p')
+            ->innerJoin('p.category', 'c')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('u.id = :userId')
