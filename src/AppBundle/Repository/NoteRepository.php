@@ -37,7 +37,7 @@ class NoteRepository extends EntityRepository
 
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname, n.numberNote, np.status')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','np.status')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
@@ -45,7 +45,7 @@ class NoteRepository extends EntityRepository
             ->andWhere('np.status = \'Pendiente\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
             ->orderBy('n.checkin')
-            ->setMaxResults(20);
+            ->setMaxResults(50);
 
         $dql->setParameter('tempNow', $tempNow);
 
@@ -71,24 +71,41 @@ class NoteRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findAllDeliveredNotes()
+    public function findUsersWithDeliveredNotes()
     {
         $tempNow = new \DateTime('now');
 
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as waiter', 'n.id as noteId', 'np.id as noteProductId', 'n.numberNote', 'np.status', 'p.id as productId', 'p.name as product', 'c.name as category', 'np.amount')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','np.status', 'n.checkin')
             ->from('AppBundle:NoteProduct', 'np')
-            ->innerJoin('np.product', 'p')
-            ->innerJoin('p.category', 'c')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('n.checkin <= :tempNow')
             ->andWhere('np.status = \'Entregado\'')
-            ->orderBy('n.checkin', 'desc')
-            ->setMaxResults(50);
+            ->groupBy('u.id', 'n.numberNote', 'n.checkin')
+            ->orderBy('n.checkin');
 
         $dql->setParameter('tempNow', $tempNow);
+
+        return $dql->getQuery()->getResult();
+    }
+
+    public function findDeliveredNoteProducts($userId, $numberNote)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('p.id', 'p.name as product', 'sum(np.amount) as amount')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.product', 'p')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('n.user', 'u')
+            ->where('u.id = :userId')
+            ->andWhere('n.numberNote = :folio')
+            ->groupBy('p.id');
+
+        $dql->setParameter('userId', $userId);
+        $dql->setParameter('folio', $numberNote);
 
         return $dql->getQuery()->getResult();
     }

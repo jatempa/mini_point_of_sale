@@ -10,10 +10,65 @@
 {% endblock %}
 
 {% block body %}
-    <main></main>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/frontend/canceling.js') }}"></script>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <section class="text-centered">
+          <h1>Comandas generadas</h1>
+        </section>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      {% if (notes != null) and (notes|length > 0) %}
+        <div class="navigation text-center">
+          {{ knp_pagination_render(notes) }}
+        </div>
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Comanda</th>
+                <th>Fecha y Hora</th>
+                <th></th>
+                <th>Cancelar</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for note in notes %}
+            <tr>
+                <td>{{ note.userId }}</td>
+                <td>{{ note.fullname }}</td>
+                <td>{{ note.numberNote }}</td>
+                <td>{{ note.checkin|date('Y-m-d H:i') }}</td>
+                <td>
+                  <table class="table table-responsive">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                      </tr>
+                      {% for product in note.products %}
+                      <tr>
+                        <td>{{ product.product }}</td>
+                        <td>{{ product.amount }}</td>
+                      </tr>
+                      {% endfor %}
+                  </table>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-lg">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <div class="navigation text-center">
+          {{ knp_pagination_render(notes) }}
+        </div>
+      {% else %}
+        <h3>Actualmente no existen comandas registradas.</h3>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}

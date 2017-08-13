@@ -9,7 +9,8 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
+use Mike42\Escpos\Printer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,6 +23,14 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        /*
+        $connector = new CupsPrintConnector("BIXOLON-SRP-330II");
+        $printer = new Printer($connector);
+        $printer -> text("Hello World!\n");
+        $printer -> text("Jorge Atempa!\n");
+        $printer -> cut();
+        $printer -> cloe();*/
+
         return $this->render('default/default.html.twig');
     }
 
@@ -72,6 +81,19 @@ class DefaultController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        return $this->render('notes/canceling.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $notes = $em->getRepository('AppBundle:Note')->findUsersWithDeliveredNotes();
+
+        for ($i = 0; $i < count($notes); $i++) {
+            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findDeliveredNoteProducts($notes[$i]['userId'], $notes[$i]['numberNote']);
+        }
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($notes, $request->query->getInt('page', 1), 10);
+
+        return $this->render(
+            'notes/canceling.html.twig',
+            array('notes' => $pagination)
+        );
     }
 }
