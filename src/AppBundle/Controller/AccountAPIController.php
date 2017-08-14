@@ -91,20 +91,22 @@ class AccountAPIController extends Controller
                 $printer->text("Mesa " . $accounts[0]['id'] . "\n");
                 $printer->text("Mesero(a)" . $accounts[0]['waiter'] . "\n");
                 $printer->setJustification(Printer::JUSTIFY_LEFT);
-                $printer->text(str_pad("Cantidad", 10));
-                $printer->text(str_pad("Producto", 22));
+                $printer->text(str_pad("Cantidad", 8));
+                $printer->text(str_pad("  Producto", 24));
                 $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
+                $printer->text(str_pad("_", 42,'_'));
                 $printer->text("\n");
                 for ($i = 0; $i < count($accounts); $i++) {
                     $accounts[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $accounts[$i]['numberNote']);
                     for ($j = 0; $j < count($accounts[$i]['products']); $j++) {
-                        $printer->text(str_pad($accounts[$i]['products'][$j]['amount'], 10));
-                        $printer->text(str_pad(utf8_decode($accounts[$i]['products'][$j]['product']), 22));
+                        $printer->text(str_pad($accounts[$i]['products'][$j]['amount'], 8,' ', STR_PAD_LEFT));
+                        $printer->text(str_pad('  ' . utf8_decode($accounts[$i]['products'][$j]['product']), 24));
                         $printer->text(str_pad(number_format($accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
                         $printer->text("\n");
                         $subtotal += $accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'];
                     }
                 }
+                $printer->text(str_pad("_", 42,'_'));
                 $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
                 $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
                 $servicio = $subtotal * 0.10;
@@ -113,6 +115,7 @@ class AccountAPIController extends Controller
                 $total = $subtotal + $servicio;
                 $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
                 $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $printer->feed(2);
                 $printer -> cut();
                 $printer -> cloe();
                 $result = "success";
