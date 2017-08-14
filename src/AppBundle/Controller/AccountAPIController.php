@@ -13,6 +13,9 @@ use AppBundle\Entity\Account;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\Put;
+use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +46,7 @@ class AccountAPIController extends Controller
     public function getAllAccountsByWaiterAction()
     {
         $em = $this->getDoctrine()->getManager();
-        // Get User Id
+        // Get Users
         $users = $em->getRepository('AppBundle:User')->findWaitersId();
 
         for ($i = 0; $i < count($users); $i++) {
@@ -59,22 +62,54 @@ class AccountAPIController extends Controller
         $view = View::create()->setData(array("users" => $users));
 
         return $this->get('fos_rest.view_handler')->handle($view);
+        //return $this->redirectToRoute('homepage');
     }
 
     /**
      * @Get("/accounts/{accountId}")
      */
-    public function getAccountsByAccountIdAction($accountId, $userId)
+    public function getAccountsByAccountIdAction($accountId)
     {
         $em = $this->getDoctrine()->getManager();
         // Get User Id
         $userId = $this->getUser();
         $userId->getId();
         $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($accountId, $userId);
-
+        $subtotal = 0;
+        $servicio = 0;
+        $total = 0;
+        $connector = new FilePrintConnector("/dev/usb/lp0");
+        $printer = new Printer($connector);
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("REPUBLIK");
+        $printer->feed(2);
+        $printer->text("Mesa " . $accounts[0]['id'] . "\n");
+        $printer->text("Mesero(a)" . $accounts[0]['waiter'] . "\n");
+        $printer->setJustification(Printer::JUSTIFY_LEFT);
+        $printer->text(str_pad("Cantidad", 10));
+        $printer->text(str_pad("Producto", 22));
+        $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
+        $printer->text("\n");
         for ($i = 0; $i < count($accounts); $i++) {
             $accounts[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $accounts[$i]['numberNote']);
+            for ($j = 0; $j < count($accounts[$i]['products']); $j++) {
+                $printer->text(str_pad($accounts[$i]['products'][$j]['amount'], 10));
+                $printer->text(str_pad(utf8_decode($accounts[$i]['products'][$j]['product']), 22));
+                $printer->text(str_pad(number_format($accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
+                $printer->text("\n");
+                $subtotal += $accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'];
+            }
         }
+        $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
+        $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
+        $servicio = $subtotal * 0.10;
+        $printer->text(str_pad("Propina y servicio 10% $", 32,' ', STR_PAD_LEFT));
+        $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
+        $total = $subtotal + $servicio;
+        $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
+        $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
+        $printer -> cut();
+        $printer -> cloe();
 
         $view = View::create()->setData(array("accounts" => $accounts));
 
@@ -149,8 +184,7 @@ class AccountAPIController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
-                $account = $em->getRepository('AppBundle:Account')
-                              ->findAccountByUserIdAndTableId($accountId, $userId);
+                $account = $em->getRepository('AppBundle:Account')->findOneById($accountId);
                 $account->setCheckout(new \DateTime('now'));
                 $account->setStatus(false);
                 $em->flush();

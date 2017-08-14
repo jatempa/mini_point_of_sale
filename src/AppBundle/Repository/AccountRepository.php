@@ -31,7 +31,7 @@ class AccountRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('a.id as account', 'concat(u.name, \' \', u.firstLastName) as waiter', 'b.name', 'n.numberNote')
+        $dql->select('a.id as account', 'concat(u.name, \' \', u.firstLastName) as waiter', 'b.id', 'n.numberNote')
             ->from('AppBundle:Note', 'n')
             ->innerJoin('n.account', 'a')
             ->innerJoin('a.user', 'u')

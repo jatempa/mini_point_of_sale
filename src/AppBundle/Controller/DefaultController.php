@@ -9,8 +9,6 @@
 
 namespace AppBundle\Controller;
 
-use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
-use Mike42\Escpos\Printer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,14 +22,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        /*
-        $connector = new CupsPrintConnector("BIXOLON-SRP-330II");
-        $printer = new Printer($connector);
-        $printer -> text("Hello World!\n");
-        $printer -> text("Jorge Atempa!\n");
-        $printer -> cut();
-        $printer -> cloe();*/
-
         return $this->render('default/default.html.twig');
     }
 

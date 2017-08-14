@@ -30,7 +30,7 @@ let accountForm = {
                 </a>
               </td>
               <td v-else>
-                <a class="link">
+                <a class="link" @click.prevent="printAccount(account)">
                   <span class="icon">
                     <i class="fa fa-print"></i>
                   </span>
@@ -68,16 +68,28 @@ let accountForm = {
         };
 
         axios.put('/api/accounts/close', account)
-            .then(function (response) {
+             .then(function (response) {
                 if (response.data === 'success') {
                     swal('¡Correcto!', 'Cuenta cerrada satisfactoriamente', 'success');
                 }
-            })
-            .catch(function (error) {
+             })
+             .catch(function (error) {
                 console.log(error);
                 swal('Error', 'Esta cuenta no pudo ser cerrada en el sistema', 'error')
-            });
+             });
         this.fetchAccounts();
+    },
+    printAccount(account) {
+        axios.get('/api/accounts/' + account.id)
+             .then(function (response) {
+                if (response.data === 'success') {
+                    swal('¡Correcto!', 'Cuenta cerrada satisfactoriamente', 'success');
+                }
+             })
+             .catch(function (error) {
+                console.log(error);
+                swal('Error', 'Esta cuenta no pudo ser cerrada en el sistema', 'error')
+             });
     }
   },
   computed: {
