@@ -80,15 +80,19 @@ let accountForm = {
         this.fetchAccounts();
     },
     printAccount(account) {
+        axios.defaults.headers.common = {
+            'X-Requested-With': 'XMLHttpRequest',
+        };
+
         axios.get('/api/accounts/' + account.id)
              .then(function (response) {
                 if (response.data === 'success') {
-                    swal('¡Correcto!', 'Cuenta cerrada satisfactoriamente', 'success');
+                    swal('¡Correcto!', 'Cuenta impresa satisfactoriamente', 'success');
                 }
              })
              .catch(function (error) {
                 console.log(error);
-                swal('Error', 'Esta cuenta no pudo ser cerrada en el sistema', 'error')
+                swal('Error', 'Esta cuenta no pudo ser impresa en el sistema', 'error')
              });
     }
   },

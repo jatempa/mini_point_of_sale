@@ -68,52 +68,62 @@ class AccountAPIController extends Controller
     /**
      * @Get("/accounts/{accountId}")
      */
-    public function getAccountsByAccountIdAction($accountId)
+    public function getAccountsByAccountIdAction(Request $request, $accountId)
     {
-        $em = $this->getDoctrine()->getManager();
-        // Get User Id
-        $userId = $this->getUser();
-        $userId->getId();
-        $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($accountId, $userId);
-        $subtotal = 0;
-        $servicio = 0;
-        $total = 0;
-        $connector = new FilePrintConnector("/dev/usb/lp0");
-        $printer = new Printer($connector);
-        $printer->setJustification(Printer::JUSTIFY_CENTER);
-        $printer->text("REPUBLIK");
-        $printer->feed(2);
-        $printer->text("Mesa " . $accounts[0]['id'] . "\n");
-        $printer->text("Mesero(a)" . $accounts[0]['waiter'] . "\n");
-        $printer->setJustification(Printer::JUSTIFY_LEFT);
-        $printer->text(str_pad("Cantidad", 10));
-        $printer->text(str_pad("Producto", 22));
-        $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
-        $printer->text("\n");
-        for ($i = 0; $i < count($accounts); $i++) {
-            $accounts[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $accounts[$i]['numberNote']);
-            for ($j = 0; $j < count($accounts[$i]['products']); $j++) {
-                $printer->text(str_pad($accounts[$i]['products'][$j]['amount'], 10));
-                $printer->text(str_pad(utf8_decode($accounts[$i]['products'][$j]['product']), 22));
-                $printer->text(str_pad(number_format($accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
+        if ($request->isXmlHttpRequest()) {
+            $result = null;
+
+            try {
+                $em = $this->getDoctrine()->getManager();
+                // Get User Id
+                $userId = $this->getUser();
+                $userId->getId();
+                $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($accountId, $userId);
+                $subtotal = 0;
+                $servicio = 0;
+                $total = 0;
+                $connector = new FilePrintConnector("/dev/usb/lp0");
+                $printer = new Printer($connector);
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->text("REPUBLIK\n");
+                $printer->text("Live Music");
+                $printer->feed(2);
+                $printer->text("Mesa " . $accounts[0]['id'] . "\n");
+                $printer->text("Mesero(a)" . $accounts[0]['waiter'] . "\n");
+                $printer->setJustification(Printer::JUSTIFY_LEFT);
+                $printer->text(str_pad("Cantidad", 10));
+                $printer->text(str_pad("Producto", 22));
+                $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
                 $printer->text("\n");
-                $subtotal += $accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'];
+                for ($i = 0; $i < count($accounts); $i++) {
+                    $accounts[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $accounts[$i]['numberNote']);
+                    for ($j = 0; $j < count($accounts[$i]['products']); $j++) {
+                        $printer->text(str_pad($accounts[$i]['products'][$j]['amount'], 10));
+                        $printer->text(str_pad(utf8_decode($accounts[$i]['products'][$j]['product']), 22));
+                        $printer->text(str_pad(number_format($accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
+                        $printer->text("\n");
+                        $subtotal += $accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'];
+                    }
+                }
+                $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $servicio = $subtotal * 0.10;
+                $printer->text(str_pad("Propina y servicio 10% $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $total = $subtotal + $servicio;
+                $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $printer -> cut();
+                $printer -> cloe();
+                $result = "success";
+            } catch (Exception $e) {
+                throw $e;
             }
+
+            return new JsonResponse($result);
         }
-        $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
-        $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
-        $servicio = $subtotal * 0.10;
-        $printer->text(str_pad("Propina y servicio 10% $", 32,' ', STR_PAD_LEFT));
-        $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
-        $total = $subtotal + $servicio;
-        $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
-        $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
-        $printer -> cut();
-        $printer -> cloe();
 
-        $view = View::create()->setData(array("accounts" => $accounts));
-
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return new Response('This is not ajax!', 400);
     }
 
     /**
