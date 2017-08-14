@@ -42,6 +42,14 @@ let accountForm = {
       </div>
     </div>
     <div class="control">
+      <button class="button is-info" @click.prevent="printAllAccounts" style="margin-bottom: 10px;">
+        <span class="icon is-normal">
+            <i class="fa fa-print"></i>
+        </span>
+        <span>Imprimir todas las cuentas</span>
+      </button>
+    </div>
+    <div class="control">
       <label class="label">Selecciona una mesa</label>
       <div class="select">
         <select v-model="selectedTable">
@@ -93,6 +101,22 @@ let accountForm = {
              .catch(function (error) {
                 console.log(error);
                 swal('Error', 'Esta cuenta no pudo ser impresa en el sistema', 'error')
+             });
+    },
+    printAllAccounts() {
+        axios.defaults.headers.common = {
+            'X-Requested-With': 'XMLHttpRequest',
+        };
+
+        axios.get('/api/accounts/all')
+             .then(function (response) {
+                if (response.data === 'success') {
+                    swal('¡Correcto!', 'Cuentas impresas satisfactoriamente', 'success');
+                }
+             })
+             .catch(function (error) {
+                console.log(error);
+                swal('Error', 'Las cuentas no pudieron ser impresas correctamente', 'error')
              });
     }
   },
