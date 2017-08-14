@@ -23,8 +23,11 @@ class NoteProductRepository extends EntityRepository
             ->innerJoin('n.user', 'u')
             ->innerJoin('p.category', 'c')
             ->where('n.status = \'Entregado\'')
+            ->andWhere('n.checkout >= :tb')
             ->groupBy('n.user', 'c.id')
             ->orderBy('u.id');
+
+        $dql->setParameter('tb', new \DateTime('-24 hours'));
 
         return $dql->getQuery()->getResult();
     }
@@ -39,8 +42,11 @@ class NoteProductRepository extends EntityRepository
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('n.status = \'Entregado\'')
+            ->andWhere('n.checkout >= :tb')
             ->groupBy('n.user', 'p.name')
             ->orderBy('u.id');
+
+        $dql->setParameter('tb', new \DateTime('-24 hours'));
 
         return $dql->getQuery()->getResult();
     }
@@ -58,8 +64,11 @@ class NoteProductRepository extends EntityRepository
             ->innerJoin('a.user', 'u')
             ->innerJoin('a.barTable', 'b')
             ->where('n.status = \'Entregado\'')
+            ->andWhere('n.checkout >= :tb')
             ->groupBy('a.id', 'n.id', 'p.category')
             ->orderBy('a.id');
+
+        $dql->setParameter('tb', new \DateTime('-24 hours'));
 
         return $dql->getQuery()->getResult();
     }
