@@ -192,16 +192,56 @@ page: app.request.get('page', 1)
 
     <div class="row">
         <div class="col-md-6 col-lg-6">
-            <h3 class="title">Reportes de Ventas de Meseros</h3>
-            <a id="export_sales_product" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_product_waiter_excel') }}" role="button">
+          <h3 class="title">Reporte de ventas de meseros</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            <h4 class="title">Diario</h4>
+            <a id="export_sales_product" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_product_waiter_day_excel') }}" role="button">
                 <i class="fa fa-file-excel-o" aria-hidden="true"></i> Producto
             </a>
 
-            <a id="export_sales_category_product" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_category_product_waiter_excel') }}" role="button">
+            <a id="export_sales_category_product" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_category_product_waiter_day_excel') }}" role="button">
                 <i class="fa fa-file-excel-o" aria-hidden="true"></i> Categoría de Producto
             </a>
 
-            <a id="export_sales_accounts" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_account_waiter_excel') }}" role="button">
+            <a id="export_sales_accounts" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_account_waiter_day_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Cuenta
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            <h4 class="title">Semanal</h4>
+            <a id="export_sales_product" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_product_waiter_week_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Producto
+            </a>
+
+            <a id="export_sales_category_product" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_category_product_waiter_week_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Categoría de Producto
+            </a>
+
+            <a id="export_sales_accounts" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_account_waiter_week_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Cuenta
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            <h4 class="title">Mensual</h4>
+            <a id="export_sales_product" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_product_waiter_month_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Producto
+            </a>
+
+            <a id="export_sales_category_product" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_category_product_waiter_month_excel') }}" role="button">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Categoría de Producto
+            </a>
+
+            <a id="export_sales_accounts" class="btn btn-primary pull-right" style="margin-left: 10px" href="{{ path('export_sales_account_waiter_month_excel') }}" role="button">
                 <i class="fa fa-file-excel-o" aria-hidden="true"></i> Cuenta
             </a>
         </div>

@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class NoteProductRepository extends EntityRepository
 {
-    public function findSalesByCategoryProductAndWaiter()
+    public function findSalesByCategoryProductAndWaiter($t)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
@@ -27,12 +27,12 @@ class NoteProductRepository extends EntityRepository
             ->groupBy('n.user', 'c.id')
             ->orderBy('u.id');
 
-        $dql->setParameter('tb', new \DateTime('-24 hours'));
+        $dql->setParameter('tb', $t);
 
         return $dql->getQuery()->getResult();
     }
 
-    public function findSalesByProductAndWaiter()
+    public function findSalesByProductAndWaiter($t)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
@@ -46,12 +46,12 @@ class NoteProductRepository extends EntityRepository
             ->groupBy('n.user', 'p.name')
             ->orderBy('u.id');
 
-        $dql->setParameter('tb', new \DateTime('-24 hours'));
+        $dql->setParameter('tb', $t);
 
         return $dql->getQuery()->getResult();
     }
 
-    public function findSalesByAccountWaiter()
+    public function findSalesByAccountWaiter($t)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
@@ -68,7 +68,7 @@ class NoteProductRepository extends EntityRepository
             ->groupBy('a.id', 'n.id', 'p.category')
             ->orderBy('a.id');
 
-        $dql->setParameter('tb', new \DateTime('-24 hours'));
+        $dql->setParameter('tb', $t);
 
         return $dql->getQuery()->getResult();
     }
