@@ -52,7 +52,7 @@ class NoteRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findUsersWithPendingNotesByDate($initialDate, $finalDate)
+    public function findUsersWithPendingNotesByDate()
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
@@ -61,14 +61,12 @@ class NoteRepository extends EntityRepository
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
             ->where('n.checkin >= :initialDate')
-            ->andWhere('n.checkin < :finalDate')
             ->andWhere('n.status = \'Pendiente\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
             ->orderBy('n.checkin')
             ->setMaxResults(50);
 
-        $dql->setParameter('initialDate', $initialDate);
-        $dql->setParameter('finalDate', $finalDate);
+        $dql->setParameter('initialDate', new \DateTime('-12 hours'));
 
         return $dql->getQuery()->getResult();
     }

@@ -57,12 +57,12 @@ class NoteAPIController extends Controller
     }
 
     /**
-     * @Get("/notes/pending/{initialDate}/{finalDate}")
+     * @Get("/notes/pending/today")
      */
-    public function getPendingNotesByDateAction($initialDate, $finalDate)
+    public function getPendingNotesByDateAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $notes = $em->getRepository('AppBundle:Note')->findUsersWithPendingNotesByDate($initialDate, $finalDate);
+        $notes = $em->getRepository('AppBundle:Note')->findUsersWithPendingNotesByDate();
 
         for ($i = 0; $i < count($notes); $i++) {
             $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($notes[$i]['userId'], $notes[$i]['numberNote']);
