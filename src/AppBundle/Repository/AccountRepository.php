@@ -27,6 +27,25 @@ class AccountRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
+    public function findAllAccountsByDate($id)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select( 'a.id','a.status', 'b.id as mesaid', 'b.name as mesa')
+            ->from('AppBundle:Account', 'a')
+            ->innerJoin('a.barTable', 'b')
+            ->where('a.user = :id')
+            ->andWhere('a.checkin >= :db')
+            ->andWhere('a.checkin < :da')
+            ->orderBy('a.id','desc');
+
+        $dql->setParameter('id', $id);
+        $dql->setParameter('db', new \DateTime('-12 hours'));
+        $dql->setParameter('da', new \DateTime('+12 hours'));
+
+        return $dql->getQuery()->getResult();
+    }
+
     public function findAccountByUserIdAndTableId($accountId, $userId)
     {
         $em = $this->getEntityManager();

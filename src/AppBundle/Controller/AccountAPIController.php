@@ -41,6 +41,22 @@ class AccountAPIController extends Controller
     }
 
     /**
+     * @Get("/accounts/date")
+     */
+    public function getAccountsByDateAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Get User Id
+        $userId = $this->getUser();
+        $userId->getId();
+        $accounts = $em->getRepository('AppBundle:Account')->findAllAccountsByDate($userId);
+
+        $view = View::create()->setData(array("accounts" => $accounts));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
      * @Get("/admin/accounts/all")
      */
     public function getAllAccountsByWaiterAdminAction()

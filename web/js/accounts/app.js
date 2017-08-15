@@ -1,53 +1,55 @@
 let accountForm = {
   template: `
   <section>
-    <div v-if="accountListLength > 0" class="field">
-      <div class="control">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Mesa</th>
-              <th>Status</th>
-              <th>Cerrar</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="account in accountList" :key="account.id">
-              <td>{{ account.id }}</td>
-              <td>{{ account.mesa }}</td>
-              <td v-if=" account.status">
-                <span class="tag is-success">Abierta</span>
-              </td>
-              <td v-else>
-                <span  class="tag is-danger">Cerrada</span>
-              </td>
-              <td v-if="account.status">
-                <a class="link" @click.prevent="closeAccount(account)">
-                  <span class="icon">
-                    <i class="fa fa-check-circle-o"></i>
-                  </span>
-                </a>
-              </td>
-              <td v-else>
-                <a class="link" @click.prevent="printAccount(account)">
-                  <span class="icon">
-                    <i class="fa fa-print"></i>
-                  </span>
-                </a>             
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div v-if="accountListLength > 0">
+      <div class="field">
+        <div class="control">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Mesa</th>
+                <th>Status</th>
+                <th>Cerrar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="account in accountList" :key="account.id">
+                <td>{{ account.id }}</td>
+                <td>{{ account.mesa }}</td>
+                <td v-if=" account.status">
+                  <span class="tag is-success">Abierta</span>
+                </td>
+                <td v-else>
+                  <span  class="tag is-danger">Cerrada</span>
+                </td>
+                <td v-if="account.status">
+                  <a class="link" @click.prevent="closeAccount(account)">
+                    <span class="icon">
+                      <i class="fa fa-check-circle-o"></i>
+                    </span>
+                  </a>
+                </td>
+                <td v-else>
+                  <a class="link" @click.prevent="printAccount(account)">
+                    <span class="icon">
+                      <i class="fa fa-print"></i>
+                    </span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <div class="control">
-      <button class="button is-info" @click.prevent="printAllAccounts" style="margin-bottom: 10px;">
-        <span class="icon is-normal">
+      <div class="control">
+        <button class="button is-info" @click.prevent="printAllAccounts" style="margin-bottom: 10px;">
+          <span class="icon is-normal">
             <i class="fa fa-print"></i>
-        </span>
-        <span>Imprimir todas las cuentas</span>
-      </button>
+          </span>
+          <span>Imprimir todas las cuentas</span>
+        </button>
+      </div>      
     </div>
     <div class="control">
       <label class="label">Selecciona una mesa</label>
@@ -62,10 +64,11 @@ let accountForm = {
   </section>`,
   methods: {
     fetchAccounts () {
-        axios.get('/api/accounts')
-             .then(response => {
+        axios.get('/api/accounts/date')
+            .then(response => {
+                console.log(response);
                 this.$store.commit('updateAccountList', response.data.accounts);
-             })
+            })
             .catch(function (error) {
                 console.log(error);
             });
@@ -121,6 +124,14 @@ let accountForm = {
     }
   },
   computed: {
+    accountDate: {
+        get () {
+            return this.$store.state.accountDate
+        },
+        set (value) {
+            this.$store.commit('updateAccountDate', value)
+        }
+    },
     selectedTable: {
         get () {
             return this.$store.state.selectedTable
@@ -156,11 +167,15 @@ Vue.use('vuex');
 
 const store = new Vuex.Store({
   state: {
+    accountDate: '',
     selectedTable: 0,
     accountList: [],
     mesasList: []
   },
   mutations: {
+    updateAccountDate(state, accountDate) {
+      state.accountDate = accountDate;
+    },
     updateAccountList(state, accountList) {
       state.accountList = accountList;
     },
@@ -184,12 +199,13 @@ new Vue({
     },
     methods: {
       fetchAccounts () {
-          axios.get('/api/accounts')
-               .then(response => {
-                 this.$store.commit('updateAccountList', response.data.accounts);
-               })
+          axios.get('/api/accounts/date')
+              .then(response => {
+                  console.log(response);
+                  this.$store.commit('updateAccountList', response.data.accounts);
+              })
               .catch(function (error) {
-                 console.log(error);
+                  console.log(error);
               });
       },
       fetchTables () {
