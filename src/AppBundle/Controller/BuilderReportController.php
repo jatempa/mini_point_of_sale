@@ -27,7 +27,7 @@ class BuilderReportController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByCategoryProductAndWaiter(new \DateTime('-24 hours'));
+        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByCategoryProductAndWaiter(new \DateTime('-1 day'));
 
         // ask the service for a Excel5
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
@@ -95,7 +95,7 @@ class BuilderReportController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByCategoryProductAndWaiter(new \DateTime('-7 days'));
+        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByCategoryProductAndWaiter(new \DateTime('-1 week'));
 
         // ask the service for a Excel5
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
@@ -231,7 +231,7 @@ class BuilderReportController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByProductAndWaiter(new \DateTime('-24 hours'));
+        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByProductAndWaiter(new \DateTime('-1 day'));
 
         // ask the service for a Excel5
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
@@ -299,7 +299,7 @@ class BuilderReportController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByProductAndWaiter(new \DateTime('-7 days'));
+        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByProductAndWaiter(new \DateTime('-1 week'));
 
         // ask the service for a Excel5
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
@@ -435,7 +435,7 @@ class BuilderReportController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByAccountWaiter(new \DateTime('-24 hours'));
+        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByAccountWaiter(new \DateTime('-1 day'));
 
         // ask the service for a Excel5
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
@@ -538,7 +538,7 @@ class BuilderReportController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByAccountWaiter(new \DateTime('-7 days'));
+        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByAccountWaiter(new \DateTime('-1 week'));
 
         // ask the service for a Excel5
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
