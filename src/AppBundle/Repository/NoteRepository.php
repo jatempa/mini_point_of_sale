@@ -73,7 +73,7 @@ class NoteRepository extends EntityRepository
 
     public function findUsersWithDeliveredNotes()
     {
-        $tempNow = new \DateTime('now');
+        $tempNow = new \DateTime('-12 hours');
 
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
@@ -81,7 +81,7 @@ class NoteRepository extends EntityRepository
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.user', 'u')
-            ->where('n.checkin <= :tempNow')
+            ->where('n.checkin >= :tempNow')
             ->andWhere('n.status = \'Entregado\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
             ->orderBy('n.checkin', 'DESC');
