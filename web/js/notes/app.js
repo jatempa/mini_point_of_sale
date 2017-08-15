@@ -186,7 +186,7 @@ let productList = {
   },
   methods: {
     fetchAccounts() {
-      axios.get('/api/accounts')
+      axios.get('/api/accounts/date')
            .then(response => {
               this.accounts = response.data.accounts;
            })
