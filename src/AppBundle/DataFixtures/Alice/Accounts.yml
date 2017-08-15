@@ -1,5 +1,5 @@
 AppBundle\Entity\Account:
-  account{1..15}:
+  account{1..100}:
     user: <randomElement($array = array (@user3, @user4, @user5))>
     barTable: <randomElement($array = array (@barTable1, @barTable2, @barTable3, @barTable4, @barTable5))>
     checkin: <dateTimeBetween($startDate = 'now - 10 days', $endDate = 'now', $timezone = date_default_timezone_get())>

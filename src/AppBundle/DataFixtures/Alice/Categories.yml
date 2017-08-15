@@ -3,3 +3,5 @@ AppBundle\Entity\Category:
     name: 'Cerveza'
   category2:
     name: 'Botella'
+  category3:
+    name: 'Servicio'
