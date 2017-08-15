@@ -8,6 +8,7 @@ $set->addFile(__DIR__.'/Users.yml', 'yaml');
 $set->addFile(__DIR__.'/BarTables.yml', 'yaml');
 $set->addFile(__DIR__.'/Categories.yml', 'yaml');
 $set->addFile(__DIR__.'/Products.yml', 'yaml');
+$set->addFile(__DIR__.'/Accounts.yml', 'yaml');
 //$set->addFile(__DIR__.'/Notes.yml', 'yaml');
 //$set->addFile(__DIR__.'/NoteProducts.yml', 'yaml');
 

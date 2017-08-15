@@ -1,31 +1,7 @@
 AppBundle\Entity\Note:
-  note1:
+  note{1..100}:
     status: "Pendiente"
-    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
-    user: <randomElement($array = array (@user1, @user2, @user3))>
-    numberNote: 1
-    account: <randomElement($array = array (@account1, @account2, @account3))>
-  note2:
-    status: "Pendiente"
-    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
-    user: <randomElement($array = array (@user1, @user2, @user3))>
-    numberNote: 2
-    account: <randomElement($array = array (@account1, @account2, @account3))>
-  note3:
-    status: "Pendiente"
-    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
-    user: <randomElement($array = array (@user1, @user2, @user3))>
-    numberNote: 3
-    account: <randomElement($array = array (@account1, @account2, @account3))>
-  note4:
-    status: "Pendiente"
-    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
-    user: <randomElement($array = array (@user1, @user2, @user3))>
-    numberNote: 4
-    account: <randomElement($array = array (@account1, @account2, @account3))>
-  note5:
-    status: "Pendiente"
-    checkin: <dateTimeBetween($startDate = 'now', $endDate = 'now + 3 hours', $timezone = date_default_timezone_get())>
-    user: <randomElement($array = array (@user1, @user2, @user3))>
-    numberNote: 5
-    account: <randomElement($array = array (@account1, @account2, @account3))>
+    checkin: <dateTimeBetween($startDate = 'now - 10 days', $endDate = 'now', $timezone = date_default_timezone_get())>
+    user: <randomElement($array = array (@user3, @user4, @user5))>
+    numberNote: <numberBetween($min = 1, $max = 100)>
+    account: <randomElement($array = array (@account1, @account2, @account3, @account4, @account5, @account6, @account7, @account8, @account9, @account10, @account11, @account12, @account13, @account14, @account15))>

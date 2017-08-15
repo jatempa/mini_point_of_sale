@@ -1,25 +1,25 @@
 AppBundle\Entity\NoteProduct:
-  noteProduct{1..5}:
+  noteProduct{1..20}:
     note: @note1
     product: <randomElement($array = array (@product1, @product2, @product3, @product4, @product5, @product6, @product7, @product8, @product9, @product10))>
     amount: <numberBetween($min = 1, $max = 20)>
     total: 0
-  noteProduct{6..10}:
+  noteProduct{21..40}:
     note: @note2
     product: <randomElement($array = array (@product1, @product2, @product3, @product4, @product5, @product6, @product7, @product8, @product9, @product10))>
     amount: <numberBetween($min = 1, $max = 20)>
     total: 0
-  noteProduct{11..15}:
+  noteProduct{41..60}:
     note: @note3
     product: <randomElement($array = array (@product1, @product2, @product3, @product4, @product5, @product6, @product7, @product8, @product9, @product10))>
     amount: <numberBetween($min = 1, $max = 20)>
     total: 0
-  noteProduct{15..20}:
+  noteProduct{61..80}:
     note: @note4
     product: <randomElement($array = array (@product1, @product2, @product3, @product4, @product5, @product6, @product7, @product8, @product9, @product10))>
     amount: <numberBetween($min = 1, $max = 20)>
     total: 0
-  noteProduct{20..25}:
+  noteProduct{80..100}:
     note: @note5
     product: <randomElement($array = array (@product1, @product2, @product3, @product4, @product5, @product6, @product7, @product8, @product9, @product10))>
     amount: <numberBetween($min = 1, $max = 20)>
