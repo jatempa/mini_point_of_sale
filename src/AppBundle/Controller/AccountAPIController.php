@@ -130,11 +130,13 @@ class AccountAPIController extends Controller
                     for ($k = 0; $k < count($user['accounts'][$j]['notes']); $k++) {
                         $user['accounts'][$j]['notes'][$k]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $user['accounts'][$j]['notes'][$k]['numberNote']);
                         for ($l = 0; $l < count($user['accounts'][$j]['notes'][$k]['products']); $l++) {
-                            $printer->text(str_pad($user['accounts'][$j]['notes'][$k]['products'][$l]['amount'], 9,' ', STR_PAD_LEFT));
-                            $printer->text(str_pad('  ' . utf8_decode($user['accounts'][$j]['notes'][$k]['products'][$l]['product']), 23));
-                            $printer->text(str_pad(number_format($user['accounts'][$j]['notes'][$k]['products'][$l]['amount'] * $user['accounts'][$j]['notes'][$k]['products'][$l]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
-                            $printer->text("\n");
-                            $subtotal += $user['accounts'][$j]['notes'][$k]['products'][$l]['amount'] * $user['accounts'][$j]['notes'][$k]['products'][$l]['price'];
+                            if ($user['accounts'][$j]['notes'][$k]['products'][$l]['price'] > 0) {
+                                $printer->text(str_pad($user['accounts'][$j]['notes'][$k]['products'][$l]['amount'], 9,' ', STR_PAD_LEFT));
+                                $printer->text(str_pad('  ' . utf8_decode($user['accounts'][$j]['notes'][$k]['products'][$l]['product']), 23));
+                                $printer->text(str_pad(number_format($user['accounts'][$j]['notes'][$k]['products'][$l]['amount'] * $user['accounts'][$j]['notes'][$k]['products'][$l]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
+                                $printer->text("\n");
+                                $subtotal += $user['accounts'][$j]['notes'][$k]['products'][$l]['amount'] * $user['accounts'][$j]['notes'][$k]['products'][$l]['price'];
+                            }
                         }
                     }
                     $printer->text(str_pad("_", 42,'_'));
@@ -204,11 +206,13 @@ class AccountAPIController extends Controller
                 for ($i = 0; $i < count($accounts); $i++) {
                     $accounts[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $accounts[$i]['numberNote']);
                     for ($j = 0; $j < count($accounts[$i]['products']); $j++) {
-                        $printer->text(str_pad($accounts[$i]['products'][$j]['amount'], 9,' ', STR_PAD_LEFT));
-                        $printer->text(str_pad('  ' . utf8_decode($accounts[$i]['products'][$j]['product']), 23));
-                        $printer->text(str_pad(number_format($accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
-                        $printer->text("\n");
-                        $subtotal += $accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'];
+                        if ($accounts[$i]['products'][$j]['price'] > 0) {
+                            $printer->text(str_pad($accounts[$i]['products'][$j]['amount'], 9,' ', STR_PAD_LEFT));
+                            $printer->text(str_pad('  ' . utf8_decode($accounts[$i]['products'][$j]['product']), 23));
+                            $printer->text(str_pad(number_format($accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
+                            $printer->text("\n");
+                            $subtotal += $accounts[$i]['products'][$j]['amount'] * $accounts[$i]['products'][$j]['price'];
+                        }
                     }
                 }
                 $printer->text(str_pad("_", 42,'_'));
