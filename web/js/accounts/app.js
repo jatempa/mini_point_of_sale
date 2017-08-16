@@ -64,6 +64,10 @@ let accountForm = {
   </section>`,
   methods: {
     fetchAccounts () {
+        axios.defaults.headers.common = {
+            'X-Requested-With': 'XMLHttpRequest',
+        };
+
         axios.get('/api/accounts/date')
             .then(response => {
                 console.log(response);

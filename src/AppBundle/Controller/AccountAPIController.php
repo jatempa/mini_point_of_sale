@@ -218,7 +218,7 @@ class AccountAPIController extends Controller
                 $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
                 $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
                 $servicio = $subtotal * 0.10;
-                $printer->text(str_pad("Propina y servicio 10% $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad("Propina y Servicio Sugerido 10% $", 32,' ', STR_PAD_LEFT));
                 $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
                 $total = $subtotal + $servicio;
                 $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
