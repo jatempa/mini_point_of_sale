@@ -1,7 +1,19 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
+
 {% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+<div class="columns is-mobile is-centered">
+  <div class="column is-4 is-centered">
+    <article class="message is-danger">
+      <div class="message-header">
+        <p><strong>¡Error!</strong></p>
+      </div>
+      <div class="message-body">
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+      </div>
+    </article>
+  </div>
+</div>
 {% endif %}
 
 <div class="columns is-mobile is-centered">
