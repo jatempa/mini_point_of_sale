@@ -117,16 +117,15 @@ class AccountAPIController extends Controller
                 $printer->feed(2);
                 $printer->text("Mesero(a)" . $this->getUser() . "\n");
                 $printer->feed(2);
+                $printer->setJustification(Printer::JUSTIFY_LEFT);
+                $printer->text(str_pad("Cantidad", 9));
+                $printer->text(str_pad("  Producto", 23));
+                $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
+                $printer->text(str_pad("_", 42,'_'));
+                $printer->text("\n");
                 for ($j = 0; $j < count($user['accounts']); $j++) {
                     $printer->setJustification(Printer::JUSTIFY_CENTER);
                     $user['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($user['accounts'][$j]['id'], $userId);
-                    $printer->text("Mesa " . $user['accounts'][$j]['mesaid'] . "\n");
-                    $printer->setJustification(Printer::JUSTIFY_LEFT);
-                    $printer->text(str_pad("Cantidad", 9));
-                    $printer->text(str_pad("  Producto", 23));
-                    $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
-                    $printer->text(str_pad("_", 42,'_'));
-                    $printer->text("\n");
                     for ($k = 0; $k < count($user['accounts'][$j]['notes']); $k++) {
                         $user['accounts'][$j]['notes'][$k]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $user['accounts'][$j]['notes'][$k]['numberNote']);
                         for ($l = 0; $l < count($user['accounts'][$j]['notes'][$k]['products']); $l++) {
