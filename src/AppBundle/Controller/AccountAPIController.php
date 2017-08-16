@@ -139,18 +139,18 @@ class AccountAPIController extends Controller
                             }
                         }
                     }
-                    $printer->text(str_pad("_", 42,'_'));
-                    $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
-                    $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
-                    $servicio = $subtotal * 0.05;
-                    $printer->text(str_pad("Piso 5% $", 32,' ', STR_PAD_LEFT));
-                    $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
-                    $total = $subtotal + $servicio;
-                    $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
-                    $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
-                    $printer->feed(2);
-                    $total_general += $total;
                 }
+                $printer->text(str_pad("_", 42,'_'));
+                $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $servicio = $subtotal * 0.05;
+                $printer->text(str_pad("Piso 5% $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $total = $subtotal + $servicio;
+                $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $printer->feed(2);
+                $total_general += $total;
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text(str_pad("Total a pagar $", 20,' ', STR_PAD_LEFT));
                 $printer->text(str_pad(number_format($total_general,2, '.', ','),10,' ',STR_PAD_LEFT));

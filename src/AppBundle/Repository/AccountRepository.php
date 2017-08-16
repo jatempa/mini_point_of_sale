@@ -20,9 +20,11 @@ class AccountRepository extends EntityRepository
             ->from('AppBundle:Account', 'a')
             ->innerJoin('a.barTable', 'b')
             ->where('a.user = :id')
+            ->andWhere('a.checkin >= :db')
             ->orderBy('a.id','desc');
 
         $dql->setParameter('id', $id);
+        $dql->setParameter('db', new \DateTime('-12 hours'));
 
         return $dql->getQuery()->getResult();
     }
