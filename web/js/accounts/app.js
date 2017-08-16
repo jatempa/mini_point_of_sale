@@ -101,13 +101,10 @@ let accountForm = {
 
         axios.get('/api/accounts/' + account.id)
              .then(function (response) {
-                if (response.data === 'success') {
-                    swal('¡Correcto!', 'Cuenta impresa satisfactoriamente', 'success');
-                }
+                swal('¡Correcto!', 'Cuenta impresa satisfactoriamente', 'success');
              })
              .catch(function (error) {
                 console.log(error);
-                swal('Error', 'Esta cuenta no pudo ser impresa en el sistema', 'error')
              });
     },
     printAllAccounts() {
@@ -117,13 +114,10 @@ let accountForm = {
 
         axios.get('/api/accounts/all')
              .then(function (response) {
-                if (response.data === 'success') {
-                    swal('¡Correcto!', 'Cuentas impresas satisfactoriamente', 'success');
-                }
+                swal('¡Correcto!', 'Cuentas impresas satisfactoriamente', 'success');
              })
              .catch(function (error) {
                 console.log(error);
-                swal('Error', 'Las cuentas no pudieron ser impresas correctamente', 'error')
              });
     }
   },
