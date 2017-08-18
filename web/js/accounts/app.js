@@ -95,10 +95,6 @@ let accountForm = {
         this.fetchAccounts();
     },
     printAccount(account) {
-        axios.defaults.headers.common = {
-            'X-Requested-With': 'XMLHttpRequest',
-        };
-
         axios.get('/api/accounts/' + account.id)
              .then(function (response) {
                 swal('¡Correcto!', 'Cuenta impresa satisfactoriamente', 'success');
@@ -108,10 +104,6 @@ let accountForm = {
              });
     },
     printAllAccounts() {
-        axios.defaults.headers.common = {
-            'X-Requested-With': 'XMLHttpRequest',
-        };
-
         axios.get('/api/accounts/all')
              .then(function (response) {
                 swal('¡Correcto!', 'Cuentas impresas satisfactoriamente', 'success');
