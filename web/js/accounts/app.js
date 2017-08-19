@@ -7,7 +7,8 @@ let accountForm = {
           <table class="table">
             <thead>
               <tr>
-                <th>No. Cuenta</th>
+                <th>Cuenta</th>
+                <th>Fecha</th>
                 <th>Status</th>
                 <th>Cerrar</th>
               </tr>
@@ -15,6 +16,7 @@ let accountForm = {
             <tbody>
               <tr v-for="account in accountList" :key="account.id">
                 <td>{{ account.id }}</td>
+                <td>{{ moment(account.checkin).format('MMMM D, h:mm:ss a') }}</td>
                 <td v-if=" account.status">
                   <span class="tag is-success">Abierta</span>
                 </td>
@@ -58,7 +60,6 @@ let accountForm = {
 
         axios.get('/api/accounts/date')
             .then(response => {
-                console.log(response);
                 this.$store.commit('updateAccountList', response.data.accounts);
             })
             .catch(function (error) {
@@ -117,6 +118,9 @@ let accountForm = {
       set (value) {
         this.$store.commit('updateAccountList', value)
       }
+    },
+    accountListLength() {
+      return this.$store.state.accountList.length;
     }
   }
 };
@@ -151,7 +155,6 @@ new Vue({
       fetchAccounts () {
           axios.get('/api/accounts/date')
               .then(response => {
-                  console.log(response);
                   this.$store.commit('updateAccountList', response.data.accounts);
               })
               .catch(function (error) {
@@ -163,7 +166,7 @@ new Vue({
           'X-Requested-With': 'XMLHttpRequest',
         };
 
-        axios.post('/api/accounts/create', accountData)
+        axios.post('/api/accounts/create')
            .then(function (response) {
              if(response.data === 'success') {
                swal('¡Correcto!', 'Cuenta registrada satisfactoriamente', 'success');

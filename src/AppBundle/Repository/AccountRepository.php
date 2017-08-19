@@ -32,7 +32,7 @@ class AccountRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select( 'a.id','a.status')
+        $dql->select( 'a.id','a.checkin','a.status')
             ->from('AppBundle:Account', 'a')
             ->where('a.user = :id')
             ->andWhere('a.checkin >= :db')

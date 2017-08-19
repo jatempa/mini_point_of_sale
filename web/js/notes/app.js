@@ -138,7 +138,7 @@ let productList = {
       <div class="select">
         <select v-model="selectedAccount">
           <option v-for="account in accounts" :value="account.id" v-if="account.status">
-            Cuenta {{ account.id }} - {{ account.mesa }}
+            Cuenta {{ account.id }}
           </option>
         </select>
       </div>
