@@ -26,10 +26,12 @@ class Account
      */
     private $user;
 
-    /** @ORM\ManyToOne(targetEntity="AppBundle\Entity\BarTable")
-     *  @ORM\JoinColumn(name="barTable", referencedColumnName="bartable_id")
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=50)
      */
-    private $barTable;
+    private $name;
 
     /**
      * @var \DateTime
@@ -86,28 +88,51 @@ class Account
     }
 
     /**
-     * Set barTable
+     * Set checkin
      *
-     * @param \AppBundle\Entity\BarTable $barTable
+     * @param \DateTime $checkin
      * @return Account
      */
-    public function setBarTable(\AppBundle\Entity\BarTable $barTable = null)
+    public function setCheckin($checkin)
     {
-        $this->barTable = $barTable;
+        $this->checkin = $checkin;
 
         return $this;
     }
 
     /**
-     * Get barTable
+     * Get checkin
      *
-     * @return \AppBundle\Entity\BarTable 
+     * @return \DateTime
      */
-    public function getBarTable()
+    public function getCheckin()
     {
-        return $this->barTable;
+        return $this->checkin;
     }
 
+    /**
+     * Set checkout
+     *
+     * @param \DateTime $checkout
+     * @return Account
+     */
+    public function setCheckout($checkout)
+    {
+        $this->checkout = $checkout;
+
+        return $this;
+    }
+
+    /**
+     * Get checkout
+     *
+     * @return \DateTime
+     */
+    public function getCheckout()
+    {
+        return $this->checkout;
+    }
+    
     /**
      * Set status
      *
@@ -133,6 +158,6 @@ class Account
 
     public function __toString()
     {
-        return $this->getId() . ' - ' . $this->getBarTable();
+        return 'Cuenta. ' . $this->getId();
     }
 }

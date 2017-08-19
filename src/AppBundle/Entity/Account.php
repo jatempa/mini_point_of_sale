@@ -27,6 +27,13 @@ class Account
     private $user;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=50, nullable=true)
+     */
+    private $name;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="checkin", type="datetime", nullable=true)
@@ -78,6 +85,30 @@ class Account
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Account
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -151,6 +182,6 @@ class Account
 
     public function __toString()
     {
-        return 'Cta. ' . $this->getId() . ' - ' . $this->getBarTable();
+        return 'Cuenta. ' . $this->getId();
     }
 }

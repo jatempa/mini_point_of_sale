@@ -244,11 +244,16 @@ class AccountAPIController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
             $result = null;
+            // Get data from client
+            $accountName = $request->request->get('name');
             // Prepare ORM
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 $account = new Account();
+                if (!is_null($accountName)) {
+                    $account->setName($accountName);
+                }
                 $account->setCheckin(new \DateTime('now'));
                 $account->setUser($this->getUser());
                 $account->setStatus(true);

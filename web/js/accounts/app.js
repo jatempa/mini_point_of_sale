@@ -8,6 +8,7 @@ let accountForm = {
             <thead>
               <tr>
                 <th>Cuenta</th>
+                <th>Nombre</th>
                 <th>Fecha</th>
                 <th>Status</th>
                 <th>Cerrar</th>
@@ -16,7 +17,8 @@ let accountForm = {
             <tbody>
               <tr v-for="account in accountList" :key="account.id">
                 <td>{{ account.id }}</td>
-                <td>{{ moment(account.checkin).format('MMMM D, h:mm:ss a') }}</td>
+                <td>{{ account.name }}</td>
+                <td>{{ moment(account.checkin).format('h:mm:ss a') }}</td>
                 <td v-if=" account.status">
                   <span class="tag is-primary">Abierta</span>
                 </td>
@@ -46,6 +48,12 @@ let accountForm = {
     <div v-else>
       <h4>Debes crear una cuenta para comenzar</h4>
     </div>
+    <div class="field">
+      <label class="label">Mesa</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Por ejemplo: Mesa de mi cliente favorito" v-model="accountName">
+      </div>
+    </div>   
   </section>`,
   methods: {
     fetchAccounts () {
@@ -89,6 +97,14 @@ let accountForm = {
     }
   },
   computed: {
+    accountName: {
+        get () {
+            return this.$store.state.accountName
+        },
+        set (value) {
+            this.$store.commit('updateAccountName', value)
+        }
+    },
     accountDate: {
         get () {
             return this.$store.state.accountDate
@@ -116,10 +132,14 @@ Vue.use('vuex');
 
 const store = new Vuex.Store({
   state: {
+    accountName: '',
     accountDate: '',
     accountList: []
   },
   mutations: {
+    updateAccountName(state, accountName) {
+      state.accountName = accountName;
+    },
     updateAccountDate(state, accountDate) {
       state.accountDate = accountDate;
     },
@@ -152,7 +172,15 @@ new Vue({
           'X-Requested-With': 'XMLHttpRequest',
         };
 
-        axios.post('/api/accounts/create')
+        let accountData = null;
+
+        if(this.$store.state.accountName !== '') {
+          accountData = {
+            name: this.$store.state.accountName
+          };
+        }
+
+        axios.post('/api/accounts/create', accountData)
            .then(function (response) {
              if(response.data === 'success') {
                swal('¡Correcto!', 'Cuenta registrada satisfactoriamente', 'success');
@@ -163,7 +191,12 @@ new Vue({
              swal('Error', 'Esta cuenta no pudo ser registrada en el sistema', 'error')
            });
         // Clean form
+        this.cleanForm();
+        // Update list
         this.fetchAccounts();
+      },
+      cleanForm () {
+        this.$store.commit('updateAccountName', '');
       }
     }
 });
