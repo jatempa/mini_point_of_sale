@@ -51,6 +51,9 @@ let accountForm = {
         </button>
       </div>      
     </div>
+    <div v-else>
+      <h4>Debes crear una cuenta para comenzar</h4>
+    </div>
   </section>`,
   methods: {
     fetchAccounts () {
