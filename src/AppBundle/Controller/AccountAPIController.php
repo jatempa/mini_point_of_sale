@@ -71,7 +71,7 @@ class AccountAPIController extends Controller
         for ($i = 0; $i < count($users); $i++) {
             $users[$i]['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccounts($users[$i]['id']);
             for ($j = 0; $j < count($users[$i]['accounts']); $j++) {
-                $users[$i]['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($users[$i]['accounts'][$j]['id'], $users[$i]['id']);
+                $users[$i]['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserId($users[$i]['accounts'][$j]['id'], $users[$i]['id']);
                 for ($k = 0; $k < count($users[$i]['accounts'][$j]['notes']); $k++) {
                     $users[$i]['accounts'][$j]['notes'][$k]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($users[$i]['id'], $users[$i]['accounts'][$j]['notes'][$k]['numberNote']);
                 }
@@ -173,7 +173,7 @@ class AccountAPIController extends Controller
             // Get User Id
             $userId = $this->getUser();
             $userId->getId();
-            $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($accountId, $userId);
+            $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserId($accountId, $userId);
             $subtotal = 0;
 
             $connector = new FilePrintConnector("/dev/usb/lp0");
@@ -228,7 +228,7 @@ class AccountAPIController extends Controller
     public function getAccountsByAccountIdAndUserIdAction($accountId, $userId)
     {
         $em = $this->getDoctrine()->getManager();
-        $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($accountId, $userId);
+        $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserId($accountId, $userId);
 
         for ($i = 0; $i < count($accounts); $i++) {
             $accounts[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $accounts[$i]['numberNote']);
