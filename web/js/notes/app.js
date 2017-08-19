@@ -38,7 +38,7 @@ let productForm = {
           </span>
           <span>Agregar a lista</span>
         </button>
-      </div>      
+      </div>    
     </section>                   
     `,
     mounted() {
@@ -137,7 +137,7 @@ let productList = {
       <label class="label">Selecciona una cuenta</label>
       <div class="select">
         <select v-model="selectedAccount">
-          <option v-for="account in accounts" :value="account.id" v-if="account.status">
+          <option v-for="account in getAccounts" :value="account.id" v-if="account.status">
             Cuenta {{ account.id }}
           </option>
         </select>
@@ -173,14 +173,9 @@ let productList = {
           </tbody>
         </table>    
       </div>    
-    </div>  
+    </div>    
   </section>
   `,
-  data() {
-    return {
-      accounts: []
-    }
-  },
   mounted() {
     this.fetchAccounts();
   },
@@ -188,7 +183,7 @@ let productList = {
     fetchAccounts() {
       axios.get('/api/accounts/date')
            .then(response => {
-              this.accounts = response.data.accounts;
+             this.$store.commit('updateAccounts', response.data.accounts);
            })
            .catch(function (error) {
               console.log(error);
@@ -196,6 +191,9 @@ let productList = {
     }
   },
   computed: {
+    getAccounts () {
+      return this.$store.state.accounts.filter((a) => a.status === true);
+    },
     getCarProducts () {
       return this.$store.state.carProducts;
     },
@@ -224,6 +222,7 @@ const store = new Vuex.Store({
       selectedAccount: 0,
       selectedCategory: 0,
       selectedProduct: 0,
+      accounts: [],
       carProducts: [],
       categories: [],
       products: [],
@@ -232,6 +231,9 @@ const store = new Vuex.Store({
     mutations: {
       updateLastNumberNote(state) {
         state.lastNumberNote += 1;
+      },
+      updateAccounts(state, accounts) {
+        state.accounts = accounts;
       },
       updateSelectedAccount(state, selectedAccount) {
         state.selectedAccount = selectedAccount;
