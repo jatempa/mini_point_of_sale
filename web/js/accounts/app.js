@@ -41,15 +41,7 @@ let accountForm = {
             </tbody>
           </table>
         </div>
-      </div>
-      <div class="control">
-        <button class="button is-success" @click.prevent="printAllAccounts" style="margin-bottom: 10px;">
-          <span class="icon is-normal">
-            <i class="fa fa-print"></i>
-          </span>
-          <span>Imprimir todas las cuentas</span>
-        </button>
-      </div>      
+      </div>  
     </div>
     <div v-else>
       <h4>Debes crear una cuenta para comenzar</h4>
@@ -90,15 +82,6 @@ let accountForm = {
         axios.get('/api/accounts/' + account.id)
              .then(function (response) {
                 swal('¡Correcto!', 'Cuenta impresa satisfactoriamente', 'success');
-             })
-             .catch(function (error) {
-                console.log(error);
-             });
-    },
-    printAllAccounts() {
-        axios.get('/api/accounts/all')
-             .then(function (response) {
-                swal('¡Correcto!', 'Cuentas impresas satisfactoriamente', 'success');
              })
              .catch(function (error) {
                 console.log(error);
@@ -152,7 +135,7 @@ new Vue({
     store,
     components: { accountForm },
     mounted() {
-        this.fetchAccounts();
+      this.fetchAccounts();
     },
     methods: {
       fetchAccounts () {
@@ -173,7 +156,6 @@ new Vue({
            .then(function (response) {
              if(response.data === 'success') {
                swal('¡Correcto!', 'Cuenta registrada satisfactoriamente', 'success');
-
              }
            })
            .catch(function (error) {
