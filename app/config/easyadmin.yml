@@ -48,7 +48,7 @@ easy_admin:
             list:
                 title: "Cuentas"
                 fields:
-                  - { property: 'id', label: 'Cuenta Id' }
+                  - { property: 'id', label: 'Id' }
                   - { property: 'user', label: 'Mesero' }
                   - { property: 'checkin', label: 'Fecha de apertura' }
                   - { property: 'checkout', label: 'Fecha de clausura' }

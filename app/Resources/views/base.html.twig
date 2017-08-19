@@ -22,15 +22,17 @@
           {% elseif is_granted('ROLE_PALOMA') %}
             <a class="button is-large" href="{{ path('pendientes') }}">Comandas pendientes</a>
           {% elseif is_granted('ROLE_MESERO') %}
-            <a class="button is-large" href="{{ path('comandas') }}">
-              <span class="icon is-medium">
+            <a class="button is-medium" href="{{ path('comandas') }}">
+              <span class="icon">
                 <i class="fa fa-edit"></i>
-              </span> Comandas
+              </span>
+              <span>Comandas</span>
             </a>
-            <a class="button is-large" href="{{ path('cuentas') }}">
-              <span class="icon is-medium">
+            <a class="button is-medium" href="{{ path('cuentas') }}">
+              <span class="icon">
                 <i class="fa fa-dollar"></i>
-              </span> Cuentas
+              </span>
+              <span>Cuentas</span>
             </a>
           {% endif %}
         </div>
