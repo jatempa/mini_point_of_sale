@@ -22,6 +22,17 @@ AppBundle\Entity\User:
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
   user3:
+    username: 'palomashots'
+    email: <email()>
+    enabled: 1
+    plainPassword: '1234'
+    roles:
+        - 'ROLE_PALOMASHOTS'
+    name: <firstName()>
+    firstLastName: <lastName()>
+    secondLastName: <lastName()>
+    cellphoneNumber: <phoneNumber()>
+  user4:
     username: 'usuario1'
     email: <email()>
     enabled: 1
@@ -32,7 +43,7 @@ AppBundle\Entity\User:
     firstLastName: <lastName()>
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
-  user4:
+  user5:
     username: 'usuario2'
     email: <email()>
     enabled: 1
@@ -43,7 +54,7 @@ AppBundle\Entity\User:
     firstLastName: <lastName()>
     secondLastName: <lastName()>
     cellphoneNumber: <phoneNumber()>
-  user5:
+  user6:
     username: 'usuario3'
     email: <email()>
     enabled: 1

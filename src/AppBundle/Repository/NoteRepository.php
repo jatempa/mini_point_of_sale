@@ -43,6 +43,7 @@ class NoteRepository extends EntityRepository
             ->innerJoin('n.user', 'u')
             ->where('n.checkin <= :tempNow')
             ->andWhere('n.status = \'Pendiente\'')
+            ->andWhere('u.roles like \'%MESERO%\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
             ->orderBy('n.checkin')
             ->setMaxResults(50);
@@ -62,6 +63,7 @@ class NoteRepository extends EntityRepository
             ->innerJoin('n.user', 'u')
             ->where('n.checkin >= :initialDate')
             ->andWhere('n.status = \'Pendiente\'')
+            ->andWhere('u.roles like \'%MESERO%\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
             ->orderBy('n.checkin')
             ->setMaxResults(50);
@@ -83,6 +85,7 @@ class NoteRepository extends EntityRepository
             ->innerJoin('n.user', 'u')
             ->where('n.checkin >= :tempNow')
             ->andWhere('n.status = \'Entregado\'')
+            ->andWhere('u.roles like \'%MESERO%\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
             ->orderBy('n.checkin', 'DESC');
 

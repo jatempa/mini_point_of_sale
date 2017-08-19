@@ -21,7 +21,7 @@
             <a class="button is-danger is-large" href="{{ path('cancelations') }}">Cancelaciones</a>
           {% elseif is_granted('ROLE_PALOMA') %}
             <a class="button is-large" href="{{ path('pendientes') }}">Comandas pendientes</a>
-          {% elseif is_granted('ROLE_MESERO') %}
+          {% elseif is_granted('ROLE_MESERO') or  is_granted('ROLE_PALOMASHOTS') %}
             <a class="button is-medium" href="{{ path('comandas') }}">
               <span class="icon">
                 <i class="fa fa-edit"></i>

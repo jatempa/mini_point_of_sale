@@ -31,11 +31,12 @@ class DefaultController extends Controller
      */
     public function accountsAction()
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MESERO')) {
-            throw $this->createAccessDeniedException();
+        $chk = $this->get('security.authorization_checker');
+        if ($chk->isGranted('ROLE_MESERO') || $chk->isGranted('ROLE_PALOMASHOTS')) {
+            return $this->render('accounts/index.html.twig');
         }
 
-        return $this->render('accounts/index.html.twig');
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -44,11 +45,12 @@ class DefaultController extends Controller
      */
     public function notesAction()
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MESERO')) {
-            throw $this->createAccessDeniedException();
+        $chk = $this->get('security.authorization_checker');
+        if ($chk->isGranted('ROLE_MESERO') || $chk->isGranted('ROLE_PALOMASHOTS')) {
+            return $this->render('notes/index.html.twig');
         }
 
-        return $this->render('notes/index.html.twig');
+        return $this->redirectToRoute('homepage');
     }
 
     /**
