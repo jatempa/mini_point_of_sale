@@ -430,7 +430,7 @@ class BuilderReportController extends Controller
      */
     public function getSalesByAccountWaiterDayAction()
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$this->get('security.authorization_checker')->isGranted('ROLE_CAJERO')) {
             throw $this->createAccessDeniedException();
         }
 

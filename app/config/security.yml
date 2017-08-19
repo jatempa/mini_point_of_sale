@@ -34,6 +34,7 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/sales/account/waiter/day, role: ROLE_CAJERO }
         - { path: ^/corte/*, role: ROLE_CAJERO }
         - { path: ^/pendientes/*, role: ROLE_PALOMA }
         - { path: ^/cuentas/*, role: [ROLE_MESERO, ROLE_PALOMASHOTS] }

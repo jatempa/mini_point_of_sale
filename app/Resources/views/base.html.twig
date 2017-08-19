@@ -34,6 +34,13 @@
               </span>
               <span>Cuentas</span>
             </a>
+          {% elseif is_granted('ROLE_CAJERO') %}
+            <a class="button is-medium" href="{{ path('corte') }}">
+              <span class="icon">
+                <i class="fa fa-dollar"></i>
+              </span>
+              <span>Corte</span>
+            </a>
           {% endif %}
         </div>
       </div>

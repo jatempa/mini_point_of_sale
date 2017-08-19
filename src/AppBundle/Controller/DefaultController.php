@@ -26,6 +26,20 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/corte", name="corte")
+     * @Method("GET")
+     */
+    public function corteAction()
+    {
+        $chk = $this->get('security.authorization_checker');
+        if ($chk->isGranted('ROLE_CAJERO')) {
+            return $this->render('default/corte.html.twig');
+        }
+
+        return $this->redirectToRoute('homepage');
+    }
+
+    /**
      * @Route("/cuentas", name="cuentas")
      * @Method("GET")
      */
