@@ -32,7 +32,7 @@ let productForm = {
             <input v-model="amount" class="input" type="number" min="0" max="100" placeholder="Introduce la cantidad del producto">
           </div>
         </div>
-        <button class="button is-info" @click.prevent="addProduct">
+        <button class="button is-success" @click.prevent="addProduct">
           <span class="icon is-normal">
               <i class="fa fa-plus"></i>
           </span>

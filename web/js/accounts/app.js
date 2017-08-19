@@ -18,7 +18,7 @@ let accountForm = {
                 <td>{{ account.id }}</td>
                 <td>{{ moment(account.checkin).format('MMMM D, h:mm:ss a') }}</td>
                 <td v-if=" account.status">
-                  <span class="tag is-success">Abierta</span>
+                  <span class="tag is-primary">Abierta</span>
                 </td>
                 <td v-else>
                   <span  class="tag is-danger">Cerrada</span>
@@ -43,7 +43,7 @@ let accountForm = {
         </div>
       </div>
       <div class="control">
-        <button class="button is-info" @click.prevent="printAllAccounts" style="margin-bottom: 10px;">
+        <button class="button is-success" @click.prevent="printAllAccounts" style="margin-bottom: 10px;">
           <span class="icon is-normal">
             <i class="fa fa-print"></i>
           </span>
