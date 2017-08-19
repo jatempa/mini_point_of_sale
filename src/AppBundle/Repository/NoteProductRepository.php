@@ -55,14 +55,13 @@ class NoteProductRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('concat(u.name, \' \', u.firstLastName) as waiter', 'a.id as account', 'a.checkin as acccheckin', 'a.checkout as acccheckout', 'b.name as table', 'n.numberNote', 'n.checkin', 'n.checkout', 'c.name as category', 'sum(np.amount) as amount', 'sum(np.total) as total')
+        $dql->select('concat(u.name, \' \', u.firstLastName) as waiter', 'a.id as account', 'a.checkin as acccheckin', 'a.checkout as acccheckout', 'n.numberNote', 'n.checkin', 'n.checkout', 'c.name as category', 'sum(np.amount) as amount', 'sum(np.total) as total')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.product', 'p')
             ->innerJoin('p.category', 'c')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.account', 'a')
             ->innerJoin('a.user', 'u')
-            ->innerJoin('a.barTable', 'b')
             ->where('n.status = \'Entregado\'')
             ->andWhere('n.checkout >= :tb')
             ->groupBy('a.id', 'n.id', 'p.category')

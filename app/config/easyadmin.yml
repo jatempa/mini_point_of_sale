@@ -11,13 +11,11 @@ easy_admin:
       form_theme: 'horizontal'
       menu:
           - label: 'Ventas'
-            icon: file-text
+            icon: dollar
             children:
                 - { entity: 'Account'}
                 - { entity: 'Note'}
                 - { entity: 'NoteProduct'}
-          - entity: 'BarTable'
-            icon: cutlery
           - label: 'Productos'
             icon: beer
             children:
@@ -52,33 +50,9 @@ easy_admin:
                 fields:
                   - { property: 'id', label: 'Cuenta Id' }
                   - { property: 'user', label: 'Mesero' }
-                  - { property: 'barTable', label: 'Mesa' }
                   - { property: 'checkin', label: 'Fecha de apertura' }
                   - { property: 'checkout', label: 'Fecha de clausura' }
                   - { property: 'status', label: '¿Abierta?' }
-        BarTable:
-            label: 'Mesas'
-            class: AppBundle\Entity\BarTable
-            list:
-                actions:
-                    - { name: 'new', label: 'Crear Mesa' }
-                title: "Mesas"
-                fields:
-                  - { property: 'id', label: 'Id' }
-                  - { property: 'name', label: 'Mesa' }
-            show:
-                title: "Mesa (#%%entity_id%%)"
-                fields:
-                  - { property: 'id', label: 'Id' }
-                  - { property: 'name', label: 'Mesa' }
-            new:
-                title: "Crear Mesa"
-                fields:
-                  - { property: 'name', label: 'Mesa' }
-            edit:
-                title: "Modificar Mesa"
-                fields:
-                  - { property: 'name', label: 'Mesa' }
         Category:
             label: 'Categoría'
             class: AppBundle\Entity\Category

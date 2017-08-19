@@ -96,7 +96,7 @@ class AccountAPIController extends Controller
             // Get User Id
             $userId = $this->getUser();
             $userId->getId();
-            $user = Array();
+            $user = [];
 
             $em = $this->getDoctrine()->getManager();
             $user['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccounts($userId);
@@ -119,7 +119,7 @@ class AccountAPIController extends Controller
             $printer->text("\n");
             for ($j = 0; $j < count($user['accounts']); $j++) {
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
-                $user['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserIdAndTableId($user['accounts'][$j]['id'], $userId);
+                $user['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserId($user['accounts'][$j]['id'], $userId);
                 for ($k = 0; $k < count($user['accounts'][$j]['notes']); $k++) {
                     $user['accounts'][$j]['notes'][$k]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($userId, $user['accounts'][$j]['notes'][$k]['numberNote']);
                     for ($l = 0; $l < count($user['accounts'][$j]['notes'][$k]['products']); $l++) {
@@ -182,7 +182,6 @@ class AccountAPIController extends Controller
             $printer->text("REPUBLIK\n");
             $printer->text("Live Music");
             $printer->feed(2);
-            $printer->text("Mesa " . $accounts[0]['id'] . "\n");
             $printer->text("Mesero(a)" . $accounts[0]['waiter'] . "\n");
             $printer->setJustification(Printer::JUSTIFY_LEFT);
             $printer->text(str_pad("Cantidad", 9));
@@ -247,16 +246,12 @@ class AccountAPIController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
             $result = null;
-            // Get data from client
-            $selectedTable = $request->request->get('selectedTable');
             // Prepare ORM
             $em = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 $account = new Account();
-                $tableNumber = $em->getRepository('AppBundle:BarTable')->findOneById($selectedTable);
                 $account->setCheckin(new \DateTime('now'));
-                $account->setBarTable($tableNumber);
                 $account->setUser($this->getUser());
                 $account->setStatus(true);
 

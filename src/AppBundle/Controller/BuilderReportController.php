@@ -446,28 +446,26 @@ class BuilderReportController extends Controller
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Mesa");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Apertura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Fecha/Hora Clausura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Fecha/Hora Apertura Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H1', "Fecha/Hora Clausura Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I1', "Tipo de producto");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J1', "Cantidad");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('K1', "Total");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Fecha/Hora Apertura Cuenta");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Clausura Cuenta");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Fecha/Hora Apertura Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Fecha/Hora Clausura Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H1', "Tipo de producto");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I1', "Cantidad");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J1', "Total");
 
         for ($i=0; $i < count($sales); $i++) {
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A'.((string)$i+2), $sales[$i]['waiter']);
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B'.((string)$i+2), $sales[$i]['account']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C'.((string)$i+2), $sales[$i]['table']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D'.((string)$i+2), $sales[$i]['acccheckin']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['acccheckout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['numberNote']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['checkin']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H'.((string)$i+2), $sales[$i]['checkout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I'.((string)$i+2), $sales[$i]['category']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J'.((string)$i+2), $sales[$i]['amount']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('K'.((string)$i+2), $sales[$i]['total']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C'.((string)$i+2), $sales[$i]['acccheckin']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D'.((string)$i+2), $sales[$i]['acccheckout']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['numberNote']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['checkin']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['checkout']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H'.((string)$i+2), $sales[$i]['category']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I'.((string)$i+2), $sales[$i]['amount']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J'.((string)$i+2), $sales[$i]['total']);
         }
 
         // Dimensions
@@ -482,7 +480,6 @@ class BuilderReportController extends Controller
         $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setWidth(29);
         $phpExcelObject->getActiveSheet()->getColumnDimension('I')->setWidth(18);
         $phpExcelObject->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('K')->setWidth(15);
         // Style
         $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
         $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
@@ -504,8 +501,6 @@ class BuilderReportController extends Controller
         $phpExcelObject->getActiveSheet()->getStyle('I1')->getFont()->setBold(true);
         $phpExcelObject->getActiveSheet()->getStyle('J1')->getFont()->setSize(12);
         $phpExcelObject->getActiveSheet()->getStyle('J1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('K1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('K1')->getFont()->setBold(true);
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $phpExcelObject->setActiveSheetIndex(0);
@@ -549,28 +544,26 @@ class BuilderReportController extends Controller
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Mesa");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Apertura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Fecha/Hora Clausura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Fecha/Hora Apertura Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H1', "Fecha/Hora Clausura Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I1', "Tipo de producto");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J1', "Cantidad");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('K1', "Total");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Fecha/Hora Apertura Cuenta");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Clausura Cuenta");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Fecha/Hora Apertura Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Fecha/Hora Clausura Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H1', "Tipo de producto");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I1', "Cantidad");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J1', "Total");
 
         for ($i=0; $i < count($sales); $i++) {
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A'.((string)$i+2), $sales[$i]['waiter']);
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B'.((string)$i+2), $sales[$i]['account']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C'.((string)$i+2), $sales[$i]['table']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D'.((string)$i+2), $sales[$i]['acccheckin']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['acccheckout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['numberNote']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['checkin']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H'.((string)$i+2), $sales[$i]['checkout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I'.((string)$i+2), $sales[$i]['category']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J'.((string)$i+2), $sales[$i]['amount']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('K'.((string)$i+2), $sales[$i]['total']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C'.((string)$i+2), $sales[$i]['acccheckin']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D'.((string)$i+2), $sales[$i]['acccheckout']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['numberNote']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['checkin']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['checkout']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H'.((string)$i+2), $sales[$i]['category']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I'.((string)$i+2), $sales[$i]['amount']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J'.((string)$i+2), $sales[$i]['total']);
         }
 
         // Dimensions
@@ -585,7 +578,6 @@ class BuilderReportController extends Controller
         $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setWidth(29);
         $phpExcelObject->getActiveSheet()->getColumnDimension('I')->setWidth(18);
         $phpExcelObject->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('K')->setWidth(15);
         // Style
         $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
         $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
@@ -607,8 +599,6 @@ class BuilderReportController extends Controller
         $phpExcelObject->getActiveSheet()->getStyle('I1')->getFont()->setBold(true);
         $phpExcelObject->getActiveSheet()->getStyle('J1')->getFont()->setSize(12);
         $phpExcelObject->getActiveSheet()->getStyle('J1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('K1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('K1')->getFont()->setBold(true);
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $phpExcelObject->setActiveSheetIndex(0);
@@ -652,28 +642,26 @@ class BuilderReportController extends Controller
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Mesa");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Apertura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Fecha/Hora Clausura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Fecha/Hora Apertura Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H1', "Fecha/Hora Clausura Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I1', "Tipo de producto");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J1', "Cantidad");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('K1', "Total");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Fecha/Hora Apertura Cuenta");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Clausura Cuenta");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Fecha/Hora Apertura Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Fecha/Hora Clausura Comanda");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H1', "Tipo de producto");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I1', "Cantidad");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J1', "Total");
 
         for ($i=0; $i < count($sales); $i++) {
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A'.((string)$i+2), $sales[$i]['waiter']);
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B'.((string)$i+2), $sales[$i]['account']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C'.((string)$i+2), $sales[$i]['table']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D'.((string)$i+2), $sales[$i]['acccheckin']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['acccheckout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['numberNote']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['checkin']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H'.((string)$i+2), $sales[$i]['checkout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I'.((string)$i+2), $sales[$i]['category']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J'.((string)$i+2), $sales[$i]['amount']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('K'.((string)$i+2), $sales[$i]['total']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C'.((string)$i+2), $sales[$i]['acccheckin']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D'.((string)$i+2), $sales[$i]['acccheckout']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['numberNote']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['checkin']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['checkout']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H'.((string)$i+2), $sales[$i]['category']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I'.((string)$i+2), $sales[$i]['amount']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J'.((string)$i+2), $sales[$i]['total']);
         }
 
         // Dimensions
@@ -688,7 +676,6 @@ class BuilderReportController extends Controller
         $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setWidth(29);
         $phpExcelObject->getActiveSheet()->getColumnDimension('I')->setWidth(18);
         $phpExcelObject->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('K')->setWidth(15);
         // Style
         $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
         $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
@@ -710,8 +697,6 @@ class BuilderReportController extends Controller
         $phpExcelObject->getActiveSheet()->getStyle('I1')->getFont()->setBold(true);
         $phpExcelObject->getActiveSheet()->getStyle('J1')->getFont()->setSize(12);
         $phpExcelObject->getActiveSheet()->getStyle('J1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('K1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('K1')->getFont()->setBold(true);
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $phpExcelObject->setActiveSheetIndex(0);

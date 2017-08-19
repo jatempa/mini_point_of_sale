@@ -16,9 +16,8 @@ class AccountRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select( 'a.id','a.status', 'b.id as mesaid', 'b.name as mesa')
+        $dql->select( 'a.id','a.status')
             ->from('AppBundle:Account', 'a')
-            ->innerJoin('a.barTable', 'b')
             ->where('a.user = :id')
             ->andWhere('a.checkin >= :db')
             ->orderBy('a.id','desc');
@@ -33,9 +32,8 @@ class AccountRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select( 'a.id','a.status', 'b.id as mesaid', 'b.name as mesa')
+        $dql->select( 'a.id','a.status')
             ->from('AppBundle:Account', 'a')
-            ->innerJoin('a.barTable', 'b')
             ->where('a.user = :id')
             ->andWhere('a.checkin >= :db')
             ->andWhere('a.checkin < :da')
@@ -48,15 +46,14 @@ class AccountRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findAccountByUserIdAndTableId($accountId, $userId)
+    public function findAccountByUserId($accountId, $userId)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('a.id as account', 'concat(u.name, \' \', u.firstLastName) as waiter', 'b.id', 'n.numberNote')
+        $dql->select('a.id as account', 'concat(u.name, \' \', u.firstLastName) as waiter', 'n.numberNote')
             ->from('AppBundle:Note', 'n')
             ->innerJoin('n.account', 'a')
             ->innerJoin('a.user', 'u')
-            ->innerJoin('a.barTable', 'b')
             ->where('n.status = \'Entregado\'')
             ->andWhere('a.id = :accountId')
             ->andWhere('a.user = :userId');

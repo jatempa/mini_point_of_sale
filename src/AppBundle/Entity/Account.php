@@ -26,11 +26,6 @@ class Account
      */
     private $user;
 
-    /** @ORM\ManyToOne(targetEntity="AppBundle\Entity\BarTable")
-     *  @ORM\JoinColumn(name="barTable", referencedColumnName="bartable_id")
-     */
-    private $barTable;
-
     /**
      * @var \DateTime
      *
@@ -83,29 +78,6 @@ class Account
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set barTable
-     *
-     * @param \AppBundle\Entity\BarTable $barTable
-     * @return Account
-     */
-    public function setBarTable(\AppBundle\Entity\BarTable $barTable = null)
-    {
-        $this->barTable = $barTable;
-
-        return $this;
-    }
-
-    /**
-     * Get barTable
-     *
-     * @return \AppBundle\Entity\BarTable 
-     */
-    public function getBarTable()
-    {
-        return $this->barTable;
     }
 
     /**

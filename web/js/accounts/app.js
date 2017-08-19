@@ -7,8 +7,7 @@ let accountForm = {
           <table class="table">
             <thead>
               <tr>
-                <th>No.</th>
-                <th>Mesa</th>
+                <th>No. Cuenta</th>
                 <th>Status</th>
                 <th>Cerrar</th>
               </tr>
@@ -16,7 +15,6 @@ let accountForm = {
             <tbody>
               <tr v-for="account in accountList" :key="account.id">
                 <td>{{ account.id }}</td>
-                <td>{{ account.mesa }}</td>
                 <td v-if=" account.status">
                   <span class="tag is-success">Abierta</span>
                 </td>
@@ -50,16 +48,6 @@ let accountForm = {
           <span>Imprimir todas las cuentas</span>
         </button>
       </div>      
-    </div>
-    <div class="control">
-      <label class="label">Selecciona una mesa</label>
-      <div class="select">
-        <select v-model="selectedTable">
-          <option v-for="mesa in mesasList" :value="mesa.id">
-            {{ mesa.name }}
-          </option>
-        </select>
-      </div>
     </div>
   </section>`,
   methods: {
@@ -122,14 +110,6 @@ let accountForm = {
             this.$store.commit('updateAccountDate', value)
         }
     },
-    selectedTable: {
-        get () {
-            return this.$store.state.selectedTable
-        },
-        set (value) {
-            this.$store.commit('updateSelectedTable', value)
-        }
-    },
     accountList: {
       get () {
         return this.$store.state.accountList
@@ -137,17 +117,6 @@ let accountForm = {
       set (value) {
         this.$store.commit('updateAccountList', value)
       }
-    },
-    mesasList: {
-      get () {
-        return this.$store.state.mesasList
-      },
-      set (value) {
-        this.$store.commit('updateMesasList', value)
-      }
-    },
-    accountListLength() {
-      return this.$store.state.accountList.length;
     }
   }
 };
@@ -158,9 +127,7 @@ Vue.use('vuex');
 const store = new Vuex.Store({
   state: {
     accountDate: '',
-    selectedTable: 0,
-    accountList: [],
-    mesasList: []
+    accountList: []
   },
   mutations: {
     updateAccountDate(state, accountDate) {
@@ -168,12 +135,6 @@ const store = new Vuex.Store({
     },
     updateAccountList(state, accountList) {
       state.accountList = accountList;
-    },
-    updateMesasList(state, mesasList) {
-      state.mesasList = mesasList;
-    },
-    updateSelectedTable(state, selectedTable) {
-      state.selectedTable = selectedTable;
     }
   }
 });
@@ -184,7 +145,6 @@ new Vue({
     store,
     components: { accountForm },
     mounted() {
-        this.fetchTables();
         this.fetchAccounts();
     },
     methods: {
@@ -198,45 +158,24 @@ new Vue({
                   console.log(error);
               });
       },
-      fetchTables () {
-          axios.get('/api/tables')
-               .then(response => {
-                   this.$store.commit('updateMesasList', response.data.mesas);
-               })
-              .catch(function (error) {
-                 console.log(error);
-              });
-      },
       createAccount () {
         axios.defaults.headers.common = {
           'X-Requested-With': 'XMLHttpRequest',
         };
 
-        if(this.$store.state.selectedTable > 0) {
-          let accountData = {
-            selectedTable: parseInt(this.$store.state.selectedTable)
-          };
+        axios.post('/api/accounts/create', accountData)
+           .then(function (response) {
+             if(response.data === 'success') {
+               swal('¡Correcto!', 'Cuenta registrada satisfactoriamente', 'success');
 
-          axios.post('/api/accounts/create', accountData)
-               .then(function (response) {
-                 if(response.data === 'success') {
-                   swal('¡Correcto!', 'Cuenta registrada satisfactoriamente', 'success');
-
-                 }
-               })
-               .catch(function (error) {
-                 console.log(error);
-                 swal('Error', 'Esta cuenta no pudo ser registrada en el sistema', 'error')
-               });
-          // Clean form
-          this.fetchAccounts();
-          this.cleanForm();
-        } else {
-          swal('Error', 'Es necesario especificar valores correctos para procesar la cuenta', 'warning');
-        }
-      },
-      cleanForm () {
-        this.$store.commit('updateSelectedTable', 0);
+             }
+           })
+           .catch(function (error) {
+             console.log(error);
+             swal('Error', 'Esta cuenta no pudo ser registrada en el sistema', 'error')
+           });
+        // Clean form
+        this.fetchAccounts();
       }
     }
 });
