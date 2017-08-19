@@ -80,7 +80,7 @@ new Vue({
            })
            .catch(function (error) {
              console.log(error);
-             swal('Error', 'Esta venta no ha podido ser registrada en el sistema. No entregue el producto y solicite generen una nueva comanda.', 'error')
+             swal('Error', 'Esta venta no ha podido ser registrada en el sistema. Una causa posible es la falta de productos en stock de algun producto.', 'error')
            });
     }
   },
