@@ -23,7 +23,7 @@
                 {% if csrf_token %}
                     <input class="help" type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
                 {% endif %}
-
+                <img src="{{ asset('img/REPUBLIK.png') }}" alt="logo-republik">
                 <div class="field">
                     <label class="label" for="username">{{ 'security.login.username'|trans }}</label>
                     <div class="control has-icons-left has-icons-right">
