@@ -174,7 +174,7 @@ easy_admin:
                     - { property: 'enabled', type: 'checkbox', label: 'Activo' }
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'plainPassword', type: 'text', type_options: { required: false }, label: 'Contraseña' }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: false, choices: { ROLE_PALOMA: 'Paloma', ROLE_PALOMASHOTS: 'Paloma Shots', ROLE_MESERO: 'Mesero', ROLE_ADMIN: 'Administrador' } } }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: false, choices: { ROLE_CAJERO: 'Cajero', ROLE_PALOMA: 'Paloma', ROLE_PALOMASHOTS: 'Paloma Shots', ROLE_MESERO: 'Mesero', ROLE_ADMIN: 'Administrador' } } }
                 form_options: { validation_groups: ['Profile'] }
             new:
                 title: "Crear Usuario"
@@ -187,5 +187,5 @@ easy_admin:
                     - { property: 'enabled', type: 'checkbox', label: 'Activo' }
                     - { property: 'username', label: 'Usuario' }
                     - { property: 'plainPassword', type: 'text', type_options: { required: true}, label: 'Contraseña' }
-                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: false, choices: { ROLE_PALOMA: 'Paloma', ROLE_PALOMASHOTS: 'Paloma Shots', ROLE_MESERO: 'Mesero', ROLE_ADMIN: 'Administrador' } } }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: false, choices: { ROLE_CAJERO: 'Cajero', ROLE_PALOMA: 'Paloma', ROLE_PALOMASHOTS: 'Paloma Shots', ROLE_MESERO: 'Mesero', ROLE_ADMIN: 'Administrador' } } }
                 form_options: { validation_groups: ['Registration'] }

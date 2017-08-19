@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <a class="button is-medium" href="{{ path('export_sales_account_waiter_day_excel', {'demo': 12}) }}">
+    <span class="icon">
+      <i class="fa fa-file-excel-o"></i>
+    </span>
+    <span>Cuentas de meseros</span>
+  </a>
+{% endblock %}
