@@ -42,8 +42,8 @@ let accountForm = {
           <table class="table">
             <thead>
               <tr>
-                <th>Cuenta</th>
-                <th>Nombre</th>
+                <th>Cta.</th>
+                <th>Mesa</th>
                 <th>Apertura</th>
                 <th>Status</th>
                 <th>Cerrar</th>

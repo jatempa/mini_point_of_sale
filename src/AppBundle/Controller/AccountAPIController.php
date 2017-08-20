@@ -69,7 +69,7 @@ class AccountAPIController extends Controller
         $users = $em->getRepository('AppBundle:User')->findWaitersId();
 
         for ($i = 0; $i < count($users); $i++) {
-            $users[$i]['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccounts($users[$i]['id']);
+            $users[$i]['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccountsByDate($users[$i]['id']);
             for ($j = 0; $j < count($users[$i]['accounts']); $j++) {
                 $users[$i]['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserId($users[$i]['accounts'][$j]['id'], $users[$i]['id']);
                 for ($k = 0; $k < count($users[$i]['accounts'][$j]['notes']); $k++) {
