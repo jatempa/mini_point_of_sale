@@ -2,6 +2,17 @@ let accountForm = {
   template: `
   <section>
     <div v-if="accountListLength > 0">
+      <div class="modal is-active" v-if="showModal">
+        <div class="modal-background"></div>      
+        <div class="modal-content">
+          <div class="box">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. At autem error obcaecati. Aliquam debitis incidunt inventore quia temporibus, voluptas. Delectus distinctio doloribus ea fugiat maiores natus necessitatibus nisi soluta ullam!
+            </p>
+          </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close" @click.prevent="closeModal"></button>      
+      </div>
       <div class="field">
         <div class="control">
           <table class="table">
@@ -9,14 +20,18 @@ let accountForm = {
               <tr>
                 <th>Cuenta</th>
                 <th>Nombre</th>
-                <th>Fecha</th>
+                <th>Apertura</th>
                 <th>Status</th>
                 <th>Cerrar</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="account in accountList" :key="account.id">
-                <td>{{ account.id }}</td>
+                <td>
+                  <a @click.prevent="showAccountDetails">
+                    {{ account.id }}
+                  </a>
+                </td>
                 <td>{{ account.name }}</td>
                 <td>{{ moment(account.checkin).format('h:mm:ss a') }}</td>
                 <td v-if=" account.status">
@@ -55,6 +70,11 @@ let accountForm = {
       </div>
     </div>   
   </section>`,
+  data() {
+    return {
+      showModal: false
+    }
+  },
   methods: {
     fetchAccounts () {
         axios.defaults.headers.common = {
@@ -94,6 +114,12 @@ let accountForm = {
              .catch(function (error) {
                 console.log(error);
              });
+    },
+    showAccountDetails() {
+        this.showModal = true;
+    },
+    closeModal() {
+        this.showModal = false;
     }
   },
   computed: {
