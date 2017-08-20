@@ -6,7 +6,7 @@ let accountForm = {
         <div class="modal-background"></div>      
         <div class="modal-content">
           <div class="box">
-            <h4>{{ accountTitle }}</h4>
+            <h4>Cuenta {{ accountTitle }}</h4>
             <table class="table">
               <thead>
                 <tr>
@@ -97,7 +97,7 @@ let accountForm = {
   data() {
     return {
       showModal: false,
-      accountTitle: 'Cuenta ',
+      accountTitle: '',
       accountDetails: []
     }
   },
@@ -143,7 +143,7 @@ let accountForm = {
         axios.get('/api/accounts/'+accountId+'/details')
             .then(response => {
                 this.accountDetails = response.data.account;
-                this.accountTitle += accountId;
+                this.accountTitle = accountId;
             })
             .catch(function (error) {
                 console.log(error);
@@ -151,7 +151,8 @@ let accountForm = {
     },
     closeModal() {
         this.showModal = false;
-        this.accountDetails = []
+        this.accountDetails = [];
+        this.accountTitle = '';
     }
   },
   computed: {

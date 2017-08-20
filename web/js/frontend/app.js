@@ -11,7 +11,7 @@ new Vue({
         <div class="col-md-3 col-md-offset-9 col-lg-3 col-lg-offset-9">
           <form style="margin-bottom: 25px">
             <button type="button" class="btn btn-primary btn-lg" @click="loadMorePendingNotes">
-              <i class="fa fa-refresh" aria-hidden="true"></i> Actualizar Comandas
+              <i class="fa fa-refresh" aria-hidden="true"></i> Obtener Comandas
             </button>
           </form>
         </div>  
