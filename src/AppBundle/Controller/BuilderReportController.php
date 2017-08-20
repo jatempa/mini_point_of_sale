@@ -855,27 +855,27 @@ class BuilderReportController extends Controller
         $chk = $this->get('security.authorization_checker');
         if ($chk->isGranted('ROLE_CAJERO')) {
             try {
-                $subtotal = 0;
-                $total_general = 0;
                 $em = $this->getDoctrine()->getManager();
                 // Get Users
                 $users = $em->getRepository('AppBundle:User')->findWaitersId();
                 // Configure printer
                 $connector = new FilePrintConnector("/dev/usb/lp0");
                 $printer = new Printer($connector);
-                $printer->setJustification(Printer::JUSTIFY_CENTER);
-                $printer->text("REPUBLIK\n");
-                $printer->text("Live Music");
-                $printer->feed(2);
-                $printer->text("Mesero(a)" . $users[0]['waiter'] . "\n");
-                $printer->feed(2);
-                $printer->setJustification(Printer::JUSTIFY_LEFT);
-                $printer->text(str_pad("Cantidad", 9));
-                $printer->text(str_pad("  Producto", 23));
-                $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
-                $printer->text(str_pad("_", 42,'_'));
-                $printer->text("\n");
+	        $printer->setJustification(Printer::JUSTIFY_CENTER);
+	        $printer->text("REPUBLIK\n");
+	        $printer->text("Live Music");
                 for ($i = 0; $i < count($users); $i++) {
+                    $subtotal = 0;
+                    $total_general = 0;
+	            $printer->feed(2);
+		    $printer->text("Mesero(a)" . $users[$i]['waiter'] . "\n");
+		    $printer->feed(2);
+		    $printer->setJustification(Printer::JUSTIFY_LEFT);
+		    $printer->text(str_pad("Cantidad", 9));
+		    $printer->text(str_pad("  Producto", 23));
+		    $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
+		    $printer->text(str_pad("_", 42,'_'));
+		    $printer->text("\n");
                     $users[$i]['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccountsByDate($users[$i]['id']);
                     for ($j = 0; $j < count($users[$i]['accounts']); $j++) {
                         $users[$i]['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserId($users[$i]['accounts'][$j]['id'], $users[$i]['id']);
@@ -892,28 +892,30 @@ class BuilderReportController extends Controller
                             }
                         }
                     }
+                    $printer->text(str_pad("_", 42,'_'));
+                    $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
+                    $servicio = $subtotal * 0.05;
+                    $printer->text(str_pad("Piso 5% $", 32,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
+                    $total = $subtotal + $servicio;
+                    $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
+                    $printer->feed(2);
+                    $total_general += $total;
+                    $printer->setJustification(Printer::JUSTIFY_CENTER);
+                    $printer->text(str_pad("Total a pagar $", 20,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad(number_format($total_general,2, '.', ','),10,' ',STR_PAD_LEFT));
                 }
-                $printer->text(str_pad("_", 42,'_'));
-                $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
-                $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
-                $servicio = $subtotal * 0.05;
-                $printer->text(str_pad("Piso 5% $", 32,' ', STR_PAD_LEFT));
-                $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
-                $total = $subtotal + $servicio;
-                $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
-                $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
-                $printer->feed(2);
-                $total_general += $total;
-                $printer->setJustification(Printer::JUSTIFY_CENTER);
-                $printer->text(str_pad("Total a pagar $", 20,' ', STR_PAD_LEFT));
-                $printer->text(str_pad(number_format($total_general,2, '.', ','),10,' ',STR_PAD_LEFT));
                 $printer->feed(2);
                 $printer->cut();
-                $printer->cloe();
+                $printer->close();
             } catch (Exception $e) {
                 throw $e;
             }
         }
+
+        return $this->redirectToRoute('corte');
     }
 
     /**
@@ -925,8 +927,6 @@ class BuilderReportController extends Controller
         $chk = $this->get('security.authorization_checker');
         if ($chk->isGranted('ROLE_CAJERO')) {
             try {
-                $subtotal = 0;
-                $total_general = 0;
                 $em = $this->getDoctrine()->getManager();
                 // Get Users
                 $users = $em->getRepository('AppBundle:User')->findWaitersId();
@@ -936,47 +936,52 @@ class BuilderReportController extends Controller
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text("REPUBLIK\n");
                 $printer->text("Live Music");
-                $printer->feed(2);
-                $printer->text("Mesero(a)" . $users[0]['waiter'] . "\n");
-                $printer->feed(2);
-                $printer->setJustification(Printer::JUSTIFY_LEFT);
-                $printer->text(str_pad("Cantidad", 9));
-                $printer->text(str_pad("  Producto", 23));
-                $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
-                $printer->text(str_pad("_", 42,'_'));
-                $printer->text("\n");
                 for ($i = 0; $i < count($users); $i++) {
+                    $subtotal = 0;
+                    $total_general = 0;
+                    $printer->feed(2);
+                    $printer->text("Mesero(a)" . $users[$i]['waiter'] . "\n");
+		    $printer->feed(2);
+		    $printer->setJustification(Printer::JUSTIFY_LEFT);
+		    $printer->text(str_pad("Cantidad", 9));
+		    $printer->text(str_pad("  Producto", 23));
+		    $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
+		    $printer->text(str_pad("_", 42,'_'));
+		    $printer->text("\n");
+
                     $users[$i]['products'] = $em->getRepository('AppBundle:Account')->findAllAccountProductsByDate($users[$i]['id']);
                     for ($j = 0; $j < count($users[$i]['products']); $j++) {
                         if ($users[$i]['products'][$j]['price'] > 0) {
                             $printer->text(str_pad($users[$i]['products'][$j]['amount'], 9,' ', STR_PAD_LEFT));
-                            $printer->text(str_pad('  ' . utf8_decode($users[$i]['products'][$j]['product']), 23));
+                            $printer->text(str_pad('  ' . utf8_decode($users[$i]['products'][$j]['name']), 23));
                             $printer->text(str_pad(number_format($users[$i]['products'][$j]['amount'] * $users[$i]['products'][$j]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
                             $printer->text("\n");
                             $subtotal += $users[$i]['products'][$j]['amount'] * $users[$i]['products'][$j]['price'];
                         }
                     }
+                    $printer->text(str_pad("_", 42,'_'));
+                    $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
+                    $servicio = $subtotal * 0.05;
+                    $printer->text(str_pad("Piso 5% $", 32,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
+                    $total = $subtotal + $servicio;
+                    $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
+                    $printer->feed(2);
+                    $total_general += $total;
+                    $printer->setJustification(Printer::JUSTIFY_CENTER);
+                    $printer->text(str_pad("Total a pagar $", 20,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad(number_format($total_general,2, '.', ','),10,' ',STR_PAD_LEFT));
                 }
-                $printer->text(str_pad("_", 42,'_'));
-                $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
-                $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
-                $servicio = $subtotal * 0.05;
-                $printer->text(str_pad("Piso 5% $", 32,' ', STR_PAD_LEFT));
-                $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
-                $total = $subtotal + $servicio;
-                $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
-                $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
-                $printer->feed(2);
-                $total_general += $total;
-                $printer->setJustification(Printer::JUSTIFY_CENTER);
-                $printer->text(str_pad("Total a pagar $", 20,' ', STR_PAD_LEFT));
-                $printer->text(str_pad(number_format($total_general,2, '.', ','),10,' ',STR_PAD_LEFT));
                 $printer->feed(2);
                 $printer->cut();
-                $printer->cloe();
+                $printer->close();
             } catch (Exception $e) {
                 throw $e;
             }
         }
+
+        return $this->redirectToRoute('corte');
     }
 }

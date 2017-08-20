@@ -106,7 +106,7 @@ class AccountAPIController extends Controller
                 $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
                 $printer->feed(2);
                 $printer->cut();
-                $printer->cloe();
+                $printer->close();
             } catch (Exception $e) {
                 throw $e;
             }
