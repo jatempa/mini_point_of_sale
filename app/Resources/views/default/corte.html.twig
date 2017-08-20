@@ -2,11 +2,17 @@
 
 {% block body %}
   <h1 class="title">Reporte de ventas de meseros</h1>
-  <a class="button is-medium" href="{{ path('print_all_accounts') }}">
+  <a class="button is-medium" href="{{ path('print_all_details_accounts') }}">
     <span class="icon">
       <i class="fa fa-print"></i>
     </span>
-    <span>Imprimir</span>
+    <span>Imprimir 1</span>
+  </a>
+  <a class="button is-medium" href="{{ path('print_all_products_accounts') }}">
+    <span class="icon">
+      <i class="fa fa-print"></i>
+    </span>
+    <span>Imprimir 2</span>
   </a>
   <a class="button is-medium" href="{{ path('export_sales_account_waiter_day_excel') }}">
     <span class="icon">

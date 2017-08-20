@@ -40,7 +40,7 @@ class AccountRepository extends EntityRepository
             ->orderBy('a.id','desc');
 
         $dql->setParameter('id', $id);
-        $dql->setParameter('db', new \DateTime('-12 hours'));
+        $dql->setParameter('db', new \DateTime('-24 hours'));
         $dql->setParameter('da', new \DateTime('+12 hours'));
 
         return $dql->getQuery()->getResult();
@@ -81,6 +81,29 @@ class AccountRepository extends EntityRepository
 
         $dql->setParameter('accountId', $accountId);
         $dql->setParameter('userId', $userId);
+
+        return $dql->getQuery()->getResult();
+    }
+
+    public function findAllAccountProductsByDate($id)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('p.name', 'p.price', 'sum(np.amount) as amount')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.product', 'p')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('n.account', 'a')
+            ->where('a.user = :id')
+            ->andWhere('a.checkin >= :db')
+            ->andWhere('a.checkin < :da')
+            ->andWhere('p.price > 0')
+            ->orderBy('p.id')
+            ->groupBy('p.id');
+
+        $dql->setParameter('id', $id);
+        $dql->setParameter('db', new \DateTime('-12 hours'));
+        $dql->setParameter('da', new \DateTime('+12 hours'));
 
         return $dql->getQuery()->getResult();
     }
