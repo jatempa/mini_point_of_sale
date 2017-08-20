@@ -8,6 +8,8 @@
 
 namespace AppBundle\Controller;
 
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -448,38 +450,29 @@ class BuilderReportController extends Controller
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Cuenta");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Fecha/Hora Apertura Cuenta");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Clausura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Fecha/Hora Apertura Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Fecha/Hora Clausura Comanda");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H1', "Tipo de producto");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I1', "Cantidad");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J1', "Total");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Tipo de producto");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Cantidad");
+        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Total");
 
         for ($i=0; $i < count($sales); $i++) {
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A'.((string)$i+2), $sales[$i]['waiter']);
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B'.((string)$i+2), $sales[$i]['account']);
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C'.((string)$i+2), $sales[$i]['acccheckin']);
             $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D'.((string)$i+2), $sales[$i]['acccheckout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['numberNote']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['checkin']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['checkout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('H'.((string)$i+2), $sales[$i]['category']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('I'.((string)$i+2), $sales[$i]['amount']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('J'.((string)$i+2), $sales[$i]['total']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['category']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['amount']);
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['total']);
         }
 
         // Dimensions
         $phpExcelObject->getActiveSheet()->setTitle('Simple');
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setWidth(27);
         $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setWidth(12);
+        $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setWidth(29);
         $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setWidth(29);
         $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setWidth(29);
         $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setWidth(12);
         $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setWidth(29);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setWidth(29);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('I')->setWidth(18);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('J')->setWidth(15);
         // Style
         $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
         $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
@@ -495,12 +488,6 @@ class BuilderReportController extends Controller
         $phpExcelObject->getActiveSheet()->getStyle('F1')->getFont()->setBold(true);
         $phpExcelObject->getActiveSheet()->getStyle('G1')->getFont()->setSize(12);
         $phpExcelObject->getActiveSheet()->getStyle('G1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('H1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('H1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('I1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('I1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('J1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('J1')->getFont()->setBold(true);
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $phpExcelObject->setActiveSheetIndex(0);
@@ -857,5 +844,75 @@ class BuilderReportController extends Controller
         $response->headers->set('Content-Disposition', $dispositionHeader);
 
         return $response;
+    }
+
+    /**
+     * @Route("/report/accounts/all", name="print_all_accounts")
+     * @Method("GET")
+     */
+    public function getAllAccountsByWaiterAction()
+    {
+        $chk = $this->get('security.authorization_checker');
+        if ($chk->isGranted('ROLE_CAJERO')) {
+            try {
+                $subtotal = 0;
+                $total_general = 0;
+                $em = $this->getDoctrine()->getManager();
+                // Get Users
+                $users = $em->getRepository('AppBundle:User')->findWaitersId();
+                // Configure printer
+                $connector = new FilePrintConnector("/dev/usb/lp0");
+                $printer = new Printer($connector);
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->text("REPUBLIK\n");
+                $printer->text("Live Music");
+                $printer->feed(2);
+                $printer->text("Mesero(a)" . $users[0]['waiter'] . "\n");
+                $printer->feed(2);
+                $printer->setJustification(Printer::JUSTIFY_LEFT);
+                $printer->text(str_pad("Cantidad", 9));
+                $printer->text(str_pad("  Producto", 23));
+                $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
+                $printer->text(str_pad("_", 42,'_'));
+                $printer->text("\n");
+                for ($i = 0; $i < count($users); $i++) {
+                    $users[$i]['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccountsByDate($users[$i]['id']);
+                    for ($j = 0; $j < count($users[$i]['accounts']); $j++) {
+                        $users[$i]['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserId($users[$i]['accounts'][$j]['id'], $users[$i]['id']);
+                        for ($k = 0; $k < count($users[$i]['accounts'][$j]['notes']); $k++) {
+                            $users[$i]['accounts'][$j]['notes'][$k]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($users[$i]['id'], $users[$i]['accounts'][$j]['notes'][$k]['numberNote']);
+                            for ($l = 0; $l < count($users[$i]['accounts'][$j]['notes'][$k]['products']); $l++) {
+                                if ($users[$i]['accounts'][$j]['notes'][$k]['products'][$l]['price'] > 0) {
+                                    $printer->text(str_pad($users[$i]['accounts'][$j]['notes'][$k]['products'][$l]['amount'], 9,' ', STR_PAD_LEFT));
+                                    $printer->text(str_pad('  ' . utf8_decode($users[$i]['accounts'][$j]['notes'][$k]['products'][$l]['product']), 23));
+                                    $printer->text(str_pad(number_format($users[$i]['accounts'][$j]['notes'][$k]['products'][$l]['amount'] * $users[$i]['accounts'][$j]['notes'][$k]['products'][$l]['price'], 2, '.', ','), 10, ' ', STR_PAD_LEFT));
+                                    $printer->text("\n");
+                                    $subtotal += $users[$i]['accounts'][$j]['notes'][$k]['products'][$l]['amount'] * $users[$i]['accounts'][$j]['notes'][$k]['products'][$l]['price'];
+                                }
+                            }
+                        }
+                    }
+                }
+                $printer->text(str_pad("_", 42,'_'));
+                $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $servicio = $subtotal * 0.05;
+                $printer->text(str_pad("Piso 5% $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($servicio,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $total = $subtotal + $servicio;
+                $printer->text(str_pad("Total $", 32,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $printer->feed(2);
+                $total_general += $total;
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->text(str_pad("Total a pagar $", 20,' ', STR_PAD_LEFT));
+                $printer->text(str_pad(number_format($total_general,2, '.', ','),10,' ',STR_PAD_LEFT));
+                $printer->feed(2);
+                $printer->cut();
+                $printer->cloe();
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
     }
 }

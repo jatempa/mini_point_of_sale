@@ -27,7 +27,7 @@ class UserRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id')
+        $dql->select('u.id', 'concat(u.name, \' \', u.firstLastName) as waiter')
             ->from('AppBundle:User', 'u')
             ->where('u.roles like \'%MESERO%\'');
 
