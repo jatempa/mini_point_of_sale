@@ -18,15 +18,19 @@
         <div class="content">
           <form>
             <account-form></account-form>
-            <div class="field is-grouped" style="margin-top: 20px;">
-              <div class="control">
-                <button class="button is-info" @click.prevent="createAccount">
-                  <span class="icon is-normal">
-                    <i class="fa fa-save"></i>
-                  </span>
-                  <span>Crear Cuenta</span>
-                </button>
-              </div>
+            <div class="field" style="margin-top: 20px;">
+              <button class="button is-info" @click.prevent="createAccount">
+                <span class="icon is-normal">
+                  <i class="fa fa-save"></i>
+                </span>
+                <span>Crear Cuenta</span>
+              </button>
+              <button class="button" @click.prevent="cleanForm">
+				<span class="icon is-normal">
+				  <i class="fa fa-remove"></i>
+				</span>
+                <span>Cancelar</span>
+              </button>
             </div>
           </form>
         </div>
