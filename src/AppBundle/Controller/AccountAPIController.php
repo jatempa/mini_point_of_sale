@@ -192,37 +192,4 @@ class AccountAPIController extends Controller
 
         return new Response('This is not ajax!', 400);
     }
-
-    /**
-     * @Put("/accounts/close")
-     */
-    public function putCloseAccountAction(Request $request)
-    {
-        if ($request->isXmlHttpRequest()) {
-            $result = null;
-            // Get data from client
-            $accountId = $request->request->get('id');
-            $userId = $this->getUser()->getId();
-            $selectedTable = $request->request->get('mesaId');
-            // Prepare ORM
-            $em = $this->getDoctrine()->getManager();
-            $em->getConnection()->beginTransaction(); // suspend auto-commit
-            try {
-                $account = $em->getRepository('AppBundle:Account')->findOneById($accountId);
-                $account->setCheckout(new \DateTime('now'));
-                $account->setStatus(false);
-                $em->flush();
-
-                $em->getConnection()->commit();
-                $result = "success";
-            } catch (Exception $e) {
-                $em->getConnection()->rollBack();
-                throw $e;
-            }
-
-            return new JsonResponse($result);
-        }
-
-        return new Response('This is not ajax!', 400);
-    }
 }

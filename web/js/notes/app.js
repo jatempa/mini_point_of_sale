@@ -137,7 +137,7 @@ let productList = {
       <label class="label">Selecciona una cuenta</label>
       <div class="select">
         <select v-model="selectedAccount">
-          <option v-for="account in getAccounts" :value="account.id" v-if="account.status">
+          <option v-for="account in getAccounts" :value="account.id">
            Cta. {{ account.id }} {{ account.name }}
           </option>
         </select>
@@ -192,7 +192,7 @@ let productList = {
   },
   computed: {
     getAccounts () {
-      return this.$store.state.accounts.filter((a) => a.status === true);
+      return this.$store.state.accounts;
     },
     getCarProducts () {
       return this.$store.state.carProducts;

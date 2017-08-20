@@ -45,8 +45,7 @@ let accountForm = {
                 <th>Cta.</th>
                 <th>Mesa</th>
                 <th>Apertura</th>
-                <th>Status</th>
-                <th>Cerrar</th>
+                <th>Imprimir</th>
               </tr>
             </thead>
             <tbody>
@@ -58,20 +57,7 @@ let accountForm = {
                 </td>
                 <td>{{ account.name }}</td>
                 <td>{{ moment(account.checkin).format('h:mm:ss a') }}</td>
-                <td v-if=" account.status">
-                  <span class="tag is-primary">Abierta</span>
-                </td>
-                <td v-else>
-                  <span  class="tag is-danger">Cerrada</span>
-                </td>
-                <td v-if="account.status">
-                  <a class="link" @click.prevent="closeAccount(account)">
-                    <span class="icon">
-                      <i class="fa fa-check-circle-o"></i>
-                    </span>
-                  </a>
-                </td>
-                <td v-else>
+                <td>
                   <a class="link" @click.prevent="printAccount(account)">
                     <span class="icon">
                       <i class="fa fa-print"></i>
@@ -110,23 +96,6 @@ let accountForm = {
             .catch(function (error) {
                 console.log(error);
             });
-    },
-    closeAccount(account) {
-        axios.defaults.headers.common = {
-            'X-Requested-With': 'XMLHttpRequest',
-        };
-
-        axios.put('/api/accounts/close', account)
-             .then(function (response) {
-                if (response.data === 'success') {
-                    swal('¡Correcto!', 'Cuenta cerrada satisfactoriamente', 'success');
-                }
-             })
-             .catch(function (error) {
-                console.log(error);
-                swal('Error', 'Esta cuenta no pudo ser cerrada en el sistema', 'error')
-             });
-        this.fetchAccounts();
     },
     printAccount(account) {
         axios.get('/api/accounts/' + account.id)
