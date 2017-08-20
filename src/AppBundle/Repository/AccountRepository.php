@@ -76,6 +76,7 @@ class AccountRepository extends EntityRepository
             ->where('n.status = \'Entregado\'')
             ->andWhere('a.id = :accountId')
             ->andWhere('a.user = :userId')
+            ->andWhere('p.price > 0')
             ->groupBy('p.id');
 
         $dql->setParameter('accountId', $accountId);
