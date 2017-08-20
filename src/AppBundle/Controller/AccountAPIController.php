@@ -94,7 +94,7 @@ class AccountAPIController extends Controller
                 // Get User Id
                 $userId = $this->getUser();
                 $userId->getId();
-                $user = [];
+                $user = Array();
 
                 $em = $this->getDoctrine()->getManager();
                 $user['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccounts($userId);
@@ -216,6 +216,28 @@ class AccountAPIController extends Controller
         }
 
         $view = View::create()->setData(array("accounts" => $accounts));
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
+     * @Get("/accounts/{accountId}/details")
+     */
+    public function getDetailsByAccountIdAction($accountId)
+    {
+        $chk = $this->get('security.authorization_checker');
+        // initialize variable
+        $accounts = null;
+
+        if ($chk->isGranted('ROLE_MESERO') || $chk->isGranted('ROLE_PALOMASHOTS')) {
+            $em = $this->getDoctrine()->getManager();
+            // Get User Id
+            $userId = $this->getUser();
+            $userId->getId();
+            $account = $em->getRepository('AppBundle:Account')->findDetailsByAccountId($accountId, $userId);
+        }
+
+        $view = View::create()->setData(array("account" => $account));
 
         return $this->get('fos_rest.view_handler')->handle($view);
     }

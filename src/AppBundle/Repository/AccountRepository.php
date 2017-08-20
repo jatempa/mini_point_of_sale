@@ -63,4 +63,24 @@ class AccountRepository extends EntityRepository
 
         return $dql->getQuery()->getResult();
     }
+
+    public function findDetailsByAccountId($accountId, $userId)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('p.name', 'p.price', 'sum(np.amount) as amount')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.product', 'p')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('n.account', 'a')
+            ->where('n.status = \'Entregado\'')
+            ->andWhere('a.id = :accountId')
+            ->andWhere('a.user = :userId')
+            ->groupBy('p.id');
+
+        $dql->setParameter('accountId', $accountId);
+        $dql->setParameter('userId', $userId);
+
+        return $dql->getQuery()->getResult();
+    }
 }

@@ -6,9 +6,33 @@ let accountForm = {
         <div class="modal-background"></div>      
         <div class="modal-content">
           <div class="box">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. At autem error obcaecati. Aliquam debitis incidunt inventore quia temporibus, voluptas. Delectus distinctio doloribus ea fugiat maiores natus necessitatibus nisi soluta ullam!
-            </p>
+            <h4>{{ accountTitle }}</h4>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Producto</th>
+                  <th>Precio</th>
+                  <th>Cant.</th>
+                  <th>Subt.</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th colspan="4">Total $</th>
+                  <th>{{ totalAccount }}</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr v-for="(product, index) in accountDetails" v-if="product.price > 0" :key="product.id">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ product.name }}</td>
+                  <td>{{ product.price }}</td>
+                  <td>{{ product.amount }}</td>
+                  <td>{{ product.price*product.amount }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <button class="modal-close is-large" aria-label="close" @click.prevent="closeModal"></button>      
@@ -28,7 +52,7 @@ let accountForm = {
             <tbody>
               <tr v-for="account in accountList" :key="account.id">
                 <td>
-                  <a @click.prevent="showAccountDetails">
+                  <a @click.prevent="showAccountDetails(account.id)">
                     {{ account.id }}
                   </a>
                 </td>
@@ -72,15 +96,13 @@ let accountForm = {
   </section>`,
   data() {
     return {
-      showModal: false
+      showModal: false,
+      accountTitle: 'Cuenta ',
+      accountDetails: []
     }
   },
   methods: {
     fetchAccounts () {
-        axios.defaults.headers.common = {
-            'X-Requested-With': 'XMLHttpRequest',
-        };
-
         axios.get('/api/accounts/date')
             .then(response => {
                 this.$store.commit('updateAccountList', response.data.accounts);
@@ -115,11 +137,21 @@ let accountForm = {
                 console.log(error);
              });
     },
-    showAccountDetails() {
+    showAccountDetails(id) {
         this.showModal = true;
+        var accountId = parseInt(id);
+        axios.get('/api/accounts/'+accountId+'/details')
+            .then(response => {
+                this.accountDetails = response.data.account;
+                this.accountTitle += accountId;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     },
     closeModal() {
         this.showModal = false;
+        this.accountDetails = []
     }
   },
   computed: {
@@ -149,6 +181,9 @@ let accountForm = {
     },
     accountListLength() {
       return this.$store.state.accountList.length;
+    },
+    totalAccount() {
+        return this.accountDetails.reduce((acc, x) => acc + (x.price * x.amount), 0)
     }
   }
 };
