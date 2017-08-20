@@ -21,7 +21,7 @@ new Vue({
           <div class="col-md-4 col-lg-4" v-for="n in getPendingNotes" :key="n.id">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title"><strong>Mesero {{ n.userId }} </strong> {{ n.fullname }} / Comanda {{ n.numberNote }}</h3>
+                <h3 class="panel-title"><strong>Mesero {{ n.userId }} - Comanda {{ n.numberNote }}</strong> / {{ n.fullname }}</h3>
               </div>
               <div class="panel-body">
                 <ul>
