@@ -23,7 +23,7 @@ class AccountRepository extends EntityRepository
             ->orderBy('a.id','desc');
 
         $dql->setParameter('id', $id);
-        $dql->setParameter('db', new \DateTime('-26 hours'));
+        $dql->setParameter('db', new \DateTime('-12 hours'));
 
         return $dql->getQuery()->getResult();
     }
@@ -40,7 +40,7 @@ class AccountRepository extends EntityRepository
             ->orderBy('a.id','desc');
 
         $dql->setParameter('id', $id);
-        $dql->setParameter('db', new \DateTime('-26 hours'));
+        $dql->setParameter('db', new \DateTime('-12 hours'));
         $dql->setParameter('da', new \DateTime('+12 hours'));
 
         return $dql->getQuery()->getResult();
@@ -103,7 +103,7 @@ class AccountRepository extends EntityRepository
             ->groupBy('p.id');
 
         $dql->setParameter('id', $id);
-        $dql->setParameter('db', new \DateTime('-26 hours'));
+        $dql->setParameter('db', new \DateTime('-12 hours'));
         $dql->setParameter('da', new \DateTime('+12 hours'));
 
         return $dql->getQuery()->getResult();
