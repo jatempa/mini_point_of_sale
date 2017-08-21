@@ -853,7 +853,7 @@ class BuilderReportController extends Controller
     public function getAllAccountsByWaiterAction()
     {
         $chk = $this->get('security.authorization_checker');
-        if ($chk->isGranted('ROLE_CAJERO')) {
+        if ($chk->isGranted('ROLE_ADMIN') || $chk->isGranted('ROLE_CAJERO')) {
             try {
                 $em = $this->getDoctrine()->getManager();
                 // Get Users
@@ -861,21 +861,21 @@ class BuilderReportController extends Controller
                 // Configure printer
                 $connector = new FilePrintConnector("/dev/usb/lp0");
                 $printer = new Printer($connector);
-	        $printer->setJustification(Printer::JUSTIFY_CENTER);
-	        $printer->text("REPUBLIK\n");
-	        $printer->text("Live Music");
+                $printer->setJustification(Printer::JUSTIFY_CENTER);
+                $printer->text("REPUBLIK\n");
+                $printer->text("Live Music");
                 for ($i = 0; $i < count($users); $i++) {
                     $subtotal = 0;
                     $total_general = 0;
-	            $printer->feed(2);
-		    $printer->text("Mesero(a)" . $users[$i]['waiter'] . "\n");
-		    $printer->feed(2);
-		    $printer->setJustification(Printer::JUSTIFY_LEFT);
-		    $printer->text(str_pad("Cantidad", 9));
-		    $printer->text(str_pad("  Producto", 23));
-		    $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
-		    $printer->text(str_pad("_", 42,'_'));
-		    $printer->text("\n");
+                    $printer->feed(2);
+                    $printer->text("Mesero(a)" . $users[$i]['waiter'] . "\n");
+                    $printer->feed(2);
+                    $printer->setJustification(Printer::JUSTIFY_LEFT);
+                    $printer->text(str_pad("Cantidad", 9));
+                    $printer->text(str_pad("  Producto", 23));
+                    $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad("_", 42,'_'));
+                    $printer->text("\n");
                     $users[$i]['accounts'] = $em->getRepository('AppBundle:Account')->findAllAccountsByDate($users[$i]['id']);
                     for ($j = 0; $j < count($users[$i]['accounts']); $j++) {
                         $users[$i]['accounts'][$j]['notes'] = $em->getRepository('AppBundle:Account')->findAccountByUserId($users[$i]['accounts'][$j]['id'], $users[$i]['id']);
@@ -925,7 +925,7 @@ class BuilderReportController extends Controller
     public function getAllAccountProductsByDateAction()
     {
         $chk = $this->get('security.authorization_checker');
-        if ($chk->isGranted('ROLE_CAJERO')) {
+        if ($chk->isGranted('ROLE_ADMIN') || $chk->isGranted('ROLE_CAJERO')) {
             try {
                 $em = $this->getDoctrine()->getManager();
                 // Get Users
@@ -941,13 +941,13 @@ class BuilderReportController extends Controller
                     $total_general = 0;
                     $printer->feed(2);
                     $printer->text("Mesero(a)" . $users[$i]['waiter'] . "\n");
-		    $printer->feed(2);
-		    $printer->setJustification(Printer::JUSTIFY_LEFT);
-		    $printer->text(str_pad("Cantidad", 9));
-		    $printer->text(str_pad("  Producto", 23));
-		    $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
-		    $printer->text(str_pad("_", 42,'_'));
-		    $printer->text("\n");
+                    $printer->feed(2);
+                    $printer->setJustification(Printer::JUSTIFY_LEFT);
+                    $printer->text(str_pad("Cantidad", 9));
+                    $printer->text(str_pad("  Producto", 23));
+                    $printer->text(str_pad("Total", 10,' ', STR_PAD_LEFT));
+                    $printer->text(str_pad("_", 42,'_'));
+                    $printer->text("\n");
 
                     $users[$i]['products'] = $em->getRepository('AppBundle:Account')->findAllAccountProductsByDate($users[$i]['id']);
                     for ($j = 0; $j < count($users[$i]['products']); $j++) {
