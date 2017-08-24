@@ -35,8 +35,8 @@ class BuilderReportController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasMeseroxCategoriaProducto")
-            ->setSubject("VentasMeseroxCategoriaProducto");
+            ->setTitle("VentasMeseroxCategoriaProductoDiario")
+            ->setSubject("VentasMeseroxCategoriaProductoDiario");
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Tipo de producto");
@@ -76,7 +76,7 @@ class BuilderReportController extends Controller
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasMeseroxCategoriaProducto.xls'
+            'VentasMeseroxCategoriaProductoDiario.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -103,8 +103,8 @@ class BuilderReportController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasMeseroxCategoriaProducto")
-            ->setSubject("VentasMeseroxCategoriaProducto");
+            ->setTitle("VentasMeseroxCategoriaProductoSemanal")
+            ->setSubject("VentasMeseroxCategoriaProductoSemanal");
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Tipo de producto");
@@ -144,7 +144,7 @@ class BuilderReportController extends Controller
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasMeseroxCategoriaProducto.xls'
+            'VentasMeseroxCategoriaProductoSemanal.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -171,8 +171,8 @@ class BuilderReportController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasMeseroxCategoriaProducto")
-            ->setSubject("VentasMeseroxCategoriaProducto");
+            ->setTitle("VentasMeseroxCategoriaProductoMensual")
+            ->setSubject("VentasMeseroxCategoriaProductoMensual");
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Tipo de producto");
@@ -212,7 +212,7 @@ class BuilderReportController extends Controller
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasMeseroxCategoriaProducto.xls'
+            'VentasMeseroxCategoriaProductoMensual.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -239,8 +239,8 @@ class BuilderReportController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasMeseroxProducto")
-            ->setSubject("VentasMeseroxProducto");
+            ->setTitle("VentasMeseroxProductoDiario")
+            ->setSubject("VentasMeseroxProductoDiario");
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Producto");
@@ -280,7 +280,7 @@ class BuilderReportController extends Controller
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasMeseroxProducto.xls'
+            'VentasMeseroxProductoDiario.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -307,8 +307,8 @@ class BuilderReportController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasMeseroxProducto")
-            ->setSubject("VentasMeseroxProducto");
+            ->setTitle("VentasMeseroxProductoSemanal")
+            ->setSubject("VentasMeseroxProductoSemanal");
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Producto");
@@ -348,7 +348,7 @@ class BuilderReportController extends Controller
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasMeseroxProducto.xls'
+            'VentasMeseroxProductoSemanal.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -375,8 +375,8 @@ class BuilderReportController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasMeseroxProducto")
-            ->setSubject("VentasMeseroxProducto");
+            ->setTitle("VentasMeseroxProductoMensual")
+            ->setSubject("VentasMeseroxProductoMensual");
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Producto");
@@ -416,7 +416,7 @@ class BuilderReportController extends Controller
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasMeseroxProducto.xls'
+            'VentasMeseroxProductoMensual.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -432,81 +432,81 @@ class BuilderReportController extends Controller
      */
     public function getSalesByAccountWaiterDayAction()
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$this->get('security.authorization_checker')->isGranted('ROLE_CAJERO')) {
-            throw $this->createAccessDeniedException();
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !$this->get('security.authorization_checker')->isGranted('ROLE_CAJERO')) {
+
+
+            $em = $this->getDoctrine()->getManager();
+            $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByAccountWaiter(new \DateTime('-1 day'));
+
+            // ask the service for a Excel5
+            $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+
+            $phpExcelObject->getProperties()->setCreator("Admin")
+                ->setTitle("VentasxCuentaMeseroDiario")
+                ->setSubject("VentasxCuentaMeseroDiario");
+
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Cuenta");
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Fecha/Hora Apertura Cuenta");
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Clausura Cuenta");
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Tipo de producto");
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Cantidad");
+            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Total");
+
+            for ($i = 0; $i < count($sales); $i++) {
+                $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A' . ((string)$i + 2), $sales[$i]['waiter']);
+                $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B' . ((string)$i + 2), $sales[$i]['account']);
+                $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C' . ((string)$i + 2), $sales[$i]['acccheckin']);
+                $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D' . ((string)$i + 2), $sales[$i]['acccheckout']);
+                $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E' . ((string)$i + 2), $sales[$i]['category']);
+                $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F' . ((string)$i + 2), $sales[$i]['amount']);
+                $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G' . ((string)$i + 2), $sales[$i]['total']);
+            }
+
+            // Dimensions
+            $phpExcelObject->getActiveSheet()->setTitle('Simple');
+            $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setWidth(27);
+            $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+            $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setWidth(29);
+            $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setWidth(29);
+            $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setWidth(29);
+            $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+            $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setWidth(29);
+            // Style
+            $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
+            $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+            $phpExcelObject->getActiveSheet()->getStyle('B1')->getFont()->setSize(12);
+            $phpExcelObject->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
+            $phpExcelObject->getActiveSheet()->getStyle('C1')->getFont()->setSize(12);
+            $phpExcelObject->getActiveSheet()->getStyle('C1')->getFont()->setBold(true);
+            $phpExcelObject->getActiveSheet()->getStyle('D1')->getFont()->setSize(12);
+            $phpExcelObject->getActiveSheet()->getStyle('D1')->getFont()->setBold(true);
+            $phpExcelObject->getActiveSheet()->getStyle('E1')->getFont()->setSize(12);
+            $phpExcelObject->getActiveSheet()->getStyle('E1')->getFont()->setBold(true);
+            $phpExcelObject->getActiveSheet()->getStyle('F1')->getFont()->setSize(12);
+            $phpExcelObject->getActiveSheet()->getStyle('F1')->getFont()->setBold(true);
+            $phpExcelObject->getActiveSheet()->getStyle('G1')->getFont()->setSize(12);
+            $phpExcelObject->getActiveSheet()->getStyle('G1')->getFont()->setBold(true);
+
+            // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+            $phpExcelObject->setActiveSheetIndex(0);
+
+            // create the writer
+            $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+            // create the response
+            $response = $this->get('phpexcel')->createStreamedResponse($writer);
+            // adding headers
+            $dispositionHeader = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                'VentasxCuentaMeseroDiario.xls'
+            );
+            $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+            $response->headers->set('Pragma', 'public');
+            $response->headers->set('Cache-Control', 'maxage=1');
+            $response->headers->set('Content-Disposition', $dispositionHeader);
+
+            return $response;
         }
-
-        $em = $this->getDoctrine()->getManager();
-        $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByAccountWaiter(new \DateTime('-1 day'));
-
-        // ask the service for a Excel5
-        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
-
-        $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasxCuentaMesero")
-            ->setSubject("VentasxCuentaMesero");
-
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C1', "Fecha/Hora Apertura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D1', "Fecha/Hora Clausura Cuenta");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E1', "Tipo de producto");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F1', "Cantidad");
-        $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G1', "Total");
-
-        for ($i=0; $i < count($sales); $i++) {
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A'.((string)$i+2), $sales[$i]['waiter']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B'.((string)$i+2), $sales[$i]['account']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('C'.((string)$i+2), $sales[$i]['acccheckin']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('D'.((string)$i+2), $sales[$i]['acccheckout']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('E'.((string)$i+2), $sales[$i]['category']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('F'.((string)$i+2), $sales[$i]['amount']);
-            $phpExcelObject->setActiveSheetIndex(0)->setCellValue('G'.((string)$i+2), $sales[$i]['total']);
-        }
-
-        // Dimensions
-        $phpExcelObject->getActiveSheet()->setTitle('Simple');
-        $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setWidth(27);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setWidth(29);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setWidth(29);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setWidth(29);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setWidth(12);
-        $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setWidth(29);
-        // Style
-        $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('B1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('C1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('C1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('D1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('D1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('E1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('E1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('F1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('F1')->getFont()->setBold(true);
-        $phpExcelObject->getActiveSheet()->getStyle('G1')->getFont()->setSize(12);
-        $phpExcelObject->getActiveSheet()->getStyle('G1')->getFont()->setBold(true);
-
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-        $phpExcelObject->setActiveSheetIndex(0);
-
-        // create the writer
-        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
-        // create the response
-        $response = $this->get('phpexcel')->createStreamedResponse($writer);
-        // adding headers
-        $dispositionHeader = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasxCuentaMesero.xls'
-        );
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
-        $response->headers->set('Content-Disposition', $dispositionHeader);
-
-        return $response;
     }
 
     /**
@@ -526,8 +526,8 @@ class BuilderReportController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasxCuentaMesero")
-            ->setSubject("VentasxCuentaMesero");
+            ->setTitle("VentasxCuentaMeseroSemanal")
+            ->setSubject("VentasxCuentaMeseroSemanal");
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Cuenta");
@@ -597,7 +597,7 @@ class BuilderReportController extends Controller
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasxCuentaMesero.xls'
+            'VentasxCuentaMeseroSemanal.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -624,8 +624,8 @@ class BuilderReportController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("Admin")
-            ->setTitle("VentasxCuentaMesero")
-            ->setSubject("VentasxCuentaMesero");
+            ->setTitle("VentasxCuentaMeseroMensual")
+            ->setSubject("VentasxCuentaMeseroMensual");
 
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('A1', "Mesero");
         $phpExcelObject->setActiveSheetIndex(0)->setCellValue('B1', "Cuenta");
@@ -695,7 +695,7 @@ class BuilderReportController extends Controller
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'VentasxCuentaMesero.xls'
+            'VentasxCuentaMeseroMensual.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
