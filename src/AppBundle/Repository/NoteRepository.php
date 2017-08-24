@@ -57,10 +57,11 @@ class NoteRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status', 'a.id as account')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.note', 'n')
-            ->innerJoin('n.user', 'u')
+            ->innerJoin('n.account', 'a')
+            ->innerJoin('a.user', 'u')
             ->where('n.checkin >= :initialDate')
             ->andWhere('n.status = \'Pendiente\'')
             ->andWhere('u.roles like \'%MESERO%\'')
