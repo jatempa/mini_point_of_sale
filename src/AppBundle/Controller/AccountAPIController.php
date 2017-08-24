@@ -175,7 +175,6 @@ class AccountAPIController extends Controller
                 }
                 $account->setCheckin(new \DateTime('now'));
                 $account->setUser($this->getUser());
-                $account->setStatus(true);
 
                 $em->persist($account);
                 $em->flush();

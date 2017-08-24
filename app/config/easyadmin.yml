@@ -52,7 +52,6 @@ easy_admin:
                   - { property: 'user', label: 'Mesero' }
                   - { property: 'checkin', label: 'Fecha de apertura' }
                   - { property: 'checkout', label: 'Fecha de clausura' }
-                  - { property: 'status', label: '¿Abierta?' }
         Category:
             label: 'Categoría'
             class: AppBundle\Entity\Category
@@ -85,7 +84,7 @@ easy_admin:
                 fields:
                   - { property: 'id', label: 'Id' }
                   - { property: 'user', label: 'Mesero' }
-                  - { property: 'account', label: 'Mesa' }
+                  - { property: 'account', label: 'Cuenta' }
                   - { property: 'numberNote', label: 'Folio' }
                   - { property: 'checkin', label: 'Fecha/Hora Emisión' }
                   - { property: 'checkout', label: 'Fecha/Hora Actualización' }

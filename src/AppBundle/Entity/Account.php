@@ -48,13 +48,6 @@ class Account
     private $checkout;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="status", type="boolean")
-     */
-    private $status;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -155,29 +148,6 @@ class Account
     public function getCheckout()
     {
         return $this->checkout;
-    }
-    
-    /**
-     * Set status
-     *
-     * @param boolean $status
-     * @return Account
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return boolean
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     public function __toString()
