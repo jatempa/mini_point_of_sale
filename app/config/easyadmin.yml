@@ -33,7 +33,7 @@ easy_admin:
     show:
         actions:
             - { name: 'edit', label: 'Actualizar' }
-            - { name: 'list', label: 'Regresar al menu' }
+            - { name: 'list', label: 'Regresar al menú' }
     edit:
         actions:
             - { name: 'list', label: 'Regresar al menú' }
