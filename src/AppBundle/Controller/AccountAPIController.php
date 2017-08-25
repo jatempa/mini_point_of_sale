@@ -76,7 +76,7 @@ class AccountAPIController extends Controller
                 $printer->text("REPUBLIK\n");
                 $printer->text("Live Music");
                 $printer->feed(2);
-                $printer->text("Mesero(a)" . $userId->getName() . " " . $userId->getFirstLastName() . "\n");
+                $printer->text("Mesero(a) " . $userId->getName() . " " . $userId->getFirstLastName() . "\n");
                 $printer->setJustification(Printer::JUSTIFY_LEFT);
                 $printer->text(str_pad("Cantidad", 9));
                 $printer->text(str_pad("  Producto", 23));
