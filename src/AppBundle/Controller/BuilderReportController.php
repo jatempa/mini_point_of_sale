@@ -13,6 +13,7 @@ use Mike42\Escpos\Printer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class BuilderReportController extends Controller
@@ -432,8 +433,7 @@ class BuilderReportController extends Controller
      */
     public function getSalesByAccountWaiterDayAction()
     {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !$this->get('security.authorization_checker')->isGranted('ROLE_CAJERO')) {
-
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || $this->get('security.authorization_checker')->isGranted('ROLE_CAJERO')) {
 
             $em = $this->getDoctrine()->getManager();
             $sales = $em->getRepository('AppBundle:NoteProduct')->findSalesByAccountWaiter(new \DateTime('-1 day'));
@@ -507,6 +507,8 @@ class BuilderReportController extends Controller
 
             return $response;
         }
+
+        return new Response("Error");
     }
 
     /**
