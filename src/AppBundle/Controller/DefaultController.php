@@ -107,10 +107,10 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/notes/checkin/product/cancelaciones/{userId}/{folioNumber}", name="cancel_note")
+     * @Route("/notes/checkin/product/cancelaciones/{accountId}/{userId}/{folioNumber}", name="cancel_note")
      * @Method("GET")
      */
-    public function cancelNoteAction($userId, $folioNumber)
+    public function cancelNoteAction($accountId, $userId, $folioNumber)
     {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -137,7 +137,7 @@ class DefaultController extends Controller
               }
             }
 
-            $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($userId, $folioNumber);
+            $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductIdForCancel($accountId, $userId, $folioNumber);
             //Update status of note product
             $note = $em->getRepository('AppBundle:Note')->findOneById($n['id']);
             $note->setStatus('Cancelado');

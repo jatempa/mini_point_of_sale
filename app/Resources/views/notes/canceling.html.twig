@@ -25,7 +25,8 @@
           <thead>
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
+                <th>Mesero</th>
+                <th>Cuenta</th>
                 <th>No. Comanda</th>
                 <th>Fecha y Hora</th>
                 <th></th>
@@ -38,6 +39,7 @@
 
                 <td>{{ note.userId }}</td>
                 <td>{{ note.fullname }}</td>
+                <td>{{ note.account }}</td>
                 <td>{{ note.numberNote }}</td>
                 <td>{{ note.checkin|date('Y-m-d H:i:s') }}</td>
                 <td>
@@ -56,7 +58,7 @@
                   </table>
                 </td>
                 <td>
-                  <a class="btn btn-danger btn-lg" href="{{ path('cancel_note', { 'userId': note.userId, 'folioNumber': note.numberNote }) }}">
+                  <a class="btn btn-danger btn-lg" href="{{ path('cancel_note', { 'accountId': note.account, 'userId': note.userId, 'folioNumber': note.numberNote }) }}">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </a>
                 </td>

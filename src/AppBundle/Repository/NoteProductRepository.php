@@ -93,4 +93,26 @@ class NoteProductRepository extends EntityRepository
 
         return $dql->getQuery()->getSingleResult();
     }
+
+    public function findNoteProductIdForCancel($accountId, $userId, $numberNote)
+    {
+        $em = $this->getEntityManager();
+        $dql = $em->createQueryBuilder();
+        $dql->select('n.id')
+            ->from('AppBundle:NoteProduct', 'np')
+            ->innerJoin('np.note', 'n')
+            ->innerJoin('n.account', 'a')
+            ->innerJoin('a.user', 'u')
+            ->where('u.id = :userId')
+            ->andWhere('n.numberNote = :folio')
+            ->andWhere('n.status like \'%Entregado%\'')
+            ->andWhere('a.id = :accId')
+            ->groupBy('n.id');
+
+        $dql->setParameter('userId', $userId);
+        $dql->setParameter('folio', $numberNote);
+        $dql->setParameter('accId', $accountId);
+
+        return $dql->getQuery()->getSingleResult();
+    }
 }
