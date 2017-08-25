@@ -19,12 +19,21 @@
 		  <product-list></product-list>
 		  <product-form></product-form>
 		  <div class="field" style="margin-top: 20px;">
-			<button type="submit" class="button is-info">
-			  <span class="icon is-normal">
-			    <i class="fa fa-send"></i>
-			  </span>
-			  <span>Enviar Comanda</span>
-			</button>
+			{% if is_granted('ROLE_PALOMASHOTS') %}
+				<button type="submit" class="button is-info">
+				  <span class="icon is-normal">
+				    <i class="fa fa-save"></i>
+				  </span>
+					<span>Registrar Comanda</span>
+				</button>
+			{% else %}
+				<button type="submit" class="button is-info">
+				  <span class="icon is-normal">
+				    <i class="fa fa-send"></i>
+				  </span>
+				  <span>Enviar Comanda</span>
+				</button>
+			{% endif %}
 			<button class="button" @click.prevent="cleanForm">
 			  <span class="icon is-normal">
 			    <i class="fa fa-remove"></i>
@@ -40,5 +49,9 @@
 
 {% block javascripts %}
   {{ parent() }}
-  <script src="{{ asset('js/notes/app.js') }}"></script>
+  {% if is_granted('ROLE_PALOMASHOTS') %}
+	  <script src="{{ asset('js/notes/appshots.js') }}"></script>
+  {% else %}
+	  <script src="{{ asset('js/notes/app.js') }}"></script>
+  {% endif %}
 {% endblock %}

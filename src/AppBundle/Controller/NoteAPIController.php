@@ -170,4 +170,80 @@ class NoteAPIController extends Controller
 
         return new Response('This is not ajax!', 400);
     }
+
+
+    /**
+     * @Post("/notes/create/shotwaiter")
+     */
+    public function postCreateNoteForShotWaiterAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $result = null;
+            // Get data from client
+            $selectedAccount = $request->request->get('selectedAccount');
+            $numberNote = $request->request->get('numberNote');
+            $products = $request->request->get('products');
+            // Prepare ORM
+            $em = $this->getDoctrine()->getManager();
+            $em->getConnection()->beginTransaction(); // suspend auto-commit
+            try {
+
+                $account = $em->getRepository('AppBundle:Account')->findOneById($selectedAccount);
+                // Create Note
+                $note = new Note();
+                $note->setNumberNote($numberNote);
+                $note->setCheckin(new \DateTime('now'));
+                $note->setUser($this->getUser());
+                $note->setAccount($account);
+                $note->setStatus("Pendiente");
+                $em->persist($note);
+                $em->flush();
+
+                foreach ($products as $product) {
+                    if (!is_null($product)) {
+                        $noteProduct = new NoteProduct();
+                        $noteProduct->setNote($note);
+                        $prod = $em->getRepository('AppBundle:Product')->findOneById($product['id']);
+                        $noteProduct->setProduct($prod);
+                        $noteProduct->setAmount($product['amount']);
+                        $noteProduct->setTotal($product['total']);
+                        // Save Product
+                        $em->persist($noteProduct);
+                        $em->flush();
+                    }
+                }
+
+                // Change status of note
+                $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($note->getAccount(), $note->getUser()->getId(), $note->getNumberNote());
+
+                $noteObj = $em->getRepository('AppBundle:Note')->findOneById($n['id']);
+                $noteObj->setStatus('Entregado');
+                $noteObj->setCheckOut(new \DateTime('now'));
+                $em->flush();
+
+                // Reduce stock
+                foreach ($products as $p) {
+                    $product = $em->getRepository('AppBundle:Product')->findOneById($p['id']);
+                    $reduceAmount = $product->getStock() - $p['amount'];
+
+                    if ($reduceAmount < 0) {
+                        $em->getConnection()->rollBack();
+                    } else {
+                        $product->setStock($reduceAmount);
+                        $em->flush();
+                    }
+                }
+
+                $em->getConnection()->commit();
+                $result = "success";
+
+                return new JsonResponse($result);
+            } catch (Exception $e) {
+                $em->getConnection()->rollBack();
+                throw $e;
+            }
+        }
+
+        return new Response('This is not ajax!', 400);
+    }
 }
