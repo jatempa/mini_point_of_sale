@@ -51,7 +51,6 @@ easy_admin:
                   - { property: 'id', label: 'Id' }
                   - { property: 'user', label: 'Mesero' }
                   - { property: 'checkin', label: 'Fecha de apertura' }
-                  - { property: 'checkout', label: 'Fecha de clausura' }
         Category:
             label: 'Categoría'
             class: AppBundle\Entity\Category
@@ -85,9 +84,9 @@ easy_admin:
                   - { property: 'id', label: 'Id' }
                   - { property: 'user', label: 'Mesero' }
                   - { property: 'account', label: 'Cuenta' }
-                  - { property: 'numberNote', label: 'Folio' }
+                  - { property: 'numberNote', label: 'Comanda' }
                   - { property: 'checkin', label: 'Fecha/Hora Emisión' }
-                  - { property: 'checkout', label: 'Fecha/Hora Actualización' }
+                  - { property: 'checkout', label: 'Fecha/Hora Entrega' }
                   - { property: 'status', label: 'Status' }
                 sort: ['checkin', 'DESC']
         NoteProduct:
