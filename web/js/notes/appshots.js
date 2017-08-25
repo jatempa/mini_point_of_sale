@@ -14,33 +14,67 @@ let productForm = {
         </div>
       </div>
       <div v-if="selectedCategory > 0" class="field" style="margin-top: 8px;">
-        <label class="label">Selecciona un producto</label>
-        <div class="control">
-          <div class="select">
-            <select v-model="selectedProduct">
-              <option v-for="product in getProductsByCategory" :value="product.id">
-                {{ product.name }} ($ {{ product.price }})
-              </option>
-            </select>
+          <div v-if="selectedCategory === 2 && canAddGift">
+            <div class="field">
+              <label class="label">Tipo de servicio</label>
+              <div class="control">
+                  <div class="select">
+                    <select v-model="kindService">
+                      <option value="Pinneapple">1 Jarra de Piña</option>
+                      <option value="Berry">1 Jarra de Berry</option>
+                      <option value="Pack1">4 Naturales</option>
+                      <option value="Pack2">3 Naturales y 1 Mineral</option>
+                      <option value="Pack3">2 Naturales y 2 Minerales</option>
+                      <option value="Pack4">1 Naturales y 3 Minerales</option>
+                      <option value="Pack5">4 Minerales</option>
+                    </select>
+                  </div>
+              </div>
+            </div>
+        
+            <button class="button is-success" @click.prevent="addGiftService" style="margin-top: 8px;">
+              <span class="icon is-normal">
+                  <i class="fa fa-plus"></i>
+              </span>
+              <span>Agregar a lista</span>
+            </button>
+          </div>      
+          <div v-else>
+            <label class="label">Selecciona un producto</label>
+            <div class="control">
+              <div class="select">
+                <select v-model="selectedProduct">
+                  <option v-for="product in getProductsByCategory" :value="product.id">
+                    {{ product.name }} ($ {{ product.price }})
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div v-if="selectedProduct > 0" style="margin-top: 8px;">        
+            <div class="field">
+              <label class="label">Cantidad</label>
+              <div class="control">
+                <input v-model="amount" class="input" type="number" min="0" max="100" placeholder="Introduce la cantidad del producto">
+              </div>
+            </div>
+            
+            <button class="button is-success" @click.prevent="addProduct"  style="margin-top: 8px;">
+              <span class="icon is-normal">
+                  <i class="fa fa-plus"></i>
+              </span>
+              <span>Agregar a lista</span>
+            </button>
+            </div>
           </div>
-        </div>
       </div>
-      <div v-if="selectedProduct > 0" style="margin-top: 8px;">
-        <div class="field">
-          <label class="label">Cantidad</label>
-          <div class="control">
-            <input v-model="amount" class="input" type="number" min="0" max="100" placeholder="Introduce la cantidad del producto">
-          </div>
-        </div>
-        <button class="button is-success" @click.prevent="addProduct">
-          <span class="icon is-normal">
-              <i class="fa fa-plus"></i>
-          </span>
-          <span>Agregar a lista</span>
-        </button>
-      </div>    
     </section>                   
     `,
+    data() {
+        return {
+            kindService: 0,
+            canAddGift: true
+        }
+    },
     mounted() {
         this.fetchCategories();
         this.fetchProducts();
@@ -82,18 +116,67 @@ let productForm = {
                 // Clear
                 this.$store.commit('updateSelectedCategory', 0);
                 this.$store.commit('updateSelectedProduct', 0);
-                this.$store.state.amount = 0;
+                this.$store.commit('updateAmount', 0);
+                this.kindService = 0;
+                this.canAddGift = true;
             } else {
                 swal('Error', 'Debes ingresar una cantidad mínima de 1 producto para continuar', 'warning');
+            }
+        },
+        addGiftService () {
+            if (this.kindService === "Pinneapple") {
+                this.canAddGift = false;
+                this.$store.commit('updateAmount', 1);
+                this.$store.commit('updateSelectedProduct', 13);
+                this.addProduct();
+            } else if (this.kindService === "Berry") {
+                this.canAddGift = false;
+                this.$store.commit('updateAmount', 1);
+                this.$store.commit('updateSelectedProduct', 14);
+                this.addProduct();
+            } else if (this.kindService === "Pack1") {
+                this.canAddGift = false;
+                this.$store.commit('updateAmount', 4);
+                this.$store.commit('updateSelectedProduct', 11);
+                this.addProduct();
+            } else if (this.kindService === "Pack2") {
+                this.canAddGift = false;
+                this.$store.commit('updateAmount', 3);
+                this.$store.commit('updateSelectedProduct', 11);
+                this.addProduct();
+                this.$store.commit('updateAmount', 1);
+                this.$store.commit('updateSelectedProduct', 12);
+                this.addProduct();
+            } else if (this.kindService === "Pack3") {
+                this.canAddGift = false;
+                this.$store.commit('updateAmount', 2);
+                this.$store.commit('updateSelectedProduct', 11);
+                this.addProduct();
+                this.$store.commit('updateAmount', 2);
+                this.$store.commit('updateSelectedProduct', 12);
+                this.addProduct();
+            } else if (this.kindService === "Pack4") {
+                this.canAddGift = false;
+                this.$store.commit('updateAmount', 1);
+                this.$store.commit('updateSelectedProduct', 11);
+                this.addProduct();
+                this.$store.commit('updateAmount', 3);
+                this.$store.commit('updateSelectedProduct', 12);
+                this.addProduct();
+            } else if (this.kindService === "Pack5") {
+                this.canAddGift = false;
+                this.$store.commit('updateAmount', 4);
+                this.$store.commit('updateSelectedProduct', 12);
+                this.addProduct();
             }
         }
     },
     computed: {
         getProductsByCategory () {
-            return this.$store.state.products.filter((p) => p.category === this.$store.state.selectedCategory);
+            return this.$store.state.products.filter((p) => p.category === this.$store.state.selectedCategory && p.category !== 3);
         },
         categories () {
-            return this.$store.state.categories;
+            return this.$store.state.categories.filter((c) => c.id !== 3);
         },
         selectedAccount: {
             get () {
@@ -129,6 +212,7 @@ let productForm = {
         }
     }
 };
+
 
 let productList = {
     template: `
