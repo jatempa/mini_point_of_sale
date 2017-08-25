@@ -115,12 +115,16 @@ let productForm = {
                 this.$store.commit('updateAmount', 0);
             } else {
                 swal('Error', 'Debes ingresar una cantidad mínima de 1 producto para continuar', 'warning');
+                this.$store.commit('updateSelectedCategory', 0);
+                this.$store.commit('updateSelectedGift', 0);
+                this.$store.commit('updateSelectedProduct', 0);
+                this.$store.commit('updateFlagAddGift', true);
             }
         },
         addGiftService () {
             if(this.$store.state.flagAddGift) {
-                this.addProduct();
                 this.$store.commit('updateFlagAddGift', false);
+                this.addProduct();
             }
 
             switch (parseInt(this.$store.state.selectedGift)) {
