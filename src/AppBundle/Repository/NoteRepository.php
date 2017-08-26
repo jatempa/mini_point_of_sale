@@ -76,8 +76,6 @@ class NoteRepository extends EntityRepository
 
     public function findUsersWithDeliveredNotes()
     {
-        $tempNow = new \DateTime('-36 hours');
-
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
         $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status', 'n.checkin', 'a.id as account')
@@ -85,13 +83,13 @@ class NoteRepository extends EntityRepository
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.account', 'a')
             ->innerJoin('a.user', 'u')
-            ->where('n.checkin >= :tempNow')
+            ->where('n.checkin >= :initialDate')
             ->andWhere('n.status = \'Entregado\'')
             ->andWhere('u.roles like \'%MESERO%\'')
             ->groupBy('u.id', 'n.numberNote', 'n.checkin')
             ->orderBy('n.checkin', 'DESC');
 
-        $dql->setParameter('tempNow', $tempNow);
+        $dql->setParameter('initialDate', new \DateTime('-12 hours'));
 
         return $dql->getQuery()->getResult();
     }
