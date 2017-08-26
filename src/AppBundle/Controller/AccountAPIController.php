@@ -70,7 +70,7 @@ class AccountAPIController extends Controller
                 $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserId($accountId, $userId);
                 $subtotal = 0;
 
-                $connector = new FilePrintConnector("/dev/usb/lp0");
+                $connector = new FilePrintConnector("/dev/usb/lp2");
                 $printer = new Printer($connector);
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text("REPUBLIK\n");

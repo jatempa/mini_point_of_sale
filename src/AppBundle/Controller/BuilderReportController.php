@@ -856,7 +856,7 @@ class BuilderReportController extends Controller
                 // Get Users
                 $users = $em->getRepository('AppBundle:User')->findWaitersId();
                 // Configure printer
-                $connector = new FilePrintConnector("/dev/usb/lp0");
+                $connector = new FilePrintConnector("/dev/usb/lp2");
                 $printer = new Printer($connector);
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text("REPUBLIK\n");
@@ -928,7 +928,7 @@ class BuilderReportController extends Controller
                 // Get Users
                 $users = $em->getRepository('AppBundle:User')->findWaitersId();
                 // Configure printer
-                $connector = new FilePrintConnector("/dev/usb/lp0");
+                $connector = new FilePrintConnector("/dev/usb/lp2");
                 $printer = new Printer($connector);
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text("REPUBLIK\n");
