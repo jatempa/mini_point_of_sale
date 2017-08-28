@@ -62,6 +62,9 @@ class AccountAPIController extends Controller
     {
         $chk = $this->get('security.authorization_checker');
         if ($chk->isGranted('ROLE_MESERO') || $chk->isGranted('ROLE_PALOMASHOTS')) {
+            // Configure printer
+            $connector = new FilePrintConnector("/dev/usb/lp0");
+            $printer = new Printer($connector);
             try {
                 $em = $this->getDoctrine()->getManager();
                 // Get User Id
@@ -70,8 +73,6 @@ class AccountAPIController extends Controller
                 $accounts = $em->getRepository('AppBundle:Account')->findAccountByUserId($accountId, $userId);
                 $subtotal = 0;
 
-                $connector = new FilePrintConnector("/dev/usb/lp2");
-                $printer = new Printer($connector);
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text("REPUBLIK\n");
                 $printer->text("Live Music");
@@ -106,9 +107,10 @@ class AccountAPIController extends Controller
                 $printer->text(str_pad(number_format($total,2, '.', ','),10,' ',STR_PAD_LEFT));
                 $printer->feed(2);
                 $printer->cut();
-                $printer->close();
             } catch (Exception $e) {
                 throw $e;
+            } finally {
+                $printer->close();
             }
         }
 

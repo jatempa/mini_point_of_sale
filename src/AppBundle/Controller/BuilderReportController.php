@@ -851,13 +851,13 @@ class BuilderReportController extends Controller
     {
         $chk = $this->get('security.authorization_checker');
         if ($chk->isGranted('ROLE_ADMIN') || $chk->isGranted('ROLE_CAJERO')) {
+            // Configure printer
+            $connector = new FilePrintConnector("/dev/usb/lp0");
+            $printer = new Printer($connector);
             try {
                 $em = $this->getDoctrine()->getManager();
                 // Get Users
                 $users = $em->getRepository('AppBundle:User')->findWaitersId();
-                // Configure printer
-                $connector = new FilePrintConnector("/dev/usb/lp2");
-                $printer = new Printer($connector);
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text("REPUBLIK\n");
                 $printer->text("Live Music");
@@ -906,9 +906,10 @@ class BuilderReportController extends Controller
                 }
                 $printer->feed(2);
                 $printer->cut();
-                $printer->close();
             } catch (Exception $e) {
                 throw $e;
+            } finally {
+                $printer->close();
             }
         }
 
@@ -923,13 +924,13 @@ class BuilderReportController extends Controller
     {
         $chk = $this->get('security.authorization_checker');
         if ($chk->isGranted('ROLE_ADMIN') || $chk->isGranted('ROLE_CAJERO')) {
+            // Configure printer
+            $connector = new FilePrintConnector("/dev/usb/lp0");
+            $printer = new Printer($connector);
             try {
                 $em = $this->getDoctrine()->getManager();
                 // Get Users
                 $users = $em->getRepository('AppBundle:User')->findWaitersId();
-                // Configure printer
-                $connector = new FilePrintConnector("/dev/usb/lp2");
-                $printer = new Printer($connector);
                 $printer->setJustification(Printer::JUSTIFY_CENTER);
                 $printer->text("REPUBLIK\n");
                 $printer->text("Live Music");
@@ -973,9 +974,10 @@ class BuilderReportController extends Controller
                 }
                 $printer->feed(2);
                 $printer->cut();
-                $printer->close();
             } catch (Exception $e) {
                 throw $e;
+            } finally {
+                $printer->close();
             }
         }
 
