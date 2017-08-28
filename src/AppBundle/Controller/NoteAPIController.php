@@ -139,7 +139,7 @@ class NoteAPIController extends Controller
             $em->getConnection()->beginTransaction(); // suspend auto-commit
             try {
                 // Change status of note
-                $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($note['account'], $note['userId'], $note['numberNote']);
+                $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($note['userId'], $note['numberNote']);
 
                 $noteObj = $em->getRepository('AppBundle:Note')->findOneById($n['id']);
                 $noteObj->setStatus('Entregado');
@@ -214,7 +214,7 @@ class NoteAPIController extends Controller
                 }
 
                 // Change status of note
-                $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($note->getAccount(), $note->getUser()->getId(), $note->getNumberNote());
+                $n = $em->getRepository('AppBundle:NoteProduct')->findNoteProductId($note->getUser()->getId(), $note->getNumberNote());
 
                 $noteObj = $em->getRepository('AppBundle:Note')->findOneById($n['id']);
                 $noteObj->setStatus('Entregado');

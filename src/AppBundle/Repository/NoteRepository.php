@@ -31,33 +31,11 @@ class NoteRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findUsersWithPendingNotes()
-    {
-        $tempNow = new \DateTime('now');
-
-        $em = $this->getEntityManager();
-        $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status')
-            ->from('AppBundle:NoteProduct', 'np')
-            ->innerJoin('np.note', 'n')
-            ->innerJoin('n.user', 'u')
-            ->where('n.checkin <= :tempNow')
-            ->andWhere('n.status = \'Pendiente\'')
-            ->andWhere('u.roles like \'%MESERO%\'')
-            ->groupBy('u.id', 'n.numberNote', 'n.checkin')
-            ->orderBy('n.checkin')
-            ->setMaxResults(50);
-
-        $dql->setParameter('tempNow', $tempNow);
-
-        return $dql->getQuery()->getResult();
-    }
-
     public function findUsersWithPendingNotesByDate()
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status', 'a.id as account')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.account', 'a')
@@ -78,7 +56,7 @@ class NoteRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
-        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status', 'n.checkin', 'a.id as account')
+        $dql->select('u.id as userId', 'concat(u.name, \' \', u.firstLastName) as fullname', 'n.numberNote','n.status', 'n.checkin')
             ->from('AppBundle:NoteProduct', 'np')
             ->innerJoin('np.note', 'n')
             ->innerJoin('n.account', 'a')

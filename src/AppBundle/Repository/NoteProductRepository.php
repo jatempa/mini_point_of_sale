@@ -72,7 +72,7 @@ class NoteProductRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findNoteProductId($accountId, $userId, $numberNote)
+    public function findNoteProductId($userId, $numberNote)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
@@ -84,17 +84,15 @@ class NoteProductRepository extends EntityRepository
             ->where('u.id = :userId')
             ->andWhere('n.numberNote = :folio')
             ->andWhere('n.status like \'%Pendiente%\'')
-            ->andWhere('a.id = :accId')
             ->groupBy('n.id');
 
         $dql->setParameter('userId', $userId);
         $dql->setParameter('folio', $numberNote);
-        $dql->setParameter('accId', $accountId);
 
         return $dql->getQuery()->getSingleResult();
     }
 
-    public function findNoteProductIdForCancel($accountId, $userId, $numberNote)
+    public function findNoteProductIdForCancel($userId, $numberNote)
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();
@@ -106,12 +104,10 @@ class NoteProductRepository extends EntityRepository
             ->where('u.id = :userId')
             ->andWhere('n.numberNote = :folio')
             ->andWhere('n.status like \'%Entregado%\'')
-            ->andWhere('a.id = :accId')
             ->groupBy('n.id');
 
         $dql->setParameter('userId', $userId);
         $dql->setParameter('folio', $numberNote);
-        $dql->setParameter('accId', $accountId);
 
         return $dql->getQuery()->getSingleResult();
     }

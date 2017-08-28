@@ -66,7 +66,6 @@ new Vue({
       };
       
       let note = {
-        account: pendingNote.account,
         numberNote: pendingNote.numberNote,
         products: pendingNote.products,
         userId: pendingNote.userId
