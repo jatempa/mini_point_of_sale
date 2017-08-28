@@ -890,7 +890,6 @@ class BuilderReportController extends Controller
                         }
                     }
                     $printer->text(str_pad("_", 42,'_'));
-                    $printer->selectPrintMode(Printer::MODE_DOUBLE_HEIGHT);
                     $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
                     $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
                     $servicio = $subtotal * 0.05;
@@ -959,7 +958,6 @@ class BuilderReportController extends Controller
                         }
                     }
                     $printer->text(str_pad("_", 42,'_'));
-                    $printer->selectPrintMode(Printer::MODE_DOUBLE_HEIGHT);
                     $printer->text(str_pad("Subtotal $", 32,' ', STR_PAD_LEFT));
                     $printer->text(str_pad(number_format($subtotal,2, '.', ','),10,' ',STR_PAD_LEFT));
                     $servicio = $subtotal * 0.05;
