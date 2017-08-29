@@ -31,7 +31,7 @@ class NoteRepository extends EntityRepository
         return $dql->getQuery()->getResult();
     }
 
-    public function findUsersWithPendingNotesByDate()
+    public function findUsersWithPendingNotes()
     {
         $em = $this->getEntityManager();
         $dql = $em->createQueryBuilder();

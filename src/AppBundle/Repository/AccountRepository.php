@@ -12,22 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class AccountRepository extends EntityRepository
 {
-    public function findAllAccounts($id)
-    {
-        $em = $this->getEntityManager();
-        $dql = $em->createQueryBuilder();
-        $dql->select( 'a.id')
-            ->from('AppBundle:Account', 'a')
-            ->where('a.user = :id')
-            ->andWhere('a.checkin >= :db')
-            ->orderBy('a.id','desc');
-
-        $dql->setParameter('id', $id);
-        $dql->setParameter('db', new \DateTime('-12 hours'));
-
-        return $dql->getQuery()->getResult();
-    }
-
     public function findAllAccountsByDate($id)
     {
         $em = $this->getEntityManager();
