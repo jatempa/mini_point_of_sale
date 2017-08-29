@@ -68,7 +68,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/pendientes", name="pendientes")
+     * @Route("/pendientes", name="pendingNotes")
      * @Method("GET")
      */
     public function notesPendingAction()
@@ -77,7 +77,7 @@ class DefaultController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        return $this->render('notes/show.html.twig');
+        return $this->render('notes/pending.html.twig');
     }
 
     /**

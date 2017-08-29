@@ -19,15 +19,6 @@
 </head>
 <body>
   <div class="container">
-    <div class="row">
-        <div class="col-md-3">
-            {% if is_granted('ROLE_PALOMA') %}
-              <a href="{{ path('fos_user_security_logout') }}">
-                Cerrar Sesión
-              </a>
-            {% endif %}
-        </div>
-    </div>
     {% block body %}{% endblock %}
   </div>
   {% block javascripts %}

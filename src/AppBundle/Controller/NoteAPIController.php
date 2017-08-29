@@ -40,29 +40,12 @@ class NoteAPIController extends Controller
     }
 
     /**
-     * @Get("/notes/pending")
-     */
-    public function getPendingNotesAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $notes = $em->getRepository('AppBundle:Note')->findUsersWithPendingNotes();
-
-        for ($i = 0; $i < count($notes); $i++) {
-            $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($notes[$i]['userId'], $notes[$i]['numberNote']);
-        }
-
-        $view = View::create()->setData(array('notes' => $notes));
-
-        return $this->get('fos_rest.view_handler')->handle($view);
-    }
-
-    /**
      * @Get("/notes/pending/today")
      */
     public function getPendingNotesByDateAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $notes = $em->getRepository('AppBundle:Note')->findUsersWithPendingNotesByDate();
+        $notes = $em->getRepository('AppBundle:Note')->findUsersWithPendingNotes();
 
         for ($i = 0; $i < count($notes); $i++) {
             $notes[$i]['products'] = $em->getRepository('AppBundle:Note')->findProductsByNote($notes[$i]['userId'], $notes[$i]['numberNote']);

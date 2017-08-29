@@ -1,0 +1,47 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+<main>
+  <section class="col-md-12 col-lg-12">
+    <div class="row">
+      <div class="col-md-6 col-lg-6">
+        <img src="{{ asset('img/REPUBLIK.png') }}" alt="logorepublik" style="width: 280px; height: 101px; margin-bottom: 20px;">
+      </div>
+      <div class="col-md-3 col-md-offset-3 col-lg-3 col-lg-offset-3">
+        <a type="button" class="btn btn-primary btn-lg" href="{{ path('pendingNotes') }}" style="margin-top: 36px">
+          <i class="fa fa-refresh" aria-hidden="true"></i> Obtener Comandas
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-lg-12">
+        <div class="col-md-4 col-lg-4" v-for="n in getPendingNotes" :key="n.id">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><strong>Mesero ${ n.userId } - Comanda  ${ n.numberNote }</strong> / ${ n.fullname }</h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                <li v-for="product in n.products" :key="product.id">
+                  <h2>${ product.amount } ${ product.product }</h2>
+                  <h3>${ product.category } $ ${ product.price }</h3>
+                </li>
+              </ul>
+            </div>
+            <div class="panel-footer text-center">
+              <button type="button" class="btn btn-success btn-lg" @click.prevent="checkoutNote(n)">
+                <i class="fa fa-check" aria-hidden="true"></i> Entregado
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript" src="{{ asset('js/frontend/app.js') }}"></script>
+{% endblock %}

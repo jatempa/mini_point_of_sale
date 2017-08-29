@@ -1,49 +1,11 @@
 new Vue({
+  delimiters: ['${', '}'],
   el: 'main',
   data() {
     return {
       notes: []
     }
   },
-  template: `
-  <section class="col-md-12 col-lg-12">
-      <div class="row">
-        <div class="col-md-3 col-md-offset-9 col-lg-3 col-lg-offset-9">
-          <form style="margin-bottom: 25px">
-            <button type="button" class="btn btn-primary btn-lg" @click="loadMorePendingNotes">
-              <i class="fa fa-refresh" aria-hidden="true"></i> Obtener Comandas
-            </button>
-          </form>
-        </div>  
-      </div>
-      <div class="row">
-        <div class="col-md-12 col-lg-12">
-          <div class="col-md-4 col-lg-4" v-for="n in getPendingNotes" :key="n.id">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                <h3 class="panel-title"><strong>Mesero {{ n.userId }} - Comanda {{ n.numberNote }}</strong> / {{ n.fullname }}</h3>
-              </div>
-              <div class="panel-body">
-                <ul>
-                  <li v-for="product in n.products" :key="product.id">
-                    <h2>{{ product.amount }} {{ product.product }}</h2>
-                    <h3>{{ product.category }} $ {{ product.price }}</h3>
-                  </li>
-                </ul>
-              </div>
-              <div class="panel-footer text-center">
-                <form>
-                  <button type="button" class="btn btn-success btn-lg" @click.prevent="checkoutNote(n)">
-                    <i class="fa fa-check" aria-hidden="true"></i> Entregado
-                  </button>
-                </form>
-              </div>                                 
-            </div>
-          </div>
-        </div>
-      </div>
-  </section>
-  `,
   mounted() {
     this.fetchPendingNotes();
   },
@@ -56,9 +18,6 @@ new Vue({
            .catch(function (error) {
               console.log(error);
            });
-    },
-    loadMorePendingNotes () {
-      this.fetchPendingNotes();
     },
     checkoutNote (pendingNote) {
       axios.defaults.headers.common = {
