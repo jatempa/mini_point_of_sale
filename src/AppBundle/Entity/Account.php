@@ -41,13 +41,6 @@ class Account
     private $checkin;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="checkout", type="datetime", nullable=true)
-     */
-    private $checkout;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -125,29 +118,6 @@ class Account
     public function getCheckin()
     {
         return $this->checkin;
-    }
-
-    /**
-     * Set checkout
-     *
-     * @param \DateTime $checkout
-     * @return Account
-     */
-    public function setCheckout($checkout)
-    {
-        $this->checkout = $checkout;
-
-        return $this;
-    }
-
-    /**
-     * Get checkout
-     *
-     * @return \DateTime
-     */
-    public function getCheckout()
-    {
-        return $this->checkout;
     }
 
     public function __toString()
