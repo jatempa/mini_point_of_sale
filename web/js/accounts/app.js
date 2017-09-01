@@ -1,3 +1,109 @@
+Vue.use('vuex');
+
+const store = new Vuex.Store({
+    state: {
+        name: '',
+        title: '',
+        checkout: '',
+        accounts: [],
+        account: [],
+        showModal: false
+    },
+    getters: {
+        accountListLength: (state) => {
+            return state.accounts.length;
+        },
+        totalAccount: (state) => {
+            return state.account.reduce((acc, x) => acc + (x.price * x.amount), 0);
+        }
+    },
+    mutations: {
+        updateName(state, name) {
+            state.name = name;
+        },
+        updateTitle(state, title) {
+            state.title = title;
+        },
+        updateCheckout(state, checkout) {
+            state.checkout = checkout;
+        },
+        updateAccounts(state, accounts) {
+            state.accounts = accounts;
+        },
+        updateAccount(state, account) {
+            state.account = account;
+        },
+        updateShowModalFlag(state, showModal) {
+            state.showModal = showModal;
+        }
+    },
+    actions: {
+        fetchAccounts: (context) => {
+            axios.get('/api/accounts/date')
+                 .then(response => {
+                   context.commit('updateAccounts', response.data.accounts);
+                 })
+                 .catch(function (error) {
+                   console.log(error);
+                 });
+        },
+        createAccount: (context) => {
+            axios.defaults.headers.common = {
+                'X-Requested-With': 'XMLHttpRequest',
+            };
+
+            let accountData = null;
+
+            if(context.state.name !== '') {
+                accountData = {
+                    name: context.state.name
+                };
+            }
+
+            axios.post('/api/accounts/create', accountData)
+                .then(function (response) {
+                    if(response.data === 'success') {
+                        swal('¡Correcto!', 'Cuenta registrada satisfactoriamente', 'success');
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    swal('Error', 'Esta cuenta no pudo ser registrada en el sistema', 'error')
+                });
+            // Clean form
+            context.commit('updateName', '');
+            // Update list
+            context.dispatch('fetchAccounts');
+        },
+        showAccountDetails: (context, id) => {
+            let accountId = parseInt(id);
+            context.commit('updateShowModalFlag', true);
+            axios.get('/api/accounts/'+accountId+'/details')
+                 .then(response => {
+                   context.commit('updateAccount', response.data.account);
+                   context.commit('updateTitle', accountId);
+                 })
+                 .catch(function (error) {
+                   console.log(error);
+                 });
+        },
+        printAccount: (context, account) => {
+            axios.get('/api/accounts/' + account.id)
+                 .then(function (response) {
+                   swal('¡Correcto!', 'Cuenta impresa satisfactoriamente', 'success');
+                 })
+                 .catch(function (error) {
+                   console.log(error);
+                 });
+        },
+        closeModal: (context) => {
+            context.commit('updateShowModalFlag', false);
+            context.commit('updateAccount', []);
+            context.commit('updateTitle', '');
+        }
+    }
+});
+
 let accountForm = {
   template: `
   <section>
@@ -6,7 +112,7 @@ let accountForm = {
         <div class="modal-background"></div>      
         <div class="modal-content">
           <div class="box">
-            <h4>Cuenta {{ accountTitle }}</h4>
+            <h4>Cuenta {{ title }}</h4>
             <table class="table">
               <thead>
                 <tr>
@@ -24,7 +130,7 @@ let accountForm = {
                 </tr>
               </tfoot>
               <tbody>
-                <tr v-for="(product, index) in accountDetails" v-if="product.price > 0" :key="product.id">
+                <tr v-for="(product, index) in account" v-if="product.price > 0" :key="product.id">
                   <td>{{ index + 1 }}</td>
                   <td>{{ product.name }}</td>
                   <td>{{ product.price }}</td>
@@ -49,7 +155,7 @@ let accountForm = {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="account in accountList" :key="account.id">
+              <tr v-for="account in accounts" :key="account.id">
                 <td>
                   <a @click.prevent="showAccountDetails(account.id)">
                     {{ account.id }}
@@ -76,109 +182,81 @@ let accountForm = {
     <div class="field">
       <label class="label">Mesa</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Por ejemplo: Mesa de mi cliente favorito" v-model="accountName">
+        <input class="input" type="text" placeholder="Por ejemplo: Mesa de mi cliente favorito" v-model="name">
       </div>
     </div>   
   </section>`,
-  data() {
-    return {
-      showModal: false,
-      accountTitle: '',
-      accountDetails: []
-    }
-  },
   methods: {
     fetchAccounts () {
-        axios.get('/api/accounts/date')
-            .then(response => {
-                this.$store.commit('updateAccountList', response.data.accounts);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        this.$store.dispatch('fetchAccounts');
     },
     printAccount(account) {
-        axios.get('/api/accounts/' + account.id)
-             .then(function (response) {
-                swal('¡Correcto!', 'Cuenta impresa satisfactoriamente', 'success');
-             })
-             .catch(function (error) {
-                console.log(error);
-             });
+        this.$store.dispatch('printAccount', account);
     },
     showAccountDetails(id) {
-        this.showModal = true;
-        var accountId = parseInt(id);
-        axios.get('/api/accounts/'+accountId+'/details')
-            .then(response => {
-                this.accountDetails = response.data.account;
-                this.accountTitle = accountId;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        this.$store.dispatch('showAccountDetails', id);
     },
     closeModal() {
-        this.showModal = false;
-        this.accountDetails = [];
-        this.accountTitle = '';
+        this.$store.dispatch('closeModal');
     }
   },
   computed: {
-    accountName: {
-        get () {
-            return this.$store.state.accountName
-        },
-        set (value) {
-            this.$store.commit('updateAccountName', value)
-        }
-    },
-    accountDate: {
-        get () {
-            return this.$store.state.accountDate
-        },
-        set (value) {
-            this.$store.commit('updateAccountDate', value)
-        }
-    },
-    accountList: {
-      get () {
-        return this.$store.state.accountList
-      },
-      set (value) {
-        this.$store.commit('updateAccountList', value)
-      }
-    },
     accountListLength() {
-      return this.$store.state.accountList.length;
+      return this.$store.getters.accountListLength;
     },
     totalAccount() {
-        return this.accountDetails.reduce((acc, x) => acc + (x.price * x.amount), 0)
+      return this.$store.getters.totalAccount;
+    },
+    title: {
+      get () {
+          return this.$store.state.title
+      },
+      set (value) {
+          this.$store.commit('updateTitle', value)
+      }
+    },
+    name: {
+        get () {
+            return this.$store.state.name
+        },
+        set (value) {
+            this.$store.commit('updateName', value)
+        }
+    },
+    checkout: {
+        get () {
+            return this.$store.state.checkout
+        },
+        set (value) {
+            this.$store.commit('updateCheckout', value)
+        }
+    },
+    accounts: {
+      get () {
+        return this.$store.state.accounts
+      },
+      set (value) {
+        this.$store.commit('updateAccounts', value)
+      }
+    },
+    account: {
+      get () {
+        return this.$store.state.account
+      },
+      set (value) {
+        this.$store.commit('updateAccounts', value)
+      }
+    },
+    showModal: {
+      get () {
+        return this.$store.state.showModal
+      },
+      set (value) {
+        this.$store.commit('updateShowModalFlag', value)
+      }
     }
   }
 };
-
-
-Vue.use('vuex');
-
-const store = new Vuex.Store({
-  state: {
-    accountName: '',
-    accountDate: '',
-    accountList: []
-  },
-  mutations: {
-    updateAccountName(state, accountName) {
-      state.accountName = accountName;
-    },
-    updateAccountDate(state, accountDate) {
-      state.accountDate = accountDate;
-    },
-    updateAccountList(state, accountList) {
-      state.accountList = accountList;
-    }
-  }
-});
 
 new Vue({
     delimiters: ['${', '}'],
@@ -190,44 +268,10 @@ new Vue({
     },
     methods: {
       fetchAccounts () {
-          axios.get('/api/accounts/date')
-              .then(response => {
-                  this.$store.commit('updateAccountList', response.data.accounts);
-              })
-              .catch(function (error) {
-                  console.log(error);
-              });
+          this.$store.dispatch('fetchAccounts');
       },
       createAccount () {
-        axios.defaults.headers.common = {
-          'X-Requested-With': 'XMLHttpRequest',
-        };
-
-        let accountData = null;
-
-        if(this.$store.state.accountName !== '') {
-          accountData = {
-            name: this.$store.state.accountName
-          };
-        }
-
-        axios.post('/api/accounts/create', accountData)
-           .then(function (response) {
-             if(response.data === 'success') {
-               swal('¡Correcto!', 'Cuenta registrada satisfactoriamente', 'success');
-             }
-           })
-           .catch(function (error) {
-             console.log(error);
-             swal('Error', 'Esta cuenta no pudo ser registrada en el sistema', 'error')
-           });
-        // Clean form
-        this.cleanForm();
-        // Update list
-        this.fetchAccounts();
-      },
-      cleanForm () {
-        this.$store.commit('updateAccountName', '');
+          this.$store.dispatch('createAccount');
       }
     }
 });
