@@ -1,3 +1,245 @@
+Vue.use('vuex');
+
+const store = new Vuex.Store({
+    state: {
+        lastNumberNote: 0,
+        selectedAccount: 0,
+        selectedCategory: 0,
+        selectedProduct: 0,
+        accounts: [],
+        carProducts: [],
+        categories: [],
+        products: [],
+        amount: 0,
+        selectedGift: 0,
+        flagAddGift: true
+    },
+    getters: {
+        getProductsByCategory: (state) => {
+            return state.products.filter((p) => p.category === state.selectedCategory && p.category !== 3);
+        },
+        filterCategories: (state) => {
+            return state.categories.filter((c) => c.id !== 3);
+        },
+        isLicorBottle: (state) => {
+            return state.categories.filter((c) => c.id === state.selectedCategory).map((c) => c.name === 'Botella')[0];
+        },
+        getAccounts: (state) => {
+            return state.accounts;
+        },
+        getCarProducts: (state) => {
+            return state.carProducts;
+        },
+        carProductListLength: (state) => {
+            return state.carProducts.length;
+        },
+        totalCost: (state) => {
+            return state.carProducts.reduce((acc, x) => acc + (x.price * x.amount), 0);
+        }
+    },
+    mutations: {
+        updateLastNumberNote(state) {
+            state.lastNumberNote += 1;
+        },
+        updateAccounts(state, accounts) {
+            state.accounts = accounts;
+        },
+        updateSelectedAccount(state, selectedAccount) {
+            state.selectedAccount = selectedAccount;
+        },
+        updateSelectedCategory(state, selectedCategory) {
+            state.selectedCategory = selectedCategory;
+        },
+        updateSelectedProduct(state, selectedProduct) {
+            state.selectedProduct = selectedProduct;
+        },
+        updateSelectedGift(state, selectedGift) {
+            state.selectedGift = selectedGift;
+        },
+        updateFlagAddGift(state, flagAddGift) {
+            state.flagAddGift = flagAddGift;
+        },
+        updateProducts(state, products) {
+            state.products = products;
+        },
+        updateCategories(state, categories) {
+            state.categories = categories;
+        },
+        updateAmount(state, amount) {
+            state.amount = amount;
+        },
+        addCarProducts(state, product) {
+            state.carProducts.push(product);
+        },
+        resetCarProducts(state) {
+            state.carProducts = [];
+        }
+    },
+    actions: {
+        fetchAccounts: (context) => {
+            axios.get('/api/accounts/date')
+                .then(response => {
+                    context.commit('updateAccounts', response.data.accounts);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        fetchCategories: (context) => {
+            axios.get('/api/categories')
+                .then(response => {
+                    context.commit('updateCategories', response.data.categories);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        fetchProducts: (context) => {
+            axios.get('/api/products')
+                .then(response => {
+                    context.commit('updateProducts', response.data.products);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        addProduct: (context) => {
+            if (parseInt(context.state.amount) > 0) {
+                let product = {
+                    amount: parseInt(context.state.amount)
+                };
+
+                context.state.products.filter((p) => p.id === parseInt(context.state.selectedProduct))
+                    .map(function (p) {
+                        product.id = p.id;
+                        product.name = p.name;
+                        product.price = parseFloat(p.price);
+                        product.total = parseFloat(product.amount * p.price)
+                    });
+                // Add to car products
+                context.commit('addCarProducts', product);
+                // Clear
+                context.commit('updateSelectedCategory', 0);
+                context.commit('updateSelectedProduct', 0);
+                context.commit('updateAmount', 0);
+            } else {
+                swal('Error', 'Debes ingresar una cantidad mínima de 1 producto para continuar', 'warning');
+                context.commit('updateSelectedCategory', 0);
+                context.commit('updateSelectedGift', 0);
+                context.commit('updateSelectedProduct', 0);
+                context.commit('updateFlagAddGift', true);
+            }
+        },
+        addGiftService: (context) => {
+            if (context.state.flagAddGift) {
+                context.commit('updateFlagAddGift', false);
+                context.dispatch('addProduct');
+            }
+
+            switch (parseInt(context.state.selectedGift)) {
+                case 1:
+                    context.commit('updateAmount', 1);
+                    context.commit('updateSelectedProduct', 13);
+                    context.dispatch('addProduct');
+                    break;
+                case 2:
+                    context.commit('updateAmount', 1);
+                    context.commit('updateSelectedProduct', 14);
+                    context.dispatch('addProduct');
+                    break;
+                case 3:
+                    context.commit('updateAmount', 4);
+                    context.commit('updateSelectedProduct', 11);
+                    context.dispatch('addProduct');
+                    break;
+                case 4:
+                    context.commit('updateAmount', 3);
+                    context.commit('updateSelectedProduct', 11);
+                    context.dispatch('addProduct');
+                    context.commit('updateAmount', 1);
+                    context.commit('updateSelectedProduct', 12);
+                    context.dispatch('addProduct');
+                    break;
+                case 5:
+                    context.commit('updateAmount', 2);
+                    context.commit('updateSelectedProduct', 11);
+                    context.dispatch('addProduct');
+                    context.commit('updateAmount', 2);
+                    context.commit('updateSelectedProduct', 12);
+                    context.dispatch('addProduct');
+                    break;
+                case 6:
+                    context.commit('updateAmount', 1);
+                    context.commit('updateSelectedProduct', 11);
+                    context.dispatch('addProduct');
+                    context.commit('updateAmount', 3);
+                    context.commit('updateSelectedProduct', 12);
+                    context.dispatch('addProduct');
+                    break;
+                case 7:
+                    context.commit('updateAmount', 4);
+                    context.commit('updateSelectedProduct', 12);
+                    context.dispatch('addProduct');
+                    break;
+            }
+
+            context.commit('updateSelectedGift', 0);
+            context.commit('updateFlagAddGift', true);
+        },
+        getLastNoteNumber: (context) => {
+            axios.get('/api/notes/lastNoteId')
+                .then(response => {
+                    response.data.map((n) => context.state.lastNumberNote = parseInt(n.numberNote) + 1);
+                    if (!(context.state.lastNumberNote > 0)) {
+                        context.state.lastNumberNote = 1;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    context.state.lastNumberNote = 1;
+                });
+        },
+        createNote: (context) => {
+            axios.defaults.headers.common = {
+                'X-Requested-With': 'XMLHttpRequest',
+            };
+
+            if ((context.state.carProducts.length > 0) && (parseInt(context.state.selectedAccount) > 0) && (parseInt(context.state.lastNumberNote) > 0)) {
+                let noteData = {
+                    selectedAccount: parseInt(context.state.selectedAccount),
+                    numberNote: parseInt(context.state.lastNumberNote),
+                    products: context.state.carProducts
+                };
+                axios.post('/notes/create/shotwaiter', noteData)
+                     .then(function (response) {
+                       if (response.data === 'success') {
+                           swal('¡Correcto!', 'Comanda registrada satisfactoriamente', 'success');
+                           succ = true;
+                       }
+                     })
+                     .catch(function (error) {
+                       console.log(error);
+                       swal('Error', 'Esta comanda no pudo ser registrada en el sistema', 'error')
+                     });
+                // Increment number note
+                context.commit('updateLastNumberNote');
+                // Clean form
+                context.dispatch('cleanForm');
+            } else {
+                swal('Error', 'Verifica que hayas seleccionado una Cuenta y una serie de productos ', 'warning');
+            }
+        },
+        cleanForm: (context) => {
+            context.commit('updateSelectedAccount', 0);
+            context.commit('updateSelectedCategory', 0);
+            context.commit('updateSelectedGift', 0);
+            context.commit('updateSelectedProduct', 0);
+            context.commit('updateFlagAddGift', true);
+            context.commit('resetCarProducts');
+        }
+    }
+});
+
 let productForm = {
     template: `
     <section>
@@ -76,125 +318,28 @@ let productForm = {
         this.fetchProducts();
     },
     methods: {
-        fetchCategories () {
-            axios.get('/api/categories')
-                .then(response => {
-                    this.$store.commit('updateCategories', response.data.categories);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+        fetchCategories() {
+            this.$store.dispatch('fetchCategories');
         },
-        fetchProducts () {
-            axios.get('/api/products')
-                .then(response => {
-                    this.$store.commit('updateProducts', response.data.products);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+        fetchProducts() {
+            this.$store.dispatch('fetchProducts');
         },
-        addProduct () {
-            if (parseInt(this.$store.state.amount) > 0) {
-                let product = {
-                    amount: parseInt(this.$store.state.amount)
-                };
-
-                this.$store.state.products.filter((p) => p.id === parseInt(this.$store.state.selectedProduct))
-                    .map(function(p) {
-                        product.id = p.id;
-                        product.name = p.name;
-                        product.price = parseFloat(p.price);
-                        product.total = parseFloat(product.amount * p.price)
-                    });
-                // Add to car products
-                this.$store.commit('addCarProducts', product);
-                // Clear
-                this.$store.commit('updateSelectedCategory', 0);
-                this.$store.commit('updateSelectedProduct', 0);
-                this.$store.commit('updateAmount', 0);
-            } else {
-                swal('Error', 'Debes ingresar una cantidad mínima de 1 producto para continuar', 'warning');
-                this.$store.commit('updateSelectedCategory', 0);
-                this.$store.commit('updateSelectedGift', 0);
-                this.$store.commit('updateSelectedProduct', 0);
-                this.$store.commit('updateFlagAddGift', true);
-            }
+        addProduct() {
+            this.$store.dispatch('addProduct');
         },
-        addGiftService () {
-            if(this.$store.state.flagAddGift) {
-                this.$store.commit('updateFlagAddGift', false);
-                this.addProduct();
-            }
-
-            switch (parseInt(this.$store.state.selectedGift)) {
-                case 1:
-                    this.$store.commit('updateAmount', 1);
-                    this.$store.commit('updateSelectedProduct', 13);
-                    this.addProduct();
-                    this.$store.commit('updateSelectedGift', 0);
-                    this.$store.commit('updateFlagAddGift', true);
-                    break;
-                case 2:
-                    this.$store.commit('updateAmount', 1);
-                    this.$store.commit('updateSelectedProduct', 14);
-                    this.addProduct();
-                    this.$store.commit('updateSelectedGift', 0);
-                    this.$store.commit('updateFlagAddGift', true);
-                    break;
-                case 3:
-                    this.$store.commit('updateAmount', 4);
-                    this.$store.commit('updateSelectedProduct', 11);
-                    this.addProduct();
-                    this.$store.commit('updateSelectedGift', 0);
-                    this.$store.commit('updateFlagAddGift', true);
-                    break;
-                case 4:
-                    this.$store.commit('updateAmount', 3);
-                    this.$store.commit('updateSelectedProduct', 11);
-                    this.addProduct();
-                    this.$store.commit('updateAmount', 1);
-                    this.$store.commit('updateSelectedProduct', 12);
-                    this.addProduct();
-                    this.$store.commit('updateSelectedGift', 0);
-                    this.$store.commit('updateFlagAddGift', true);
-                    break;
-                case 5:
-                    this.$store.commit('updateAmount', 2);
-                    this.$store.commit('updateSelectedProduct', 11);
-                    this.addProduct();
-                    this.$store.commit('updateAmount', 2);
-                    this.$store.commit('updateSelectedProduct', 12);
-                    this.addProduct();
-                    this.$store.commit('updateSelectedGift', 0);
-                    this.$store.commit('updateFlagAddGift', true);
-                    break;
-                case 6:
-                    this.$store.commit('updateAmount', 1);
-                    this.$store.commit('updateSelectedProduct', 11);
-                    this.addProduct();
-                    this.$store.commit('updateAmount', 3);
-                    this.$store.commit('updateSelectedProduct', 12);
-                    this.addProduct();
-                    this.$store.commit('updateSelectedGift', 0);
-                    this.$store.commit('updateFlagAddGift', true);
-                    break;
-                case 7:
-                    this.$store.commit('updateAmount', 4);
-                    this.$store.commit('updateSelectedProduct', 12);
-                    this.addProduct();
-                    this.$store.commit('updateSelectedGift', 0);
-                    this.$store.commit('updateFlagAddGift', true);
-                    break;
-            }
+        addGiftService() {
+            this.$store.dispatch('addGiftService');
         }
     },
     computed: {
-        getProductsByCategory () {
-            return this.$store.state.products.filter((p) => p.category === this.$store.state.selectedCategory && p.category !== 3);
+        getProductsByCategory() {
+            return this.$store.getters.getProductsByCategory;
         },
-        categories () {
-            return this.$store.state.categories.filter((c) => c.id !== 3);
+        categories() {
+            return this.$store.getters.filterCategories;
+        },
+        isLicorBottle() {
+            return this.$store.getters.isLicorBottle;
         },
         selectedAccount: {
             get () {
@@ -228,9 +373,6 @@ let productForm = {
                 this.$store.commit('updateAmount', value)
             }
         },
-        isLicorBottle () {
-            return this.$store.state.categories.filter((c) => c.id === this.$store.state.selectedCategory).map((c) => c.name === 'Botella')[0];
-        },
         selectedGift: {
             get () {
                 return this.$store.state.selectedGift
@@ -242,79 +384,72 @@ let productForm = {
     }
 };
 
-
 let productList = {
     template: `
-  <section>
-    <div class="control">
-      <label class="label">Selecciona una cuenta</label>
-      <div class="select">
-        <select v-model="selectedAccount">
-          <option v-for="account in getAccounts" :value="account.id">
-           Cta. {{ account.id }} {{ account.name }}
-          </option>
-        </select>
-      </div>
-    </div>
-    <div v-if="carProductListLength > 0" class="field" style="margin-top: 8px;">
-      <div class="label">Lista de productos</div>
-      <div class="control">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Producto</th>
-              <th>Precio</th>
-              <th>Cant.</th>
-              <th>Subt.</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <th colspan="4">Total $</th>
-              <th>{{ totalCost }}</th>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr v-for="(product, index) in getCarProducts" :key="product.id">
-              <td>{{ index + 1 }}</td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
-              <td>{{ product.amount }}</td>
-              <td>{{ product.total }}</td>
-            </tr>
-          </tbody>
-        </table>    
-      </div>    
-    </div>    
-  </section>
+      <section>
+        <div class="control">
+          <label class="label">Selecciona una cuenta</label>
+          <div class="select">
+            <select v-model="selectedAccount">
+              <option v-for="account in getAccounts" :value="account.id">
+               Cta. {{ account.id }} {{ account.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div v-if="carProductListLength > 0" class="field" style="margin-top: 8px;">
+          <div class="label">Lista de productos</div>
+          <div class="control">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Producto</th>
+                  <th>Precio</th>
+                  <th>Cant.</th>
+                  <th>Subt.</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th colspan="4">Total $</th>
+                  <th>{{ totalCost }}</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr v-for="(product, index) in getCarProducts" :key="product.id">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ product.name }}</td>
+                  <td>{{ product.price }}</td>
+                  <td>{{ product.amount }}</td>
+                  <td>{{ product.total }}</td>
+                </tr>
+              </tbody>
+            </table>    
+          </div>    
+        </div>    
+      </section>
   `,
     mounted() {
         this.fetchAccounts();
     },
     methods: {
         fetchAccounts() {
-            axios.get('/api/accounts/date')
-                .then(response => {
-                    this.$store.commit('updateAccounts', response.data.accounts);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            this.$store.dispatch('fetchAccounts');
         }
     },
     computed: {
-        getAccounts () {
-            return this.$store.state.accounts;
+        getAccounts() {
+            return this.$store.getters.getAccounts;
         },
-        getCarProducts () {
-            return this.$store.state.carProducts;
+        getCarProducts() {
+            return this.$store.getters.getCarProducts;
         },
-        carProductListLength () {
-            return this.$store.state.carProducts.length;
+        carProductListLength() {
+            return this.$store.getters.carProductListLength;
         },
-        totalCost () {
-            return this.$store.state.carProducts.reduce((acc, x) => acc + (x.price * x.amount), 0);
+        totalCost() {
+            return this.$store.getters.totalCost;
         },
         selectedAccount: {
             get () {
@@ -327,123 +462,23 @@ let productList = {
     }
 };
 
-Vue.use('vuex');
-
-const store = new Vuex.Store({
-    state: {
-        lastNumberNote: 0,
-        selectedAccount: 0,
-        selectedCategory: 0,
-        selectedProduct: 0,
-        accounts: [],
-        carProducts: [],
-        categories: [],
-        products: [],
-        amount: 0,
-        selectedGift: 0,
-        flagAddGift: true
-    },
-    mutations: {
-        updateLastNumberNote(state) {
-            state.lastNumberNote += 1;
-        },
-        updateAccounts(state, accounts) {
-            state.accounts = accounts;
-        },
-        updateSelectedAccount(state, selectedAccount) {
-            state.selectedAccount = selectedAccount;
-        },
-        updateSelectedCategory(state, selectedCategory) {
-            state.selectedCategory = selectedCategory;
-        },
-        updateSelectedProduct(state, selectedProduct) {
-            state.selectedProduct = selectedProduct;
-        },
-        updateSelectedGift(state, selectedGift) {
-            state.selectedGift = selectedGift;
-        },
-        updateFlagAddGift(state, flagAddGift) {
-            state.flagAddGift = flagAddGift;
-        },
-        updateProducts(state, products) {
-            state.products = products;
-        },
-        updateCategories(state, categories) {
-            state.categories = categories;
-        },
-        updateAmount(state, amount) {
-            state.amount = amount;
-        },
-        addCarProducts(state, product) {
-            state.carProducts.push(product);
-        },
-        resetCarProducts(state) {
-            state.carProducts = [];
-        }
-    }
-});
-
 new Vue({
     delimiters: ['${', '}'],
     el: 'main',
     store,
-    components: { productList, productForm },
+    components: {productList, productForm},
     mounted() {
         this.getLastNoteNumber();
     },
     methods: {
-        getLastNoteNumber () {
-            axios.get('/api/notes/lastNoteId')
-                .then(response => {
-                    response.data.map((n) => this.$store.state.lastNumberNote = parseInt(n.numberNote) + 1);
-                    if (!(this.$store.state.lastNumberNote > 0)) {
-                        this.$store.state.lastNumberNote = 1;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    this.$store.state.lastNumberNote = 1;
-                });
+        getLastNoteNumber() {
+            this.$store.dispatch('getLastNoteNumber');
         },
-        createNote () {
-            axios.defaults.headers.common = {
-                'X-Requested-With': 'XMLHttpRequest',
-            };
-
-            if ((this.$store.state.carProducts.length > 0) && (parseInt(this.$store.state.selectedAccount) > 0) && (parseInt(this.$store.state.lastNumberNote) > 0)) {
-                let noteData = {
-                    selectedAccount: parseInt(this.$store.state.selectedAccount),
-                    numberNote: parseInt(this.$store.state.lastNumberNote),
-                    products: this.$store.state.carProducts
-                };
-
-                axios.post('/notes/create/shotwaiter', noteData)
-                    .then(function (response) {
-                        if(response.data === 'success') {
-                            swal('¡Correcto!', 'Comanda registrada satisfactoriamente', 'success');
-                            succ = true;
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                        swal('Error', 'Esta comanda no pudo ser registrada en el sistema', 'error')
-                    });
-
-                // Increment number note
-                this.$store.commit('updateLastNumberNote');
-                // Clean form
-                this.cleanForm();
-            } else {
-                swal('Error', 'Verifica que hayas seleccionado una Cuenta y una serie de productos ', 'warning');
-            }
+        createNote() {
+            this.$store.dispatch('createNote');
         },
-        cleanForm () {
-            this.$store.commit('updateSelectedAccount',0);
-            this.$store.commit('updateSelectedCategory', 0);
-            this.$store.commit('updateSelectedGift', 0);
-            this.$store.commit('updateSelectedProduct', 0);
-            this.$store.commit('updateFlagAddGift', true);
-            this.$store.commit('resetCarProducts');
+        cleanForm() {
+            this.$store.dispatch('cleanForm');
         }
     }
 });
